@@ -5,8 +5,12 @@
  */
 package com.internship.frejaeidjmeterplugin.gui;
 
+import com.internship.frejaeidjmeterplugin.sample.AuthSampler;
+import org.apache.jmeter.samplers.Entry;
+import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
+import org.apache.jmeter.threads.JMeterContextService;
 
 /**
  *
@@ -33,12 +37,19 @@ public class AuthSamplerGui extends AbstractSamplerGui {
         panelMain = new javax.swing.JPanel();
         lblInitAuth = new javax.swing.JLabel();
         btnSendInitAuth = new javax.swing.JButton();
-
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         lblInitAuth.setText("InitAuth");
 
         btnSendInitAuth.setText("SEND");
+        btnSendInitAuth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendInitAuthActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Are you doing anything?");
 
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);
@@ -46,9 +57,14 @@ public class AuthSamplerGui extends AbstractSamplerGui {
             panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMainLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(lblInitAuth)
-                .addGap(118, 118, 118)
-                .addComponent(btnSendInitAuth, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(panelMainLayout.createSequentialGroup()
+                        .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(lblInitAuth))
+                        .addGap(118, 118, 118)
+                        .addComponent(btnSendInitAuth, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
         panelMainLayout.setVerticalGroup(
@@ -58,11 +74,32 @@ public class AuthSamplerGui extends AbstractSamplerGui {
                 .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblInitAuth)
                     .addComponent(btnSendInitAuth))
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(jLabel1)
+                .addGap(35, 35, 35)
+                .addComponent(jLabel2)
+                .addContainerGap(145, Short.MAX_VALUE))
         );
 
-        add(panelMain, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 310));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSendInitAuthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendInitAuthActionPerformed
+        AuthSampler te = (AuthSampler) createTestElement();
+        SampleResult sr = te.sample(new Entry());
+        JMeterContextService.getContext().setPreviousResult(sr);
+        jLabel2.setText("Yes, "+sr.getSampleLabel());
+        
+    }//GEN-LAST:event_btnSendInitAuthActionPerformed
 
     @Override
     public String getLabelResource() {
@@ -71,12 +108,19 @@ public class AuthSamplerGui extends AbstractSamplerGui {
 
     @Override
     public TestElement createTestElement() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TestElement te = new AuthSampler();
+        modifyTestElement(te);
+        return te;
+    }
+    
+    @Override
+    public String getStaticLabel() {
+        return "Freja eID Authorization Sampler";
     }
 
     @Override
     public void modifyTestElement(TestElement te) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        super.configureTestElement(te);
     }
 
     @Override
@@ -86,6 +130,8 @@ public class AuthSamplerGui extends AbstractSamplerGui {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendInitAuth;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblInitAuth;
     private javax.swing.JPanel panelMain;
     // End of variables declaration//GEN-END:variables
