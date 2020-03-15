@@ -1,10 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.internship.frejaeidjmeterplugin.jmeter.sample;
-import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.InitAuthenticationRequest;
+import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.AuthenticationService;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
@@ -16,41 +11,37 @@ import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.SampleResult;
 
-/**
- *
- * @author Ivan
- */
 public class AuthSample extends AbstractSampler {
 
-    private static AuthSample instance;
-    
-    private  AuthSample() {
+    private AuthenticationService initRequest;
+
+    public AuthSample() {
+
     }
 
     @Override
     public SampleResult sample(Entry entry) {
-        return null;
-    }
-
-    public static AuthSample getInstance() {
-        if (instance == null){
-            return new AuthSample();
-        }
-        return instance;
-    }
-
-    public AuthenticationResult sendInitAuthenticate () {  
+         SampleResult sr = new SampleResult();
         try {
-            System.out.println("Init authentication is sent");
-           return InitAuthenticationRequest.create("aleksandar.markovic@verisec.com", "src/main/resources/relyingparty_keystore.p12",
-                    "123123123", "", MinRegistrationLevel.BASIC, "https://services-st.test.frejaeid.com");
-        } catch (FrejaEidClientInternalException ex) {
+            sendInitAuthenticate("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC, "src/main/resources/relyingparty_keystore.p12", "123123123", "https://services-st.test.frejaeid.com");
+            AuthenticationResult ar = getResultsInitAuthenticate();
+            sr.setResponseMessage(ar.getStatus()+"");
+            sr.setSampleLabel("Freja eID Test");
+            
+        } catch (FrejaEidClientInternalException | FrejaEidException | FrejaEidClientPollingException ex) {
             Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FrejaEidException ex) {
-            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FrejaEidClientPollingException ex) {
-            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            return sr;
         }
-        return null;
     }
+
+    public void sendInitAuthenticate(String email, MinRegistrationLevel registrationLevel, String keystorePath, String keystorePassword, String serviceAdress) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
+        initRequest = AuthenticationService.create(keystorePath, keystorePassword, serviceAdress);
+        initRequest.sendRequest(email, registrationLevel);
+    }
+
+    public AuthenticationResult getResultsInitAuthenticate() throws FrejaEidException, FrejaEidClientPollingException, FrejaEidClientInternalException {
+        return initRequest.getResults();
+    }
+
 }
