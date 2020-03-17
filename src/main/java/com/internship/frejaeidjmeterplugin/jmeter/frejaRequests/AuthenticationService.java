@@ -1,4 +1,5 @@
 package com.internship.frejaeidjmeterplugin.jmeter.frejaRequests;
+
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
@@ -15,48 +16,26 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 public class AuthenticationService {
 
     private final AuthenticationClientApi authenticationClient;
-    private InitiateAuthenticationRequest request;
-    private String reference;
-    private static String keystorePath;
-    private static String keystorePassword;
-    private static String serviceAdress;
-    
+    private static final String KEYSTORE_PATH = "src/main/resources/relyingparty_keystore.p12";
+    private static final String KEYSTORE_PASSWORD = "123123123";
+    private static final String SERVICE_ADRESS = "https://services-st.test.frejaeid.com";
 
-    private AuthenticationService() throws FrejaEidClientInternalException {
-            SslSettings sslSettings = SslSettings.create(keystorePath, keystorePassword);
-            authenticationClient = AuthenticationClient.create(sslSettings, FrejaEnvironment.TEST).setTestModeCustomUrl(serviceAdress).setTransactionContext(TransactionContext.PERSONAL).build();
+    public AuthenticationService() throws FrejaEidClientInternalException {
+        SslSettings sslSettings = SslSettings.create(KEYSTORE_PATH, KEYSTORE_PASSWORD);
+        authenticationClient = AuthenticationClient.create(sslSettings, FrejaEnvironment.TEST).setTestModeCustomUrl(SERVICE_ADRESS).setTransactionContext(TransactionContext.PERSONAL).build();
     }
 
-    public static AuthenticationService create (String keyPath, String keyPassword, String serviceAdr) throws FrejaEidClientInternalException{
-        keystorePath = keyPath;
-        keystorePassword = keyPassword;
-        serviceAdress = serviceAdr;
-        return new AuthenticationService();
-    }
-    
-    public void sendRequest(String email, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        request = InitiateAuthenticationRequest.createCustom()
+    public String initiateAuthenticationRequest(String email, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
+        InitiateAuthenticationRequest request = InitiateAuthenticationRequest.createCustom()
                 .setEmail(email)
                 .setMinRegistrationLevel(registrationLevel)
                 .build();
-        reference = authenticationClient.initiate(request);
+        return authenticationClient.initiate(request);
     }
 
-    public AuthenticationResult getResults() throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
+    public AuthenticationResult getResults(String reference) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         int maxWaitingTimeInSeconds = 30;
         AuthenticationResult result = authenticationClient.pollForResult(AuthenticationResultRequest.create(reference), maxWaitingTimeInSeconds);
         return result;
-    }
-
-    public static String getKeystorePassword() {
-        return keystorePassword;
-    }
-
-    public static String getKeystorePath() {
-        return keystorePath;
-    }
-
-    public static String getServiceAdress() {
-        return serviceAdress;
     }
 }

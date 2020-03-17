@@ -23,8 +23,8 @@ public class AuthSample extends AbstractSampler {
     public SampleResult sample(Entry entry) {
          SampleResult sr = new SampleResult();
         try {
-            sendInitAuthenticate("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC, "src/main/resources/relyingparty_keystore.p12", "123123123", "https://services-st.test.frejaeid.com");
-            AuthenticationResult ar = getResultsInitAuthenticate();
+            String reference = sendInitAuthenticate("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC);
+            AuthenticationResult ar = getResultsInitAuthenticate(reference);
             sr.setResponseMessage(ar.getStatus()+"");
             sr.setSampleLabel("Freja eID Test");
             
@@ -35,13 +35,13 @@ public class AuthSample extends AbstractSampler {
         }
     }
 
-    public void sendInitAuthenticate(String email, MinRegistrationLevel registrationLevel, String keystorePath, String keystorePassword, String serviceAdress) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        initRequest = AuthenticationService.create(keystorePath, keystorePassword, serviceAdress);
-        initRequest.sendRequest(email, registrationLevel);
+    public String sendInitAuthenticate(String email, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
+        initRequest = new AuthenticationService();
+        return initRequest.initiateAuthenticationRequest(email, registrationLevel);
     }
 
-    public AuthenticationResult getResultsInitAuthenticate() throws FrejaEidException, FrejaEidClientPollingException, FrejaEidClientInternalException {
-        return initRequest.getResults();
+    public AuthenticationResult getResultsInitAuthenticate(String reference) throws FrejaEidException, FrejaEidClientPollingException, FrejaEidClientInternalException {
+        return initRequest.getResults(reference);
     }
 
 }
