@@ -2,6 +2,7 @@ package com.internship.frejaeidjmeterplugin.jmeter.sample;
 
 import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.AuthenticationService;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
+import com.verisec.frejaeid.client.beans.general.RequestedAttributes;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
@@ -26,13 +27,30 @@ public class AuthSample extends AbstractSampler {
         try {
             String reference = authService.initiateAuthenticationRequest("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC);
             AuthenticationResult ar = authService.getResults(reference);
+            sr.setSampleLabel("Freja eID Response: " + ar.getStatus().toString());
+            sr.setResponseCode(ar.getStatus().toString());
             sr.setResponseMessage(ar.getStatus() + "");
-            sr.setSampleLabel("Freja eID Test");
-
-        } catch (FrejaEidClientInternalException | FrejaEidException | FrejaEidClientPollingException ex) {
-            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+            if ((ar.getStatus().toString()).equals("APPROVED")) {
+                sr.setSuccessful(true);
+                sr.setResponseOK();
+                String receivedAuthRef = "AuthRef: " + ar.getAuthRef();
+                String details = "Details: " + ar.getDetails();
+                RequestedAttributes requestedAttributes = ar.getRequestedAttributes();
+                String emailAddress = "Email: " + requestedAttributes.getEmailAddress();
+                String relyingPartyUserId = "relyingPartyUserId: " + requestedAttributes.getRelyingPartyUserId();
+                String dateOfBirth = "Date of Birth: " + requestedAttributes.getDateOfBirth();
+                sr.setResponseMessage("{" + receivedAuthRef + " " + relyingPartyUserId + " " + dateOfBirth);
+            } else {
+                sr.setSuccessful(false);
+            }
             return sr;
-        }
+        } catch (FrejaEidClientInternalException ex) {
+            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FrejaEidException ex) {
+            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FrejaEidClientPollingException ex) {
+            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return sr;
     }
 }
