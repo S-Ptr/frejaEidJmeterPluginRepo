@@ -1,6 +1,9 @@
 package com.internship.frejaeidjmeterplugin.jmeter.gui;
 
 import com.internship.frejaeidjmeterplugin.jmeter.sample.AuthSample;
+import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
@@ -45,7 +48,12 @@ public class AuthSamplerGui extends AbstractSamplerGui {
 
     @Override
     public TestElement createTestElement() {
-        AuthSample auth = new AuthSample();
+        AuthSample auth = null;
+        try {
+            auth = new AuthSample();
+        } catch (FrejaEidClientInternalException ex) {
+            Logger.getLogger(AuthSamplerGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
         modifyTestElement(auth);
         return auth;
     }

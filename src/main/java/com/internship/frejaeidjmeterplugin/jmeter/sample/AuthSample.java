@@ -1,4 +1,5 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sample;
+
 import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.AuthenticationService;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
@@ -13,35 +14,25 @@ import org.apache.jmeter.samplers.SampleResult;
 
 public class AuthSample extends AbstractSampler {
 
-    private AuthenticationService initRequest;
+    private final AuthenticationService authService;
 
-    public AuthSample() {
-
+    public AuthSample() throws FrejaEidClientInternalException {
+        authService = new AuthenticationService();
     }
 
     @Override
     public SampleResult sample(Entry entry) {
-         SampleResult sr = new SampleResult();
+        SampleResult sr = new SampleResult();
         try {
-            String reference = sendInitAuthenticate("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC);
-            AuthenticationResult ar = getResultsInitAuthenticate(reference);
-            sr.setResponseMessage(ar.getStatus()+"");
+            String reference = authService.initiateAuthenticationRequest("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC);
+            AuthenticationResult ar = authService.getResults(reference);
+            sr.setResponseMessage(ar.getStatus() + "");
             sr.setSampleLabel("Freja eID Test");
-            
+
         } catch (FrejaEidClientInternalException | FrejaEidException | FrejaEidClientPollingException ex) {
             Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             return sr;
         }
     }
-
-    public String sendInitAuthenticate(String email, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        initRequest = new AuthenticationService();
-        return initRequest.initiateAuthenticationRequest(email, registrationLevel);
-    }
-
-    public AuthenticationResult getResultsInitAuthenticate(String reference) throws FrejaEidException, FrejaEidClientPollingException, FrejaEidClientInternalException {
-        return initRequest.getResults(reference);
-    }
-
 }
