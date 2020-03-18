@@ -23,38 +23,26 @@ public class AuthSampler extends AbstractSampler {
 
     @Override
     public SampleResult sample(Entry entry) {
-        SampleResult sr = new SampleResult();
-        sr.setTimeStamp(System.currentTimeMillis()/1000L);
+        SampleResult sampleResult = new SampleResult();
+        sampleResult.setTimeStamp(System.currentTimeMillis()/1000L);
         try {
             String reference = authService.initiateAuthenticationRequest("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC);
-            AuthenticationResult ar = authService.getResults(reference);
-            sr.setSuccessful(true);
-            sr.setSampleLabel("Freja eID Response: " + ar.getStatus().toString());
-            sr.setResponseCode(ar.getStatus().toString());
-            sr.setResponseMessage(ar.getStatus() + "");
-            if ((ar.getStatus().toString()).equals("APPROVED")) {
-                sr.setResponseOK();
-                String receivedAuthRef = "AuthRef: " + ar.getAuthRef();
-                String details = "Details: " + ar.getDetails();
-                RequestedAttributes requestedAttributes = ar.getRequestedAttributes();
-                String relyingPartyUserId = "relyingPartyUserId: " + requestedAttributes.getRelyingPartyUserId();
-                String dateOfBirth = "Date of Birth: " + requestedAttributes.getDateOfBirth();
-                sr.setResponseMessage("{" + receivedAuthRef + " " + relyingPartyUserId + " " + dateOfBirth + " " + details +"}");
+            AuthenticationResult authResult = authService.getResults(reference);
+            sampleResult.setSuccessful(true);
+            sampleResult.setSampleLabel("Freja eID Response: " + authResult.getStatus().toString());
+            sampleResult.setResponseCode(authResult.getStatus().toString());
+            sampleResult.setResponseMessage(authResult.getStatus() + "");
+            if ((authResult.getStatus().toString()).equals("DELIVERED TO MOBILE")) {
+                sampleResult.setResponseOK();
             }
-        } catch (FrejaEidClientInternalException ex) {
-            sr.setSampleLabel("Internal Error");
-            sr.setResponseMessage(ex.getClass().getSimpleName());
+        } catch(Exception ex){
+            sampleResult.setSuccessful(false);
+            sampleResult.setSampleLabel("Unhandled Exception");
+            sampleResult.setResponseMessage(ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FrejaEidException ex) {
-            sr.setSampleLabel("Freja eID Auth Request Failed");
-            sr.setResponseMessage(ex.getClass().getSimpleName());
-            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FrejaEidClientPollingException ex) {
-            sr.setSuccessful(false);
-            sr.setSampleLabel("Freja eID Auth Request Timeout");
-            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
-        } finally{
-            return sr;
+        }
+        finally{
+            return sampleResult;
         }
     }
 }
