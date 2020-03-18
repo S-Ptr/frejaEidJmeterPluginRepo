@@ -34,8 +34,9 @@ public class AuthenticationService {
     }
 
     public AuthenticationResult getResults(String reference) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        int maxWaitingTimeInSeconds = 30;
+        int maxWaitingTimeInSeconds = 5;
         AuthenticationResult result = authenticationClient.pollForResult(AuthenticationResultRequest.create(reference), maxWaitingTimeInSeconds);
+        System.out.println("DETAILS" + result.getDetails());
         return result;
     }
 }

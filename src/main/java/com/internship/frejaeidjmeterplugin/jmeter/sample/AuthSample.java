@@ -23,15 +23,16 @@ public class AuthSample extends AbstractSampler {
 
     @Override
     public SampleResult sample(Entry entry) {
-        SampleResult sr = new SampleResult();
+           SampleResult sr = new SampleResult();
         try {
+            sr.setTimeStamp(System.currentTimeMillis()/1000L);
             String reference = authService.initiateAuthenticationRequest("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC);
             AuthenticationResult ar = authService.getResults(reference);
+            sr.setSuccessful(true);
             sr.setSampleLabel("Freja eID Response: " + ar.getStatus().toString());
             sr.setResponseCode(ar.getStatus().toString());
             sr.setResponseMessage(ar.getStatus() + "");
             if ((ar.getStatus().toString()).equals("APPROVED")) {
-                sr.setSuccessful(true);
                 sr.setResponseOK();
                 String receivedAuthRef = "AuthRef: " + ar.getAuthRef();
                 String details = "Details: " + ar.getDetails();
@@ -40,15 +41,16 @@ public class AuthSample extends AbstractSampler {
                 String relyingPartyUserId = "relyingPartyUserId: " + requestedAttributes.getRelyingPartyUserId();
                 String dateOfBirth = "Date of Birth: " + requestedAttributes.getDateOfBirth();
                 sr.setResponseMessage("{" + receivedAuthRef + " " + relyingPartyUserId + " " + dateOfBirth);
-            } else {
-                sr.setSuccessful(false);
             }
-            return sr;
         } catch (FrejaEidClientInternalException ex) {
             Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FrejaEidException ex) {
+            sr.setSampleLabel("Freja eID Auth Request Failed");
+            sr.setResponseMessage(ex.getClass().getSimpleName());
             Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FrejaEidClientPollingException ex) {
+            sr.setSuccessful(true);
+            sr.setSampleLabel("Freja eID Auth Request Delivered");
             Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return sr;
