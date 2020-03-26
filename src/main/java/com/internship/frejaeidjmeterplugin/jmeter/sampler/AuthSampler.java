@@ -17,6 +17,14 @@ public class AuthSampler extends AbstractSampler {
 
     private final AuthenticationService authService;
 
+    public String getEmail() {
+        return getPropertyAsString("email");
+    }
+
+    public void setEmail(String email) {
+        setProperty("email", email);
+    }
+
     public AuthSampler() throws FrejaEidClientInternalException {
         authService = new AuthenticationService();
     }
@@ -24,9 +32,9 @@ public class AuthSampler extends AbstractSampler {
     @Override
     public SampleResult sample(Entry entry) {
         SampleResult sampleResult = new SampleResult();
-        sampleResult.setTimeStamp(System.currentTimeMillis()/1000L);
+        sampleResult.sampleStart();
         try {
-            String reference = authService.initiateAuthenticationRequest("aleksandar.markovic@verisec.com", MinRegistrationLevel.BASIC);
+            String reference = authService.initiateAuthenticationRequest(getPropertyAsString("email"), MinRegistrationLevel.BASIC);
             AuthenticationResult authResult = authService.getResults(reference);
             sampleResult.setSuccessful(true);
             sampleResult.setSampleLabel("Freja eID Response: " + authResult.getStatus().toString());
@@ -35,13 +43,14 @@ public class AuthSampler extends AbstractSampler {
             if ((authResult.getStatus().toString()).equals("DELIVERED TO MOBILE")) {
                 sampleResult.setResponseOK();
             }
-        } catch(Exception ex){
+        } catch (Exception ex) {
             sampleResult.setSuccessful(false);
             sampleResult.setSampleLabel("Unhandled Exception");
             sampleResult.setResponseMessage(ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally{
+        } finally {
+            sampleResult.sampleEnd();
+            sampleResult.latencyEnd();
             return sampleResult;
         }
     }
