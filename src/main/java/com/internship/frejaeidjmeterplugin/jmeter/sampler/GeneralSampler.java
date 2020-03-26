@@ -16,12 +16,12 @@ import org.apache.jmeter.samplers.SampleResult;
 
 public class GeneralSampler extends AbstractSampler {
 
-    private final AuthenticationService authService;
-    private final SignService signService;
+    private final AuthSampler authSampler;
+    private final SignSampler signSampler;
 
     public GeneralSampler() throws FrejaEidClientInternalException {
-        authService = new AuthenticationService();
-        signService = new SignService();
+        authSampler = new AuthSampler();
+        signSampler = new SignSampler();
     }
 
     public String getEmail() {
@@ -44,50 +44,17 @@ public class GeneralSampler extends AbstractSampler {
     public SampleResult sample(Entry entry) {
         SampleResult sampleResult = new SampleResult();
 
-        try {
-            switch (getSelected()) {
-                case "auth":
-                    initAuthenticate(sampleResult, getPropertyAsString("email"));
-                    break;
-                case "sign":
-                    initSign(sampleResult, getPropertyAsString("email"), "Transaction", "This is transaction", MinRegistrationLevel.BASIC);
-                    break;
-                default:
-                    return sampleResult;
-            }
-        } catch (Exception ex) {
-            sampleResult.latencyEnd();
-            sampleResult.setSuccessful(false);
-            sampleResult.setSampleLabel("Unhandled Exception");
-            sampleResult.setResponseMessage(ex.getClass().getSimpleName());
-            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
-            sampleResult.sampleEnd();
-            sampleResult.latencyEnd();
-            return sampleResult;
+        switch (getSelected()) {
+            case "auth":
+                sampleResult = authSampler.sample(new Entry());
+                break;
+            case "sign":
+                sampleResult = signSampler.sample(new Entry());
+                break;
+            default:
+                return sampleResult;
+
         }
+        return sampleResult;
     }
-
-    private void setSampleResult(SampleResult sampleResult, String label, boolean successful, String responseMessage, String responseCode) {
-        sampleResult.setSuccessful(successful);
-        sampleResult.setSampleLabel(label);
-        sampleResult.setResponseCode(responseCode);
-        sampleResult.setResponseMessage(responseMessage);
-    }
-
-    private void initAuthenticate(SampleResult sampleResult, String email) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        sampleResult.setTimeStamp(System.currentTimeMillis() / 1000L);
-        String reference = authService.initiateAuthenticationRequest(email, MinRegistrationLevel.BASIC);
-        AuthenticationResult ar = authService.getResults(reference);
-        setSampleResult(sampleResult, "Freja eID Response: " + ar.getStatus(), true, ar.getStatus().toString(), ar.getStatus().toString());
-        sampleResult.setResponseOK();
-    }
-
-    private void initSign(SampleResult sampleResult, String email, String title, String dataToSignText, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        String reference = signService.initiateSignRequest(email, title, dataToSignText, registrationLevel);
-        SignResult result = signService.getResults(reference);
-        setSampleResult(sampleResult, "Freja eID Response: " + result.getStatus().toString(), true, result.getStatus() + "", result.getStatus().toString());
-        sampleResult.setResponseOK();
-    }
-
 }
