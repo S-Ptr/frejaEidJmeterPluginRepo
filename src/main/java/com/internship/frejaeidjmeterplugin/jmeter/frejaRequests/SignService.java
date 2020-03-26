@@ -39,6 +39,7 @@ public class SignService {
         return signClient.initiate(request);
     }
 
+
     public SignResult getResult(String reference) throws FrejaEidClientInternalException, FrejaEidException {
         SignResult result = signClient.getResult(SignResultRequest.create(reference));
         return result;
