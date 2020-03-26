@@ -1,9 +1,6 @@
 
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
-import javax.swing.JTextField;
-
-
 public class AuthSamplerGuiPanel extends javax.swing.JPanel {
 
     public AuthSamplerGuiPanel() {

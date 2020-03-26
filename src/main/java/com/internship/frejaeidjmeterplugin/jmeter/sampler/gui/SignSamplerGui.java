@@ -34,8 +34,6 @@ public class SignSamplerGui extends AbstractSamplerGui{
         if(testElement instanceof SignSampler){
             SignSampler signSampler = (SignSampler) testElement;
             panel.setSignEmailField(signSampler.getEmail());
-            panel.setSignTitleField(signSampler.getSignTitle());
-            panel.setSignDataTextField(signSampler.getSignData());
         }
         
     }
@@ -65,8 +63,6 @@ public class SignSamplerGui extends AbstractSamplerGui{
         if(testElement instanceof SignSampler){
             SignSampler signSampler = (SignSampler) testElement;
             signSampler.setEmail(panel.getSignEmailField());
-            signSampler.setSignTitle(panel.getSignTitleField());
-            signSampler.setSignData(panel.getSignDataTextField());
         }
     }
 }

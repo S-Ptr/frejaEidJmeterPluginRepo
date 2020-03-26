@@ -39,9 +39,8 @@ public class SignService {
         return signClient.initiate(request);
     }
 
-    public SignResult getResults(String reference) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        int maxWaitingTimeInSeconds = 5;
-        SignResult result = signClient.pollForResult(SignResultRequest.create(reference), maxWaitingTimeInSeconds);
+    public SignResult getResult(String reference) throws FrejaEidClientInternalException, FrejaEidException {
+        SignResult result = signClient.getResult(SignResultRequest.create(reference));
         return result;
     }
 }
