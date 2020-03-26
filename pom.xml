@@ -39,20 +39,55 @@
     <dependencies> 
         <dependency>
             <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
             <artifactId>ApacheJMeter_core</artifactId>
             <version>5.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>ApacheJMeter_config</artifactId>
+            <version>5.2.1</version>
+        </dependency>
         
+        <dependency>
+            <groupId>kg.apc</groupId>
+            <artifactId>jmeter-plugins</artifactId>
+            <version>1.4.0</version>
+            <type>pom</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart</artifactId>
+            <version>3.6.2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart-demo</artifactId>
+            <version>3.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart-parent</artifactId>
+            <version>3.6.2</version>
+            <type>pom</type>
+        </dependency>
         <dependency>
             <groupId>com.verisec.frejaeid</groupId>
             <artifactId>FrejaEidClient</artifactId>
             <version>2.0.0</version>
         </dependency>
-       
+        
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.11.1</version>
         </dependency>
     </dependencies>
+    
 </project>

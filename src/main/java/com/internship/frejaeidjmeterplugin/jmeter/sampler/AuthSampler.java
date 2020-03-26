@@ -1,4 +1,4 @@
-package com.internship.frejaeidjmeterplugin.jmeter.sample;
+package com.internship.frejaeidjmeterplugin.jmeter.sampler;
 
 import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.AuthenticationService;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
@@ -13,11 +13,11 @@ import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.SampleResult;
 
-public class AuthSample extends AbstractSampler {
+public class AuthSampler extends AbstractSampler {
 
     private final AuthenticationService authService;
 
-    public AuthSample() throws FrejaEidClientInternalException {
+    public AuthSampler() throws FrejaEidClientInternalException {
         authService = new AuthenticationService();
     }
 
@@ -31,7 +31,7 @@ public class AuthSample extends AbstractSampler {
             sr.setSuccessful(true);
             sr.setSampleLabel("Freja eID Response: " + ar.getStatus().toString());
             sr.setResponseCode(ar.getStatus().toString());
-            sr.setResponseMessage(ar.getStatus() + "");
+         //   sr.setResponseMessage(ar.getStatus() + "");
             if ((ar.getStatus().toString()).equals("APPROVED")) {
                 sr.setResponseOK();
                 String receivedAuthRef = "AuthRef: " + ar.getAuthRef();
@@ -43,15 +43,16 @@ public class AuthSample extends AbstractSampler {
                 sr.setResponseMessage("{" + receivedAuthRef + " " + relyingPartyUserId + " " + dateOfBirth);
             }
         } catch (FrejaEidClientInternalException ex) {
-            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FrejaEidException ex) {
             sr.setSampleLabel("Freja eID Auth Request Failed");
-            sr.setResponseMessage(ex.getClass().getSimpleName());
-            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
+            sr.setResponseMessage("FAILED");
+            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FrejaEidClientPollingException ex) {
             sr.setSuccessful(true);
             sr.setSampleLabel("Freja eID Auth Request Delivered");
-            Logger.getLogger(AuthSample.class.getName()).log(Level.SEVERE, null, ex);
+            sr.setResponseMessage("DELIVERED");
+            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return sr;
     }

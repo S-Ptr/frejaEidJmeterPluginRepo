@@ -1,8 +1,8 @@
-package com.internship.frejaeidjmeterplugin.jmeter.gui;
+package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
 import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.FrejaRequestType;
-import com.internship.frejaeidjmeterplugin.jmeter.gui.action.GeneralSamplerGuiAction;
-import com.internship.frejaeidjmeterplugin.jmeter.sample.GeneralSampler;
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.action.GeneralSamplerGuiAction;
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.GeneralSampler;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,8 +11,7 @@ import org.apache.jmeter.testelement.TestElement;
 
 public class GeneralSamplerGui extends AbstractSamplerGui {
 
-    public static FrejaRequestType requestType = FrejaRequestType.INIT_AUTHENTICATION;
-    public static String authMail = "aleksandar.markovic@verisec.com";
+    public static FrejaRequestType requestType;
 
     public GeneralSamplerGui() {
         initComponents();
@@ -26,7 +25,6 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
         jPanel1 = new javax.swing.JPanel();
         checkAuth = new javax.swing.JCheckBox();
         checkSign = new javax.swing.JCheckBox();
-        btnOk = new javax.swing.JButton();
         lblError = new javax.swing.JLabel();
         txtAuthEmail = new javax.swing.JTextField();
 
@@ -35,8 +33,6 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
         checkAuth.setText(" InitAuthentication enabled");
 
         checkSign.setText("InitSign enabled");
-
-        btnOk.setText("OK");
 
         lblError.setForeground(new java.awt.Color(255, 0, 0));
 
@@ -58,10 +54,6 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
                                 .addComponent(txtAuthEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(checkSign))
                         .addGap(0, 95, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,9 +66,7 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
                 .addComponent(checkSign)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(42, 42, 42)
-                .addComponent(btnOk)
-                .addGap(20, 20, 20))
+                .addGap(85, 85, 85))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -106,7 +96,6 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
     public String getStaticLabel() {
         return "Freja eID General Request";
     }
-
     @Override
     public TestElement createTestElement() {
         GeneralSampler general = null;
@@ -120,18 +109,29 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
     }
 
     @Override
+    public void configure(TestElement element) {
+        super.configure(element); //To change body of generated methods, choose Tools | Templates.
+        if (element instanceof GeneralSampler){
+            GeneralSampler ref = (GeneralSampler)element;
+            txtAuthEmail.setText(ref.getEmail());
+        }
+    }
+
+    
+    @Override
     public void modifyTestElement(TestElement te) {
         super.configureTestElement(te);
+        GeneralSampler gen = (GeneralSampler)te;
+        gen.setEmail(txtAuthEmail.getText());
     }
 
     private void prepareForm() {
         txtAuthEmail.setVisible(false);
-        GeneralSamplerGuiAction action = new GeneralSamplerGuiAction(this, txtAuthEmail, checkAuth, checkSign, lblError, btnOk);
+        GeneralSamplerGuiAction action = new GeneralSamplerGuiAction(this, txtAuthEmail, checkAuth, checkSign, lblError);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnOk;
     private javax.swing.JCheckBox checkAuth;
     private javax.swing.JCheckBox checkSign;
     private javax.swing.JPanel jPanel1;
