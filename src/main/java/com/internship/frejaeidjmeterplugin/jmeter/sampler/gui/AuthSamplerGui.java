@@ -27,11 +27,11 @@ public class AuthSamplerGui extends AbstractSamplerGui {
     }
 
     @Override
-    public void configure(TestElement element) {
-        super.configure(element);
-        if(element instanceof AuthSampler){
-            AuthSampler ref = (AuthSampler) element;
-            panel.setAuthEmailField(ref.getEmail());
+    public void configure(TestElement testElement) {
+        super.configure(testElement);
+        if(testElement instanceof AuthSampler){
+            AuthSampler authSampler = (AuthSampler) testElement;
+            panel.setAuthEmailField(authSampler.getEmail());
         }
     }
 
@@ -42,21 +42,21 @@ public class AuthSamplerGui extends AbstractSamplerGui {
 
     @Override
     public TestElement createTestElement() {
-        AuthSampler auth = null;
+        AuthSampler authSampler = null;
         try {
-            auth = new AuthSampler();
+            authSampler = new AuthSampler();
         } catch (FrejaEidClientInternalException ex) {
             Logger.getLogger(AuthSamplerGui.class.getName()).log(Level.SEVERE, null, ex);
         }
-        modifyTestElement(auth);
-        return auth;
+        modifyTestElement(authSampler);
+        return authSampler;
     }
 
     @Override
-    public void modifyTestElement(TestElement te) {
-        configureTestElement(te);
-        AuthSampler auth = (AuthSampler) te;
-        auth.setEmail(panel.getAuthEmailField());
+    public void modifyTestElement(TestElement testElement) {
+        configureTestElement(testElement);
+        AuthSampler authSampler = (AuthSampler) testElement;
+        authSampler.setEmail(panel.getAuthEmailField());
     }
     
     @Override
