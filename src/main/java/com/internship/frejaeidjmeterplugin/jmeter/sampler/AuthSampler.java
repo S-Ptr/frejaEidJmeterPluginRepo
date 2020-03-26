@@ -42,7 +42,7 @@ public class AuthSampler extends AbstractSampler {
             if ((authResult.getStatus().toString()).equals("DELIVERED TO MOBILE")) {
                 sampleResult.setResponseOK();
             }
-        } catch (FrejaEidClientInternalException | FrejaEidClientPollingException | FrejaEidException ex) {
+        } catch (Exception ex) {
             sampleResult.setSuccessful(false);
             sampleResult.setSampleLabel("Unhandled Exception");
             sampleResult.setResponseMessage(ex.getClass().getSimpleName());

@@ -42,49 +42,52 @@ public class GeneralSampler extends AbstractSampler {
 
     @Override
     public SampleResult sample(Entry entry) {
-        SampleResult sr = new SampleResult();
+        SampleResult sampleResult = new SampleResult();
 
         try {
-            if (getSelected().equals("auth")) {
-                initAuthenticate(sr, getPropertyAsString("email"));
-            } else if (getSelected().equals("sign")) {
-                initSign(sr, getPropertyAsString("email"), "Transaction", "This is transaction", MinRegistrationLevel.EXTENDED);
-            } else {
-                return sr;
+            switch (getSelected()) {
+                case "auth":
+                    initAuthenticate(sampleResult, getPropertyAsString("email"));
+                    break;
+                case "sign":
+                    initSign(sampleResult, getPropertyAsString("email"), "Transaction", "This is transaction", MinRegistrationLevel.BASIC);
+                    break;
+                default:
+                    return sampleResult;
             }
-        } catch (FrejaEidClientInternalException ex) {
+        } catch (Exception ex) {
+            sampleResult.latencyEnd();
+            sampleResult.setSuccessful(false);
+            sampleResult.setSampleLabel("Unhandled Exception");
+            sampleResult.setResponseMessage(ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FrejaEidException ex) {
-            setSampleResult(sr, "Freja eID Auth Request Failed", false, "FAILED", ex.getClass().getSimpleName());
-            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FrejaEidClientPollingException ex) {
-            setSampleResult(sr, "Freja eID Auth Request Delivered", true, "DELIVERED", "");
-            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            sampleResult.sampleEnd();
+            sampleResult.latencyEnd();
+            return sampleResult;
         }
-        return sr;
     }
 
-    private void setSampleResult(SampleResult sr, String label, boolean successful, String responseMessage, String responseCode) {
-        sr.setSuccessful(successful);
-        sr.setSampleLabel(label);
-        sr.setResponseCode(responseCode);
-        sr.setResponseMessage(responseMessage);
+    private void setSampleResult(SampleResult sampleResult, String label, boolean successful, String responseMessage, String responseCode) {
+        sampleResult.setSuccessful(successful);
+        sampleResult.setSampleLabel(label);
+        sampleResult.setResponseCode(responseCode);
+        sampleResult.setResponseMessage(responseMessage);
     }
 
-    private void initAuthenticate(SampleResult sr, String email) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        sr.setTimeStamp(System.currentTimeMillis() / 1000L);
+    private void initAuthenticate(SampleResult sampleResult, String email) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
+        sampleResult.setTimeStamp(System.currentTimeMillis() / 1000L);
         String reference = authService.initiateAuthenticationRequest(email, MinRegistrationLevel.BASIC);
         AuthenticationResult ar = authService.getResults(reference);
-        setSampleResult(sr, "Freja eID Response: " + ar.getStatus(), true, ar.getStatus().toString(), ar.getStatus().toString());
-        sr.setResponseOK();
+        setSampleResult(sampleResult, "Freja eID Response: " + ar.getStatus(), true, ar.getStatus().toString(), ar.getStatus().toString());
+        sampleResult.setResponseOK();
     }
 
-    private void initSign(SampleResult sr, String email, String title, String dataToSignText, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
+    private void initSign(SampleResult sampleResult, String email, String title, String dataToSignText, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
         String reference = signService.initiateSignRequest(email, title, dataToSignText, registrationLevel);
         SignResult result = signService.getResults(reference);
-        setSampleResult(sr, "Freja eID Response: " + result.getStatus().toString(), true, result.getStatus() + "", result.getStatus().toString());
-        sr.latencyEnd();
-        sr.setResponseOK();
+        setSampleResult(sampleResult, "Freja eID Response: " + result.getStatus().toString(), true, result.getStatus() + "", result.getStatus().toString());
+        sampleResult.setResponseOK();
     }
 
 }
