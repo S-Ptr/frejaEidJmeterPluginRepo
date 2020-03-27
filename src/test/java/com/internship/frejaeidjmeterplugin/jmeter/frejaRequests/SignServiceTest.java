@@ -69,6 +69,7 @@ public class SignServiceTest {
         MinRegistrationLevel registrationLevel = MinRegistrationLevel.BASIC;
         String expResult = "";
         String result = instance.initiateSignRequest(email, title, dataToSignText, registrationLevel);
+        System.out.println(result);
         assertNotEquals("", result);
         System.out.println("PASS");
     }
@@ -91,18 +92,7 @@ public class SignServiceTest {
         System.out.println("PASS");
     }
 
-    @Test
-    public void testGetResultsTimeout() throws Exception {
-        System.out.println("getResultsTimeoutThrow");
-        String email = "aleksandar.markovic@verisec.com";
-        String title = "asd";
-        String dataToSignText = "asd";
-        MinRegistrationLevel registrationLevel = MinRegistrationLevel.BASIC;
-        SignService instance = new SignService();
-        String reference = instance.initiateSignRequest(email, title, dataToSignText, registrationLevel);
-        assertThrows(FrejaEidClientPollingException.class, () -> {instance.getResults(reference);});
-        System.out.println("PASS");
-    }
+
     
     
     

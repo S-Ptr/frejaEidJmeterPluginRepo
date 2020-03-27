@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.internship.frejaeidjmeterplugin.jmeter.frejaRequests;
 
 import com.verisec.frejaeid.client.beans.general.SslSettings;
@@ -18,14 +13,9 @@ import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
-import java.nio.charset.StandardCharsets;
 
-/**
- *
- * @author User
- */
+
 public class SignService {
-    
     private final SignClientApi signClient;
     private static final String KEYSTORE_PATH = "src/main/resources/relyingparty_keystore.p12";
     private static final String KEYSTORE_PASSWORD = "123123123";
@@ -47,9 +37,9 @@ public class SignService {
         return signClient.initiate(request);
     }
 
-    public SignResult getResults(String reference) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
-        int maxWaitingTimeInSeconds = 30;
-        SignResult result = signClient.pollForResult(SignResultRequest.create(reference), maxWaitingTimeInSeconds);
+
+    public SignResult getResult(String reference) throws FrejaEidClientInternalException, FrejaEidException {
+        SignResult result = signClient.getResult(SignResultRequest.create(reference));
         return result;
     }
 }

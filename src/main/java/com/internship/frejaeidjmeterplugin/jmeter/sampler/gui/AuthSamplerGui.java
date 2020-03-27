@@ -9,18 +9,18 @@ import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
 public class AuthSamplerGui extends AbstractSamplerGui {
-    
+
     AuthSamplerGuiPanel panel;
-    
+
     public AuthSamplerGui() {
         super();
         panel = new AuthSamplerGuiPanel();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
-        add(panel,BorderLayout.CENTER);
+        add(panel, BorderLayout.CENTER);
     }
-    
+
     @Override
     public String getLabelResource() {
         return this.getClass().getSimpleName();
@@ -29,7 +29,7 @@ public class AuthSamplerGui extends AbstractSamplerGui {
     @Override
     public void configure(TestElement testElement) {
         super.configure(testElement);
-        if(testElement instanceof AuthSampler){
+        if (testElement instanceof AuthSampler) {
             AuthSampler authSampler = (AuthSampler) testElement;
             panel.setAuthEmailField(authSampler.getEmail());
         }
@@ -58,10 +58,9 @@ public class AuthSamplerGui extends AbstractSamplerGui {
         AuthSampler authSampler = (AuthSampler) testElement;
         authSampler.setEmail(panel.getAuthEmailField());
     }
-    
+
     @Override
     public void clearGui() {
         super.clearGui();
-        //maybe something else?
     }
 }
