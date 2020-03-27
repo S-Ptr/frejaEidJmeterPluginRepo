@@ -1,6 +1,6 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
-import com.internship.frejaeidjmeterplugin.jmeter.sampler.GeneralSampler;
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.FrejaEIDPluginSampler;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.awt.BorderLayout;
 import java.util.logging.Level;
@@ -8,13 +8,13 @@ import java.util.logging.Logger;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
-public class GeneralSamplerGui extends AbstractSamplerGui {
+public class FrejaEIDPlugnGui extends AbstractSamplerGui {
 
-    private GeneralSamplerGuiPanel panel;
+    private final FrejaEIDPluginGuiPanel panel;
 
-    public GeneralSamplerGui() {
+    public FrejaEIDPlugnGui() {
         super();
-        panel = new GeneralSamplerGuiPanel();
+        panel = new FrejaEIDPluginGuiPanel();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
@@ -28,11 +28,11 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
 
     @Override
     public TestElement createTestElement() {
-        GeneralSampler general = null;
+        FrejaEIDPluginSampler general = null;
         try {
-            general = new GeneralSampler();
+            general = new FrejaEIDPluginSampler();
         } catch (FrejaEidClientInternalException ex) {
-            Logger.getLogger(GeneralSamplerGuiPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrejaEIDPluginGuiPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         modifyTestElement(general);
         return general;
@@ -41,8 +41,8 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
     @Override
     public void configure(TestElement element) {
         super.configure(element);
-        if (element instanceof GeneralSampler) {
-            GeneralSampler ref = (GeneralSampler) element;
+        if (element instanceof FrejaEIDPluginSampler) {
+            FrejaEIDPluginSampler ref = (FrejaEIDPluginSampler) element;
             panel.setTxtEmail(ref.getEmail());
         }
     }
@@ -50,9 +50,11 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
     @Override
     public void modifyTestElement(TestElement te) {
         super.configureTestElement(te);
-        GeneralSampler gen = (GeneralSampler) te;
+        FrejaEIDPluginSampler gen = (FrejaEIDPluginSampler) te;
         gen.setEmail(panel.getTxtEmail().getText());
-        if (panel.getCheckAuth().isSelected()) {
+        if (panel.getCheckAuth().isSelected() && panel.getCheckSign().isSelected()) {
+            gen.setSelected("both");
+        } else if (panel.getCheckAuth().isSelected()) {
             gen.setSelected("auth");
         } else if (panel.getCheckSign().isSelected()) {
             gen.setSelected("sign");
@@ -63,7 +65,7 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
 
     @Override
     public String getStaticLabel() {
-        return "Freja eID General Request";
+        return "Freja eID Plugin";
     }
 
 }

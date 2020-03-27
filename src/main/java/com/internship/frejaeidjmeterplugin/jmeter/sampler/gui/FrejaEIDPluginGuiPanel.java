@@ -3,9 +3,9 @@ package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
-public class GeneralSamplerGuiPanel extends javax.swing.JPanel {
+public class FrejaEIDPluginGuiPanel extends javax.swing.JPanel {
 
-    public GeneralSamplerGuiPanel() {
+    public FrejaEIDPluginGuiPanel() {
         initComponents();
     }
 
