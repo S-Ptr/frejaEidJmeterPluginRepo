@@ -12,6 +12,10 @@ import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import java.io.File;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AuthenticationService {
 
