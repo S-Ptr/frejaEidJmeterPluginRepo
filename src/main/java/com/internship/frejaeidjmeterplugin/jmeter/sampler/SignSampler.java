@@ -1,7 +1,7 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler;
 
-import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.AuthenticationService;
-import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
+import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.SignService;
+import com.verisec.frejaeid.client.beans.sign.get.SignResult;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.util.logging.Level;
@@ -10,9 +10,15 @@ import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.SampleResult;
 
-public class AuthSampler extends AbstractSampler {
+public class SignSampler extends AbstractSampler {
 
-    private final AuthenticationService authService;
+    private final SignService signService;
+    private static final String TITLE = "Transaction";
+    private static final String SIGN_DATA = "Data";
+
+    public SignSampler() throws FrejaEidClientInternalException {
+        signService = new SignService();
+    }
 
     public String getEmail() {
         return getPropertyAsString("email");
@@ -22,18 +28,14 @@ public class AuthSampler extends AbstractSampler {
         setProperty("email", email);
     }
 
-    public AuthSampler() throws FrejaEidClientInternalException {
-        authService = new AuthenticationService();
-    }
-
     @Override
     public SampleResult sample(Entry entry) {
         SampleResult sampleResult = new SampleResult();
         sampleResult.sampleStart();
         try {
-            String reference = authService.initiateAuthenticationRequest(getPropertyAsString("email"), MinRegistrationLevel.BASIC);
-            AuthenticationResult authResult = authService.getResult(reference);
-
+            String reference = signService.initiateSignRequest(getPropertyAsString("email"), TITLE, SIGN_DATA, MinRegistrationLevel.BASIC);
+            sampleResult.latencyEnd();
+            SignResult authResult = signService.getResult(reference);
             sampleResult.setSuccessful(true);
             sampleResult.setSampleLabel("Freja eID Response: " + authResult.getStatus().toString());
             sampleResult.setResponseCode(authResult.getStatus().toString());
@@ -42,14 +44,15 @@ public class AuthSampler extends AbstractSampler {
                 sampleResult.setResponseOK();
             }
         } catch (Exception ex) {
+            sampleResult.latencyEnd();
             sampleResult.setSuccessful(false);
             sampleResult.setSampleLabel("FAILED");
             sampleResult.setResponseMessage(ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             sampleResult.sampleEnd();
-            sampleResult.latencyEnd();
             return sampleResult;
         }
     }
+
 }

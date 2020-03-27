@@ -1,6 +1,6 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
-import com.internship.frejaeidjmeterplugin.jmeter.sampler.AuthSampler;
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.SignSampler;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.awt.BorderLayout;
 import java.util.logging.Level;
@@ -8,13 +8,13 @@ import java.util.logging.Logger;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
-public class AuthSamplerGui extends AbstractSamplerGui {
+public class SignSamplerGui extends AbstractSamplerGui {
 
-    AuthSamplerGuiPanel panel;
+    private SignSamplerGuiPanel panel;
 
-    public AuthSamplerGui() {
+    public SignSamplerGui() {
         super();
-        panel = new AuthSamplerGuiPanel();
+        panel = new SignSamplerGuiPanel();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
@@ -29,38 +29,37 @@ public class AuthSamplerGui extends AbstractSamplerGui {
     @Override
     public void configure(TestElement testElement) {
         super.configure(testElement);
-        if (testElement instanceof AuthSampler) {
-            AuthSampler authSampler = (AuthSampler) testElement;
-            panel.setAuthEmailField(authSampler.getEmail());
+        if (testElement instanceof SignSampler) {
+            SignSampler signSampler = (SignSampler) testElement;
+            panel.setSignEmailField(signSampler.getEmail());
         }
+
     }
 
     @Override
     public String getStaticLabel() {
-        return "Freja eID Authentication Request";
+        return "Freja eID Sign Request";
     }
 
     @Override
     public TestElement createTestElement() {
-        AuthSampler authSampler = null;
+        TestElement testElement;
         try {
-            authSampler = new AuthSampler();
+            testElement = new SignSampler();
         } catch (FrejaEidClientInternalException ex) {
-            Logger.getLogger(AuthSamplerGui.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignSamplerGui.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        modifyTestElement(authSampler);
-        return authSampler;
+        modifyTestElement(testElement);
+        return testElement;
     }
 
     @Override
     public void modifyTestElement(TestElement testElement) {
         configureTestElement(testElement);
-        AuthSampler authSampler = (AuthSampler) testElement;
-        authSampler.setEmail(panel.getAuthEmailField());
-    }
-
-    @Override
-    public void clearGui() {
-        super.clearGui();
+        if (testElement instanceof SignSampler) {
+            SignSampler signSampler = (SignSampler) testElement;
+            signSampler.setEmail(panel.getSignEmailField());
+        }
     }
 }
