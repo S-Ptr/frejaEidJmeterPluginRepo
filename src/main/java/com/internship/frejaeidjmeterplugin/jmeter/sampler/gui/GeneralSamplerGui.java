@@ -1,4 +1,3 @@
-
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.GeneralSampler;
@@ -9,12 +8,12 @@ import java.util.logging.Logger;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
-
 public class GeneralSamplerGui extends AbstractSamplerGui {
 
     private GeneralSamplerGuiPanel panel;
 
     public GeneralSamplerGui() {
+        super();
         panel = new GeneralSamplerGuiPanel();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
@@ -25,11 +24,6 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
     @Override
     public String getLabelResource() {
         return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public String getStaticLabel() {
-        return "Freja eID General Request";
     }
 
     @Override
@@ -46,10 +40,10 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
 
     @Override
     public void configure(TestElement element) {
-        super.configure(element); 
+        super.configure(element);
         if (element instanceof GeneralSampler) {
             GeneralSampler ref = (GeneralSampler) element;
-            panel.getTxtAuthEmail().setText(ref.getEmail());
+            panel.setTxtEmail(ref.getEmail());
         }
     }
 
@@ -57,7 +51,7 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
     public void modifyTestElement(TestElement te) {
         super.configureTestElement(te);
         GeneralSampler gen = (GeneralSampler) te;
-        gen.setEmail(panel.getTxtAuthEmail().getText());
+        gen.setEmail(panel.getTxtEmail().getText());
         if (panel.getCheckAuth().isSelected()) {
             gen.setSelected("auth");
         } else if (panel.getCheckSign().isSelected()) {
@@ -65,6 +59,11 @@ public class GeneralSamplerGui extends AbstractSamplerGui {
         } else {
             gen.setSelected("noAction");
         }
+    }
+
+    @Override
+    public String getStaticLabel() {
+        return "Freja eID General Request";
     }
 
 }

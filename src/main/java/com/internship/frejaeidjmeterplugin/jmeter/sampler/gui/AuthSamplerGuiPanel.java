@@ -1,4 +1,3 @@
-
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
 public class AuthSamplerGuiPanel extends javax.swing.JPanel {
@@ -10,13 +9,11 @@ public class AuthSamplerGuiPanel extends javax.swing.JPanel {
     public String getAuthEmailField() {
         return AuthEmailField.getText();
     }
-    
+
     public void setAuthEmailField(String text) {
         AuthEmailField.setText(text);
     }
-    
 
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

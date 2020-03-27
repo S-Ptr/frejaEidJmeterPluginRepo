@@ -1,4 +1,3 @@
-
 package com.internship.frejaeidjmeterplugin.jmeter.frejaRequests;
 
 import com.verisec.frejaeid.client.beans.general.SslSettings;
@@ -15,9 +14,8 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
 
-
 public class SignService {
-    
+
     private final SignClientApi signClient;
     private static final String KEYSTORE_PATH = "src/main/resources/relyingparty_keystore.p12";
     private static final String KEYSTORE_PASSWORD = "123123123";
@@ -38,7 +36,6 @@ public class SignService {
                 .build();
         return signClient.initiate(request);
     }
-
 
     public SignResult getResult(String reference) throws FrejaEidClientInternalException, FrejaEidException {
         SignResult result = signClient.getResult(SignResultRequest.create(reference));

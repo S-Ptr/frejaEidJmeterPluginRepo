@@ -33,6 +33,7 @@ public class AuthSampler extends AbstractSampler {
         try {
             String reference = authService.initiateAuthenticationRequest(getPropertyAsString("email"), MinRegistrationLevel.BASIC);
             AuthenticationResult authResult = authService.getResult(reference);
+
             sampleResult.setSuccessful(true);
             sampleResult.setSampleLabel("Freja eID Response: " + authResult.getStatus().toString());
             sampleResult.setResponseCode(authResult.getStatus().toString());

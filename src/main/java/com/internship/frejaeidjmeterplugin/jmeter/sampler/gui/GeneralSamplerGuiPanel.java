@@ -1,12 +1,9 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
 import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class GeneralSamplerGuiPanel extends JPanel{
-    private boolean isCheckedAuth;
-    private boolean isCheckedSign;
+public class GeneralSamplerGuiPanel extends javax.swing.JPanel {
 
     public GeneralSamplerGuiPanel() {
         initComponents();
@@ -19,17 +16,12 @@ public class GeneralSamplerGuiPanel extends JPanel{
         jPanel1 = new javax.swing.JPanel();
         checkAuth = new javax.swing.JCheckBox();
         checkSign = new javax.swing.JCheckBox();
-        lblError = new javax.swing.JLabel();
-        txtAuthEmail = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder("General request"));
-
-        checkAuth.setText(" InitAuthentication enabled");
+        checkAuth.setText("InitAuthentication enabled");
 
         checkSign.setText("InitSign enabled");
-
-        lblError.setForeground(new java.awt.Color(255, 0, 0));
 
         jLabel1.setText("Email:");
 
@@ -38,36 +30,26 @@ public class GeneralSamplerGuiPanel extends JPanel{
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(checkSign))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtAuthEmail)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(checkAuth)
-                                .addGap(0, 100, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                    .addComponent(checkAuth)
+                    .addComponent(checkSign)
+                    .addComponent(jLabel1)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(15, 15, 15)
                 .addComponent(checkAuth)
-                .addGap(25, 25, 25)
+                .addGap(18, 18, 18)
                 .addComponent(checkSign)
-                .addGap(17, 17, 17)
-                .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(txtAuthEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -75,16 +57,16 @@ public class GeneralSamplerGuiPanel extends JPanel{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(37, 37, 37)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(40, 40, 40)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -96,16 +78,19 @@ public class GeneralSamplerGuiPanel extends JPanel{
         return checkSign;
     }
 
-    public JTextField getTxtAuthEmail() {
-        return txtAuthEmail;
+    public JTextField getTxtEmail() {
+        return txtEmail;
     }
-    
+
+    public void setTxtEmail(String text) {
+        this.txtEmail.setText(text);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox checkAuth;
     private javax.swing.JCheckBox checkSign;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblError;
-    private javax.swing.JTextField txtAuthEmail;
+    private javax.swing.JTextField txtEmail;
     // End of variables declaration//GEN-END:variables
 }

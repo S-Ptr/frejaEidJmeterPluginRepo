@@ -1,5 +1,4 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler;
-
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.samplers.Entry;

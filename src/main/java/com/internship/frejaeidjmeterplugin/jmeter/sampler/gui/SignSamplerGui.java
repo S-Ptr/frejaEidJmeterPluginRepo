@@ -1,4 +1,3 @@
-
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.SignSampler;
@@ -9,20 +8,19 @@ import java.util.logging.Logger;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
-
-public class SignSamplerGui extends AbstractSamplerGui{
+public class SignSamplerGui extends AbstractSamplerGui {
 
     private SignSamplerGuiPanel panel;
-    
+
     public SignSamplerGui() {
         super();
         panel = new SignSamplerGuiPanel();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
-        add(panel,BorderLayout.CENTER);
+        add(panel, BorderLayout.CENTER);
     }
-    
+
     @Override
     public String getLabelResource() {
         return this.getClass().getSimpleName();
@@ -31,13 +29,12 @@ public class SignSamplerGui extends AbstractSamplerGui{
     @Override
     public void configure(TestElement testElement) {
         super.configure(testElement);
-        if(testElement instanceof SignSampler){
+        if (testElement instanceof SignSampler) {
             SignSampler signSampler = (SignSampler) testElement;
             panel.setSignEmailField(signSampler.getEmail());
         }
-        
+
     }
-    
 
     @Override
     public String getStaticLabel() {
@@ -60,7 +57,7 @@ public class SignSamplerGui extends AbstractSamplerGui{
     @Override
     public void modifyTestElement(TestElement testElement) {
         configureTestElement(testElement);
-        if(testElement instanceof SignSampler){
+        if (testElement instanceof SignSampler) {
             SignSampler signSampler = (SignSampler) testElement;
             signSampler.setEmail(panel.getSignEmailField());
         }
