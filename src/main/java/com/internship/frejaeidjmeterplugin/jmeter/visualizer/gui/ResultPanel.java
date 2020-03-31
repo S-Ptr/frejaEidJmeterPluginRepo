@@ -45,7 +45,7 @@ public class ResultPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         initializeVariables();
-        setTitle();
+        setTitles();
         restartValuesActionListener();
         setStyleOnErrorLabel();
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -63,7 +63,7 @@ public class ResultPanel extends javax.swing.JPanel {
         lblError = new javax.swing.JLabel();
     }
 
-    private void setTitle() {
+    private void setTitles() {
         lblTitleDelivered.setText("Delivered:");
         lblDelivered.setText(" ");
         lblTitleFailed.setText("Failed:");

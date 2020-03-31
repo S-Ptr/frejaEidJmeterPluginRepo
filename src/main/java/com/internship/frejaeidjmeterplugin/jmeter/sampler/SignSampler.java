@@ -25,10 +25,10 @@ public class SignSampler {
             String reference = signService.initiateSignRequest(email, TITLE, SIGN_DATA, MinRegistrationLevel.BASIC);
             SignResult authResult = signService.getResult(reference);
             setSampleResult(sampleResult, "sign", true, "Freja eID Response: " + authResult.getStatus().toString(),
-                    authResult.getStatus().toString(), "The request was delivered");
+                    authResult.getStatus().toString(), "The sign request was delivered");
             sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
-            setSampleResult(sampleResult, "sign", false, "FAILED", "FAILED",
+            setSampleResult(sampleResult, "sign", false, "Freja eID Response: FAILED", "FAILED",
                     ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -37,8 +37,8 @@ public class SignSampler {
         }
     }
 
-    private void setSampleResult(SampleResult sampleResult, String contentType, boolean successful, String sampleLabel, String responseCode, String responseMessage) {
-        sampleResult.setSuccessful(successful);
+    private void setSampleResult(SampleResult sampleResult, String contentType, boolean isSuccessful, String sampleLabel, String responseCode, String responseMessage) {
+        sampleResult.setSuccessful(isSuccessful);
         sampleResult.setSampleLabel(sampleLabel);
         sampleResult.setResponseCode(responseCode);
         sampleResult.setResponseMessage(responseMessage);

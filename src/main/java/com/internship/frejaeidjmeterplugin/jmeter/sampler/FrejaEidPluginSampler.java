@@ -10,12 +10,12 @@ import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.SampleResult;
 
-public class FrejaEIDPluginSampler extends AbstractSampler {
+public class FrejaEidPluginSampler extends AbstractSampler {
 
     private final AuthSampler authSampler;
     private final SignSampler signSampler;
 
-    public FrejaEIDPluginSampler() throws FrejaEidClientInternalException {
+    public FrejaEidPluginSampler() throws FrejaEidClientInternalException {
         authSampler = new AuthSampler();
         signSampler = new SignSampler();
     }
@@ -49,11 +49,11 @@ public class FrejaEIDPluginSampler extends AbstractSampler {
                 break;
             case "both":
                 SampleResult currentSampler = authSampler.sample(getEmail());
-                String sampleLabelAuth = currentSampler.getSampleLabel();
+                String responseCodeAuth = currentSampler.getResponseCode();
                 sampleResult.setContentType("both");
                 currentSampler = signSampler.sample(getEmail());
-                String sampleLabelSign = currentSampler.getSampleLabel();
-                sampleResult.setResponseData(getDataAsByteArray(sampleLabelAuth, sampleLabelSign));
+                String responseCodeSign = currentSampler.getResponseCode();
+                sampleResult.setResponseData(getDataAsByteArray(responseCodeAuth, responseCodeSign));
                 break;
             default:
                 sampleResult.setSampleLabel("noAction");
@@ -69,13 +69,13 @@ public class FrejaEIDPluginSampler extends AbstractSampler {
             out.writeUTF(sampleLabelAuth);
             out.writeUTF(sampleLabelSign);
         } catch (IOException ex) {
-            Logger.getLogger(FrejaEIDPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrejaEidPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 out.close();
                 baos.close();
             } catch (IOException ex) {
-                Logger.getLogger(FrejaEIDPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FrejaEidPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return baos.toByteArray();

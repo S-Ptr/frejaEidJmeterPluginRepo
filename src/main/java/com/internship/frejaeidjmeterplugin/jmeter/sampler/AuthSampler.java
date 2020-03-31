@@ -23,10 +23,10 @@ public class AuthSampler {
             String reference = authService.initiateAuthenticationRequest(email, MinRegistrationLevel.BASIC);
             AuthenticationResult authResult = authService.getResult(reference);
             setSampleResult(sampleResult, "auth", true, "Freja eID Response: " + authResult.getStatus().toString(),
-                    authResult.getStatus().toString(), "The request was delivered");
+                    authResult.getStatus().toString(), "The auth request was delivered");
             sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
-            setSampleResult(sampleResult, "auth", false, "FAILED", "FAILED",
+            setSampleResult(sampleResult, "auth", false, "Freja eID Response: FAILED", "FAILED",
                     ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -35,8 +35,8 @@ public class AuthSampler {
         }
     }
 
-    private void setSampleResult(SampleResult sampleResult, String contentType, boolean successful, String sampleLabel, String responseCode, String responseMessage) {
-        sampleResult.setSuccessful(successful);
+    private void setSampleResult(SampleResult sampleResult, String contentType, boolean isSuccessful, String sampleLabel, String responseCode, String responseMessage) {
+        sampleResult.setSuccessful(isSuccessful);
         sampleResult.setSampleLabel(sampleLabel);
         sampleResult.setResponseCode(responseCode);
         sampleResult.setResponseMessage(responseMessage);

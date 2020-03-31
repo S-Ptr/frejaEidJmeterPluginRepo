@@ -3,7 +3,7 @@ package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
-public class FrejaEIDPluginGuiPanel extends javax.swing.JPanel {
+public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox checkAuth;
@@ -12,7 +12,7 @@ public class FrejaEIDPluginGuiPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtEmail;
     // End of variables declaration//GEN-END:variables
 
-    public FrejaEIDPluginGuiPanel() {
+    public FrejaEidPluginGuiPanel() {
         initComponents();
     }
 
@@ -35,12 +35,44 @@ public class FrejaEIDPluginGuiPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        initializeVariables();
-        setTitles();
+
+        checkAuth = new javax.swing.JCheckBox();
+        checkSign = new javax.swing.JCheckBox();
+        lblTitleEmaill = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
+
+        checkAuth.setText("InitAuthentication enabled");
+
+        checkSign.setText("InitSign enabled");
+
+        lblTitleEmaill.setText("Email:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        setLayoutHorizontal(layout);
-        setLayoutVertical(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkSign)
+                    .addComponent(checkAuth)
+                    .addComponent(lblTitleEmaill))
+                .addContainerGap(127, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(checkAuth)
+                .addGap(18, 18, 18)
+                .addComponent(checkSign)
+                .addGap(56, 56, 56)
+                .addComponent(lblTitleEmaill)
+                .addGap(18, 18, 18)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void initializeVariables() {

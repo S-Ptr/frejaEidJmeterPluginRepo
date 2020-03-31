@@ -11,13 +11,14 @@ import java.util.logging.Logger;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
 
-public class FrejaEIDPluginVisualizerGui extends AbstractVisualizer {
+public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
 
-    private final FrejaEIDPluginVisualizerGuiPanel frejaEIDPluginVsualizerGuiPanel;
+    private final FrejaEidPluginVisualizerGuiPanel frejaEIDPluginVsualizerGuiPanel;
+    private static final String RESPONSE_CODE = "FAILED";
 
-    public FrejaEIDPluginVisualizerGui() {
+    public FrejaEidPluginVisualizerGui() {
         super();
-        frejaEIDPluginVsualizerGuiPanel = new FrejaEIDPluginVisualizerGuiPanel();
+        frejaEIDPluginVsualizerGuiPanel = new FrejaEidPluginVisualizerGuiPanel();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
@@ -40,10 +41,10 @@ public class FrejaEIDPluginVisualizerGui extends AbstractVisualizer {
         frejaEIDPluginVsualizerGuiPanel.getSignResults().setError("");
         switch (sampleResult.getContentType()) {
             case "auth":
-                authStatistics(sampleResult.getSampleLabel());
+                authStatistics(sampleResult.getResponseCode());
                 break;
             case "sign":
-                signStatistics(sampleResult.getSampleLabel());
+                signStatistics(sampleResult.getResponseCode());
                 break;
             case "both":
                 bothStatstics(sampleResult);
@@ -59,16 +60,16 @@ public class FrejaEIDPluginVisualizerGui extends AbstractVisualizer {
     public void clearData() {
     }
 
-    private void authStatistics(String label) {
-        if (label.equals("FAILED")) {
+    private void authStatistics(String responseCode) {
+        if (responseCode.equals(RESPONSE_CODE)) {
             frejaEIDPluginVsualizerGuiPanel.getAuthResults().increasetFailed();
         } else {
             frejaEIDPluginVsualizerGuiPanel.getAuthResults().increaseDelivered();
         }
     }
 
-    private void signStatistics(String label) {
-        if (label.equals("FAILED")) {
+    private void signStatistics(String responseCode) {
+        if (responseCode.equals(RESPONSE_CODE)) {
             frejaEIDPluginVsualizerGuiPanel.getSignResults().increasetFailed();
         } else {
             frejaEIDPluginVsualizerGuiPanel.getSignResults().increaseDelivered();
@@ -86,7 +87,7 @@ public class FrejaEIDPluginVisualizerGui extends AbstractVisualizer {
                 responseDataString.add(element);
             }
         } catch (IOException ex) {
-            Logger.getLogger(FrejaEIDPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
         }
         authStatistics(responseDataString.get(0));
         signStatistics(responseDataString.get(1));

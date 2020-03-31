@@ -5,14 +5,14 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-public class FrejaEIDPluginVisualizerGuiPanel extends JPanel {
+public class FrejaEidPluginVisualizerGuiPanel extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
     private ResultPanel authResults;
     private ResultPanel signResults;
 
-    public FrejaEIDPluginVisualizerGuiPanel() {
+    public FrejaEidPluginVisualizerGuiPanel() {
         initComponents();
         setForm();
     }
