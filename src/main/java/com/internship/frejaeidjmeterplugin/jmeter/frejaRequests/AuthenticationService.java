@@ -34,7 +34,6 @@ public class AuthenticationService {
     }
 
     public AuthenticationResult getResult(String reference) throws FrejaEidClientInternalException, FrejaEidException {
-        AuthenticationResult result = authenticationClient.getResult(AuthenticationResultRequest.create(reference));
-        return result;
+        return authenticationClient.getResult(AuthenticationResultRequest.create(reference));
     }
 }

@@ -6,50 +6,40 @@ import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.jmeter.samplers.AbstractSampler;
-import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.SampleResult;
 
-public class AuthSampler extends AbstractSampler {
+public class AuthSampler {
 
     private final AuthenticationService authService;
-
-    public String getEmail() {
-        return getPropertyAsString("email");
-    }
-
-    public void setEmail(String email) {
-        setProperty("email", email);
-    }
 
     public AuthSampler() throws FrejaEidClientInternalException {
         authService = new AuthenticationService();
     }
 
-    @Override
-    public SampleResult sample(Entry entry) {
+    public SampleResult sample(String email) {
         SampleResult sampleResult = new SampleResult();
         sampleResult.sampleStart();
         try {
-            String reference = authService.initiateAuthenticationRequest(getPropertyAsString("email"), MinRegistrationLevel.BASIC);
+            String reference = authService.initiateAuthenticationRequest(email, MinRegistrationLevel.BASIC);
             AuthenticationResult authResult = authService.getResult(reference);
-
-            sampleResult.setSuccessful(true);
-            sampleResult.setSampleLabel("Freja eID Response: " + authResult.getStatus().toString());
-            sampleResult.setResponseCode(authResult.getStatus().toString());
-            sampleResult.setResponseMessage(authResult.getStatus() + "");
-            if ((authResult.getStatus().toString()).equals("DELIVERED TO MOBILE")) {
-                sampleResult.setResponseOK();
-            }
+            setSampleResult(sampleResult, "auth", true, "Freja eID Response: " + authResult.getStatus().toString(),
+                    authResult.getStatus().toString(), "The auth request was delivered");
+            sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
-            sampleResult.setSuccessful(false);
-            sampleResult.setSampleLabel("FAILED");
-            sampleResult.setResponseMessage(ex.getClass().getSimpleName());
+            setSampleResult(sampleResult, "auth", false, "Freja eID Response: FAILED", "FAILED",
+                    ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             sampleResult.sampleEnd();
-            sampleResult.latencyEnd();
             return sampleResult;
         }
+    }
+
+    private void setSampleResult(SampleResult sampleResult, String contentType, boolean isSuccessful, String sampleLabel, String responseCode, String responseMessage) {
+        sampleResult.setSuccessful(isSuccessful);
+        sampleResult.setSampleLabel(sampleLabel);
+        sampleResult.setResponseCode(responseCode);
+        sampleResult.setResponseMessage(responseMessage);
+        sampleResult.setContentType(contentType);
     }
 }
