@@ -21,16 +21,16 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblError" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblTitleDelivered" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
                       <Component id="lblDelivered" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="jLabel3" min="-2" pref="47" max="-2" attributes="0"/>
+                      <Component id="lblTitleFailed" min="-2" pref="47" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
                       <Component id="lblFailed" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jButton1" alignment="0" min="-2" pref="126" max="-2" attributes="0"/>
+                  <Component id="btnRestartValues" alignment="0" min="-2" pref="126" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="182" max="32767" attributes="0"/>
           </Group>
@@ -41,25 +41,25 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblTitleDelivered" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblDelivered" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblTitleFailed" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblFailed" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
               <Component id="lblError" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="btnRestartValues" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="66" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="lblTitleDelivered">
       <Properties>
         <Property name="text" type="java.lang.String" value="Delivered:"/>
       </Properties>
@@ -69,19 +69,19 @@
         <Property name="text" type="java.lang.String" value=" "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
+    <Component class="javax.swing.JLabel" name="lblTitleFailed">
       <Properties>
         <Property name="text" type="java.lang.String" value="Failed:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblFailed">
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnRestartValues">
       <Properties>
         <Property name="text" type="java.lang.String" value="Restart values"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRestartValuesActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblError">

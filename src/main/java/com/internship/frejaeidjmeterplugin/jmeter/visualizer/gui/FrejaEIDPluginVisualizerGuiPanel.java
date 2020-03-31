@@ -1,4 +1,3 @@
-
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
 import java.awt.GridBagConstraints;
@@ -6,8 +5,9 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-
-public class FrejaEIDPluginVisualizerGuiPanel extends JPanel{
+public class FrejaEIDPluginVisualizerGuiPanel extends JPanel {
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
 
     private ResultPanel authResults;
     private ResultPanel signResults;
@@ -28,17 +28,10 @@ public class FrejaEIDPluginVisualizerGuiPanel extends JPanel{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 320, Short.MAX_VALUE)
-        );
+        setLayoutHorizontal(layout);
+        setLayoutVertical(layout);
     }// </editor-fold>//GEN-END:initComponents
 
     private void setForm() {
@@ -54,6 +47,17 @@ public class FrejaEIDPluginVisualizerGuiPanel extends JPanel{
         this.add(jTP, myConstraints);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+    private void setLayoutHorizontal(javax.swing.GroupLayout layout) {
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
+        );
+    }
+
+    private void setLayoutVertical(javax.swing.GroupLayout layout) {
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 320, Short.MAX_VALUE)
+        );
+    }
 }

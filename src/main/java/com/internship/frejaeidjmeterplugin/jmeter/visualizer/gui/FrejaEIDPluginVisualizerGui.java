@@ -13,15 +13,15 @@ import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
 
 public class FrejaEIDPluginVisualizerGui extends AbstractVisualizer {
 
-    private final FrejaEIDPluginVisualizerGuiPanel panel;
+    private final FrejaEIDPluginVisualizerGuiPanel frejaEIDPluginVsualizerGuiPanel;
 
     public FrejaEIDPluginVisualizerGui() {
         super();
-        panel = new FrejaEIDPluginVisualizerGuiPanel();
+        frejaEIDPluginVsualizerGuiPanel = new FrejaEIDPluginVisualizerGuiPanel();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
-        add(panel, BorderLayout.CENTER);
+        add(frejaEIDPluginVsualizerGuiPanel, BorderLayout.CENTER);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class FrejaEIDPluginVisualizerGui extends AbstractVisualizer {
 
     @Override
     public void add(SampleResult sampleResult) {
-        panel.getAuthResults().setError("");
-        panel.getSignResults().setError("");
+        frejaEIDPluginVsualizerGuiPanel.getAuthResults().setError("");
+        frejaEIDPluginVsualizerGuiPanel.getSignResults().setError("");
         switch (sampleResult.getContentType()) {
             case "auth":
                 authStatistics(sampleResult.getSampleLabel());
@@ -49,8 +49,8 @@ public class FrejaEIDPluginVisualizerGui extends AbstractVisualizer {
                 bothStatstics(sampleResult);
                 break;
             default:
-                panel.getAuthResults().setError("Please choose request");
-                panel.getSignResults().setError("Please choose request");
+                frejaEIDPluginVsualizerGuiPanel.getAuthResults().setError("Please choose request");
+                frejaEIDPluginVsualizerGuiPanel.getSignResults().setError("Please choose request");
                 break;
         }
     }
@@ -61,17 +61,17 @@ public class FrejaEIDPluginVisualizerGui extends AbstractVisualizer {
 
     private void authStatistics(String label) {
         if (label.equals("FAILED")) {
-            panel.getAuthResults().increasetFailed();
+            frejaEIDPluginVsualizerGuiPanel.getAuthResults().increasetFailed();
         } else {
-            panel.getAuthResults().increaseDelivered();
+            frejaEIDPluginVsualizerGuiPanel.getAuthResults().increaseDelivered();
         }
     }
 
     private void signStatistics(String label) {
         if (label.equals("FAILED")) {
-            panel.getSignResults().increasetFailed();
+            frejaEIDPluginVsualizerGuiPanel.getSignResults().increasetFailed();
         } else {
-            panel.getSignResults().increaseDelivered();
+            frejaEIDPluginVsualizerGuiPanel.getSignResults().increaseDelivered();
         }
     }
 

@@ -10,15 +10,15 @@ import org.apache.jmeter.testelement.TestElement;
 
 public class FrejaEIDPlugnGui extends AbstractSamplerGui {
 
-    private final FrejaEIDPluginGuiPanel panel;
+    private final FrejaEIDPluginGuiPanel frejaEIDPluginGuiPanel;
 
     public FrejaEIDPlugnGui() {
         super();
-        panel = new FrejaEIDPluginGuiPanel();
+        frejaEIDPluginGuiPanel = new FrejaEIDPluginGuiPanel();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
-        add(panel, BorderLayout.CENTER);
+        add(frejaEIDPluginGuiPanel, BorderLayout.CENTER);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class FrejaEIDPlugnGui extends AbstractSamplerGui {
         super.configure(element);
         if (element instanceof FrejaEIDPluginSampler) {
             FrejaEIDPluginSampler ref = (FrejaEIDPluginSampler) element;
-            panel.setTxtEmail(ref.getEmail());
+            frejaEIDPluginGuiPanel.setTxtEmail(ref.getEmail());
         }
     }
 
@@ -51,12 +51,12 @@ public class FrejaEIDPlugnGui extends AbstractSamplerGui {
     public void modifyTestElement(TestElement te) {
         super.configureTestElement(te);
         FrejaEIDPluginSampler gen = (FrejaEIDPluginSampler) te;
-        gen.setEmail(panel.getTxtEmail().getText());
-        if (panel.getCheckAuth().isSelected() && panel.getCheckSign().isSelected()) {
+        gen.setEmail(frejaEIDPluginGuiPanel.getTxtEmail().getText());
+        if (frejaEIDPluginGuiPanel.getCheckAuth().isSelected() && frejaEIDPluginGuiPanel.getCheckSign().isSelected()) {
             gen.setSelected("both");
-        } else if (panel.getCheckAuth().isSelected()) {
+        } else if (frejaEIDPluginGuiPanel.getCheckAuth().isSelected()) {
             gen.setSelected("auth");
-        } else if (panel.getCheckSign().isSelected()) {
+        } else if (frejaEIDPluginGuiPanel.getCheckSign().isSelected()) {
             gen.setSelected("sign");
         } else {
             gen.setSelected("noAction");

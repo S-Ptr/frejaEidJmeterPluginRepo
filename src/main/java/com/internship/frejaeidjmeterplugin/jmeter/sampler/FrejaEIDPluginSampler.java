@@ -70,6 +70,13 @@ public class FrejaEIDPluginSampler extends AbstractSampler {
             out.writeUTF(sampleLabelSign);
         } catch (IOException ex) {
             Logger.getLogger(FrejaEIDPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                out.close();
+                baos.close();
+            } catch (IOException ex) {
+                Logger.getLogger(FrejaEIDPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return baos.toByteArray();
     }

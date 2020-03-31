@@ -23,27 +23,26 @@ public class SignSampler {
         sampleResult.sampleStart();
         try {
             String reference = signService.initiateSignRequest(email, TITLE, SIGN_DATA, MinRegistrationLevel.BASIC);
-            sampleResult.latencyEnd();
             SignResult authResult = signService.getResult(reference);
-            sampleResult.setSuccessful(true);
-            sampleResult.setSampleLabel("Freja eID Response: " + authResult.getStatus().toString());
-            sampleResult.setResponseCode(authResult.getStatus().toString());
-            sampleResult.setResponseMessage(authResult.getStatus() + "");
-            sampleResult.setContentType("sign");
-            if ((authResult.getStatus().toString()).equals("DELIVERED TO MOBILE")) {
-                sampleResult.setResponseOK();
-            }
+            setSampleResult(sampleResult, "sign", true, "Freja eID Response: " + authResult.getStatus().toString(),
+                    authResult.getStatus().toString(), "The request was delivered");
+            sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
-            sampleResult.latencyEnd();
-            sampleResult.setSuccessful(false);
-            sampleResult.setSampleLabel("FAILED");
-            sampleResult.setResponseMessage(ex.getClass().getSimpleName());
-            sampleResult.setContentType("sign");
+            setSampleResult(sampleResult, "sign", false, "FAILED", "FAILED",
+                    ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             sampleResult.sampleEnd();
             return sampleResult;
         }
+    }
+
+    private void setSampleResult(SampleResult sampleResult, String contentType, boolean successful, String sampleLabel, String responseCode, String responseMessage) {
+        sampleResult.setSuccessful(successful);
+        sampleResult.setSampleLabel(sampleLabel);
+        sampleResult.setResponseCode(responseCode);
+        sampleResult.setResponseMessage(responseMessage);
+        sampleResult.setContentType(contentType);
     }
 
 }

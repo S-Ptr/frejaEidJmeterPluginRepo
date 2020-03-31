@@ -22,25 +22,24 @@ public class AuthSampler {
         try {
             String reference = authService.initiateAuthenticationRequest(email, MinRegistrationLevel.BASIC);
             AuthenticationResult authResult = authService.getResult(reference);
-
-            sampleResult.setSuccessful(true);
-            sampleResult.setSampleLabel("Freja eID Response: " + authResult.getStatus().toString());
-            sampleResult.setResponseCode(authResult.getStatus().toString());
-            sampleResult.setResponseMessage(authResult.getStatus() + "");
-            sampleResult.setContentType("auth");
-            if ((authResult.getStatus().toString()).equals("DELIVERED TO MOBILE")) {
-                sampleResult.setResponseOK();
-            }
+            setSampleResult(sampleResult, "auth", true, "Freja eID Response: " + authResult.getStatus().toString(),
+                    authResult.getStatus().toString(), "The request was delivered");
+            sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
-            sampleResult.setSuccessful(false);
-            sampleResult.setSampleLabel("FAILED");
-            sampleResult.setResponseMessage(ex.getClass().getSimpleName());
-            sampleResult.setContentType("auth");
+            setSampleResult(sampleResult, "auth", false, "FAILED", "FAILED",
+                    ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             sampleResult.sampleEnd();
-            sampleResult.latencyEnd();
             return sampleResult;
         }
+    }
+
+    private void setSampleResult(SampleResult sampleResult, String contentType, boolean successful, String sampleLabel, String responseCode, String responseMessage) {
+        sampleResult.setSuccessful(successful);
+        sampleResult.setSampleLabel(sampleLabel);
+        sampleResult.setResponseCode(responseCode);
+        sampleResult.setResponseMessage(responseMessage);
+        sampleResult.setContentType(contentType);
     }
 }
