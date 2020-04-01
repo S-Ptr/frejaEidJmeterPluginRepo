@@ -11,7 +11,8 @@ import org.apache.jmeter.testelement.TestElement;
 public class FrejaEidPlugnGui extends AbstractSamplerGui {
 
     private final FrejaEidPluginGuiPanel frejaEIDPluginGuiPanel;
-
+    public static FrejaEidPlugnGui instance;
+    
     public FrejaEidPlugnGui() {
         super();
         frejaEIDPluginGuiPanel = new FrejaEidPluginGuiPanel();
@@ -19,6 +20,11 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
         add(frejaEIDPluginGuiPanel, BorderLayout.CENTER);
+        instance = this;
+    }
+
+    public FrejaEidPluginGuiPanel getFrejaEIDPluginGuiPanel() {
+        return frejaEIDPluginGuiPanel;
     }
 
     @Override
@@ -28,14 +34,14 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
 
     @Override
     public TestElement createTestElement() {
-        FrejaEidPluginSampler general = null;
+        FrejaEidPluginSampler frejaEidPluginSampler = null;
         try {
-            general = new FrejaEidPluginSampler();
+            frejaEidPluginSampler = new FrejaEidPluginSampler();
         } catch (FrejaEidClientInternalException ex) {
             Logger.getLogger(FrejaEidPluginGuiPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        modifyTestElement(general);
-        return general;
+        modifyTestElement(frejaEidPluginSampler);
+        return frejaEidPluginSampler;
     }
 
     @Override
@@ -50,16 +56,16 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
     @Override
     public void modifyTestElement(TestElement te) {
         super.configureTestElement(te);
-        FrejaEidPluginSampler gen = (FrejaEidPluginSampler) te;
-        gen.setEmail(frejaEIDPluginGuiPanel.getTxtEmail().getText());
+        FrejaEidPluginSampler frejaEidPluginSampler = (FrejaEidPluginSampler) te;
+        frejaEidPluginSampler.setEmail(frejaEIDPluginGuiPanel.getTxtEmail().getText());
         if (frejaEIDPluginGuiPanel.getCheckAuth().isSelected() && frejaEIDPluginGuiPanel.getCheckSign().isSelected()) {
-            gen.setSelected("both");
+            frejaEidPluginSampler.setSelected("both");
         } else if (frejaEIDPluginGuiPanel.getCheckAuth().isSelected()) {
-            gen.setSelected("auth");
+            frejaEidPluginSampler.setSelected("auth");
         } else if (frejaEIDPluginGuiPanel.getCheckSign().isSelected()) {
-            gen.setSelected("sign");
+            frejaEidPluginSampler.setSelected("sign");
         } else {
-            gen.setSelected("noAction");
+            frejaEidPluginSampler.setSelected("noAction");
         }
     }
 
