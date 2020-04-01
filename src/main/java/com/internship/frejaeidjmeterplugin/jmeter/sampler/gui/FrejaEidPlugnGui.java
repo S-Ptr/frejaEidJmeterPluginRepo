@@ -11,8 +11,7 @@ import org.apache.jmeter.testelement.TestElement;
 public class FrejaEidPlugnGui extends AbstractSamplerGui {
 
     private final FrejaEidPluginGuiPanel frejaEIDPluginGuiPanel;
-    public static FrejaEidPlugnGui instance;
-    
+
     public FrejaEidPlugnGui() {
         super();
         frejaEIDPluginGuiPanel = new FrejaEidPluginGuiPanel();
@@ -20,11 +19,6 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
         add(frejaEIDPluginGuiPanel, BorderLayout.CENTER);
-        instance = this;
-    }
-
-    public FrejaEidPluginGuiPanel getFrejaEIDPluginGuiPanel() {
-        return frejaEIDPluginGuiPanel;
     }
 
     @Override
@@ -34,14 +28,16 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
 
     @Override
     public TestElement createTestElement() {
-        FrejaEidPluginSampler frejaEidPluginSampler = null;
+        FrejaEidPluginSampler general = null;
         try {
-            frejaEidPluginSampler = new FrejaEidPluginSampler();
+            general = new FrejaEidPluginSampler();
         } catch (FrejaEidClientInternalException ex) {
             Logger.getLogger(FrejaEidPluginGuiPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(FrejaEidPlugnGui.class.getName()).log(Level.SEVERE, null, ex);
         }
-        modifyTestElement(frejaEidPluginSampler);
-        return frejaEidPluginSampler;
+        modifyTestElement(general);
+        return general;
     }
 
     @Override
@@ -56,16 +52,16 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
     @Override
     public void modifyTestElement(TestElement te) {
         super.configureTestElement(te);
-        FrejaEidPluginSampler frejaEidPluginSampler = (FrejaEidPluginSampler) te;
-        frejaEidPluginSampler.setEmail(frejaEIDPluginGuiPanel.getTxtEmail().getText());
+        FrejaEidPluginSampler gen = (FrejaEidPluginSampler) te;
+        gen.setEmail(frejaEIDPluginGuiPanel.getTxtEmail().getText());
         if (frejaEIDPluginGuiPanel.getCheckAuth().isSelected() && frejaEIDPluginGuiPanel.getCheckSign().isSelected()) {
-            frejaEidPluginSampler.setSelected("both");
+            gen.setSelected("both");
         } else if (frejaEIDPluginGuiPanel.getCheckAuth().isSelected()) {
-            frejaEidPluginSampler.setSelected("auth");
+            gen.setSelected("auth");
         } else if (frejaEIDPluginGuiPanel.getCheckSign().isSelected()) {
-            frejaEidPluginSampler.setSelected("sign");
+            gen.setSelected("sign");
         } else {
-            frejaEidPluginSampler.setSelected("noAction");
+            gen.setSelected("noAction");
         }
     }
 

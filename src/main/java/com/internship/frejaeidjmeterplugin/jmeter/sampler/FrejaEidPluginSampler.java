@@ -1,7 +1,5 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler;
 
-import com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.FrejaEidPlugnGui;
-import com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.FrejaEidPluginVisualizer;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -13,14 +11,13 @@ import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.SampleResult;
 
 public class FrejaEidPluginSampler extends AbstractSampler {
+
     private final AuthSampler authSampler;
     private final SignSampler signSampler;
-    private final FrejaEidPluginVisualizer frejaEidPluginVisualizer;
 
-    public FrejaEidPluginSampler() throws FrejaEidClientInternalException {
+    public FrejaEidPluginSampler() throws FrejaEidClientInternalException, Exception {
         authSampler = new AuthSampler();
         signSampler = new SignSampler();
-        frejaEidPluginVisualizer = new FrejaEidPluginVisualizer(FrejaEidPlugnGui.instance);
     }
 
     public String getEmail() {
@@ -62,7 +59,6 @@ public class FrejaEidPluginSampler extends AbstractSampler {
                 sampleResult.setSampleLabel("noAction");
                 return sampleResult;
         }
-        frejaEidPluginVisualizer.add(sampleResult);
         return sampleResult;
     }
 

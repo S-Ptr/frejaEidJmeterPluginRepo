@@ -1,6 +1,6 @@
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
-import com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.FrejaEidPlugnGui;
+import java.awt.BorderLayout;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -9,19 +9,36 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.jmeter.samplers.SampleResult;
+import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
 
-public class FrejaEidPluginVisualizer {
+public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
 
+    private final FrejaEidPluginVisualizerGuiPanel frejaEIDPluginVsualizerGuiPanel;
     private static final String RESPONSE_CODE = "FAILED";
-    private final FrejaEidPlugnGui frejaEidPlugnGui;
 
-    public FrejaEidPluginVisualizer(FrejaEidPlugnGui frejaEidPlugnGui) {
-        this.frejaEidPlugnGui = frejaEidPlugnGui;
+    public FrejaEidPluginVisualizerGui() {
+        super();
+        frejaEIDPluginVsualizerGuiPanel = new FrejaEidPluginVisualizerGuiPanel();
+        setLayout(new BorderLayout(0, 5));
+        setBorder(makeBorder());
+        add(makeTitlePanel(), BorderLayout.NORTH);
+        add(frejaEIDPluginVsualizerGuiPanel, BorderLayout.CENTER);
     }
 
+    @Override
+    public String getStaticLabel() {
+        return "Freja eID Plugin Statistics";
+    }
+
+    @Override
+    public String getLabelResource() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
     public void add(SampleResult sampleResult) {
-        frejaEidPlugnGui.getFrejaEIDPluginGuiPanel().getAuthResults().setError("");
-        frejaEidPlugnGui.getFrejaEIDPluginGuiPanel().getSignResults().setError("");
+        frejaEIDPluginVsualizerGuiPanel.getAuthResults().setError("");
+        frejaEIDPluginVsualizerGuiPanel.getSignResults().setError("");
         switch (sampleResult.getContentType()) {
             case "auth":
                 authStatistics(sampleResult.getResponseCode());
@@ -33,25 +50,29 @@ public class FrejaEidPluginVisualizer {
                 bothStatstics(sampleResult);
                 break;
             default:
-                frejaEidPlugnGui.getFrejaEIDPluginGuiPanel().getAuthResults().setError("Please choose request");
-                frejaEidPlugnGui.getFrejaEIDPluginGuiPanel().getSignResults().setError("Please choose request");
+                frejaEIDPluginVsualizerGuiPanel.getAuthResults().setError("Please choose request");
+                frejaEIDPluginVsualizerGuiPanel.getSignResults().setError("Please choose request");
                 break;
         }
     }
 
+    @Override
+    public void clearData() {
+    }
+
     private void authStatistics(String responseCode) {
         if (responseCode.equals(RESPONSE_CODE)) {
-            frejaEidPlugnGui.getFrejaEIDPluginGuiPanel().getAuthResults().increasetFailed();
+            frejaEIDPluginVsualizerGuiPanel.getAuthResults().increasetFailed();
         } else {
-            frejaEidPlugnGui.getFrejaEIDPluginGuiPanel().getAuthResults().increaseDelivered();
+            frejaEIDPluginVsualizerGuiPanel.getAuthResults().increaseDelivered();
         }
     }
 
     private void signStatistics(String responseCode) {
         if (responseCode.equals(RESPONSE_CODE)) {
-            frejaEidPlugnGui.getFrejaEIDPluginGuiPanel().getSignResults().increasetFailed();
+            frejaEIDPluginVsualizerGuiPanel.getSignResults().increasetFailed();
         } else {
-            frejaEidPlugnGui.getFrejaEIDPluginGuiPanel().getSignResults().increaseDelivered();
+            frejaEIDPluginVsualizerGuiPanel.getSignResults().increaseDelivered();
         }
     }
 
@@ -66,9 +87,10 @@ public class FrejaEidPluginVisualizer {
                 responseDataString.add(element);
             }
         } catch (IOException ex) {
-            Logger.getLogger(FrejaEidPluginVisualizer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
         }
         authStatistics(responseDataString.get(0));
         signStatistics(responseDataString.get(1));
     }
+
 }
