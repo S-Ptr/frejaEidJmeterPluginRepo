@@ -7,17 +7,17 @@ import com.verisec.frejaeid.mobileclient.clients.impl.MobileClient;
 
 public class MobileClientService {
 
-    private final MobileClientApi mobileClientApi;
+    private final MobileClientApi mobileClient;
     private static final String KEYSTORE_PATH = "src/main/resources/websocket_keystore.jks";
     private static final String KEYSTORE_PASSWORD = "123123123";
     private static final String SERVICE_ADRESS = "wss://frejaeidmobilesvc-st.test.frejaeid.com";
 
     public MobileClientService() throws FrejaEidException, Exception{
-        mobileClientApi = new MobileClient(SERVICE_ADRESS, KEYSTORE_PATH, KEYSTORE_PASSWORD);
+        mobileClient = new MobileClient(SERVICE_ADRESS, KEYSTORE_PATH, KEYSTORE_PASSWORD);
     }
 
     public void openSecureConnection() throws Exception {
-        mobileClientApi.openSecureConnection();
+        mobileClient.openSecureConnection();
     }
 
 }
