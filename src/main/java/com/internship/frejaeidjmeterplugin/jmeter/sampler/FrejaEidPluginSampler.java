@@ -35,18 +35,6 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         setProperty("email", email);
     }
 
-    public void setCheckAuth(boolean isChecked) {
-        setProperty("auth", isChecked);
-    }
-
-    public void setCheckSign(boolean isChecked) {
-        setProperty("sign", isChecked);
-    }
-
-    public void setCheckOpenSecureConnection(boolean isChecked) {
-        setProperty("opse", isChecked);
-    }
-
     public void setRequests(String requests) {
         setProperty("requests", requests);
     }
