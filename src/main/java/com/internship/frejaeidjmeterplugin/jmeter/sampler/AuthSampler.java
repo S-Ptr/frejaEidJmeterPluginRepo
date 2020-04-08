@@ -22,10 +22,12 @@ public class AuthSampler {
         try {
             String reference = authService.initiateAuthenticationRequest(email, MinRegistrationLevel.BASIC);
             AuthenticationResult authResult = authService.getResult(reference);
+            sampleResult.latencyEnd();
             setSampleResult(sampleResult, "auth", true, "Freja eID Response: " + authResult.getStatus().toString(),
                     authResult.getStatus().toString(), "The auth request was delivered");
             sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
+            sampleResult.latencyEnd();
             setSampleResult(sampleResult, "auth", false, "Freja eID Response: FAILED", "FAILED",
                     ex.getClass().getSimpleName());
             Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);

@@ -4,6 +4,7 @@ import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.jmeter.samplers.AbstractSampler;
@@ -39,7 +40,6 @@ public class FrejaEidPluginSampler extends AbstractSampler {
     @Override
     public SampleResult sample(Entry entry) {
         SampleResult sampleResult = new SampleResult();
-
         switch (getSelected()) {
             case "auth":
                 sampleResult = authSampler.sample(getEmail());

@@ -8,11 +8,11 @@ import java.util.logging.Logger;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
-public class FrejaEidPlugnGui extends AbstractSamplerGui {
+public class FrejaEidPluginGui extends AbstractSamplerGui {
 
     private final FrejaEidPluginGuiPanel frejaEIDPluginGuiPanel;
 
-    public FrejaEidPlugnGui() {
+    public FrejaEidPluginGui() {
         super();
         frejaEIDPluginGuiPanel = new FrejaEidPluginGuiPanel();
         setLayout(new BorderLayout(0, 5));
@@ -31,8 +31,8 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
         FrejaEidPluginSampler general = null;
         try {
             general = new FrejaEidPluginSampler();
-        } catch (FrejaEidClientInternalException ex) {
-            Logger.getLogger(FrejaEidPluginGuiPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(FrejaEidPluginGui.class.getName()).log(Level.SEVERE, null, ex);
         }
         modifyTestElement(general);
         return general;

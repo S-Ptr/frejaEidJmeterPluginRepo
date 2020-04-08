@@ -14,7 +14,7 @@ public class SignSampler {
     private static final String TITLE = "Transaction";
     private static final String SIGN_DATA = "Data";
 
-    public SignSampler() throws FrejaEidClientInternalException {
+    public SignSampler() throws FrejaEidClientInternalException{
         signService = new SignService();
     }
 
@@ -24,13 +24,15 @@ public class SignSampler {
         try {
             String reference = signService.initiateSignRequest(email, TITLE, SIGN_DATA, MinRegistrationLevel.BASIC);
             SignResult authResult = signService.getResult(reference);
+            sampleResult.latencyEnd();
             setSampleResult(sampleResult, "sign", true, "Freja eID Response: " + authResult.getStatus().toString(),
                     authResult.getStatus().toString(), "The sign request was delivered");
             sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
+            sampleResult.latencyEnd();
             setSampleResult(sampleResult, "sign", false, "Freja eID Response: FAILED", "FAILED",
                     ex.getClass().getSimpleName());
-            Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             sampleResult.sampleEnd();
             return sampleResult;
