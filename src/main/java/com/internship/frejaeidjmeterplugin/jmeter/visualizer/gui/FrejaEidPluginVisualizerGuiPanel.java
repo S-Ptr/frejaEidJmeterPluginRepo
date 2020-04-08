@@ -11,12 +11,17 @@ public class FrejaEidPluginVisualizerGuiPanel extends JPanel {
 
     private ResultPanel authResults;
     private ResultPanel signResults;
+    private ResultPanel openSecureResults;
 
     public FrejaEidPluginVisualizerGuiPanel() {
         initComponents();
         setForm();
     }
 
+    public ResultPanel getOpenSecureResults() {
+        return openSecureResults;
+    }
+    
     public ResultPanel getAuthResults() {
         return authResults;
     }
@@ -38,9 +43,11 @@ public class FrejaEidPluginVisualizerGuiPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         authResults = new ResultPanel();
         signResults = new ResultPanel();
+        openSecureResults = new ResultPanel();
         JTabbedPane jTP = new JTabbedPane();
         jTP.add("Auth", authResults);
         jTP.add("Sign", signResults);
+        jTP.add("Open secure connection", openSecureResults);
         GridBagConstraints myConstraints = new GridBagConstraints();
         myConstraints.ipadx = 50;
         myConstraints.ipady = 50;
