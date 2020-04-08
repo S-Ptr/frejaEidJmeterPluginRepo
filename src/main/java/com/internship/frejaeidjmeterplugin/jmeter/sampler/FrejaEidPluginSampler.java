@@ -2,8 +2,9 @@ package com.internship.frejaeidjmeterplugin.jmeter.sampler;
 
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.jmeter.samplers.AbstractSampler;
@@ -14,10 +15,16 @@ public class FrejaEidPluginSampler extends AbstractSampler {
 
     private final AuthSampler authSampler;
     private final SignSampler signSampler;
+    private final MobileClientSampler mobileClientSampler;
+    private final HashMap<String, GenericSampler> samplerMap;
+    private String[] requests;
 
     public FrejaEidPluginSampler() throws FrejaEidClientInternalException, Exception {
         authSampler = new AuthSampler();
         signSampler = new SignSampler();
+        mobileClientSampler = new MobileClientSampler();
+        samplerMap = new HashMap<>();
+        addSamplers();
     }
 
     public String getEmail() {
@@ -28,56 +35,75 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         setProperty("email", email);
     }
 
-    public void setSelected(String text) {
-        setProperty("selected", text);
+    public void setCheckAuth(boolean isChecked) {
+        setProperty("auth", isChecked);
     }
 
-    public String getSelected() {
-        return getPropertyAsString("selected");
+    public void setCheckSign(boolean isChecked) {
+        setProperty("sign", isChecked);
+    }
+
+    public void setCheckOpenSecureConnection(boolean isChecked) {
+        setProperty("opse", isChecked);
+    }
+
+    public void setRequests(String requests) {
+        setProperty("requests", requests);
     }
 
     @Override
     public SampleResult sample(Entry entry) {
         SampleResult sampleResult = new SampleResult();
-
-        switch (getSelected()) {
-            case "auth":
-                sampleResult = authSampler.sample(getEmail());
+        requests = getProperty("requests").toString().split(" ");
+        switch (requests.length) {
+            case RequestNumber.NO_REQUEST:
+                sampleResult.setSampleLabel("noAction");
                 break;
-            case "sign":
-                sampleResult = signSampler.sample(getEmail());
-                break;
-            case "both":
-                SampleResult currentSampler = authSampler.sample(getEmail());
-                String responseCodeAuth = currentSampler.getResponseCode();
-                sampleResult.setContentType("both");
-                currentSampler = signSampler.sample(getEmail());
-                String responseCodeSign = currentSampler.getResponseCode();
-                sampleResult.setResponseData(getDataAsByteArray(responseCodeAuth, responseCodeSign));
+            case RequestNumber.ONE_REQUEST:
+                GenericSampler currentSampler = samplerMap.get(requests[0]);
+                sampleResult = currentSampler.sample(getEmail());
                 break;
             default:
-                sampleResult.setSampleLabel("noAction");
-                return sampleResult;
+                sampleResult = processAllRequests();
         }
         return sampleResult;
     }
 
-    private byte[] getDataAsByteArray(String sampleLabelAuth, String sampleLabelSign) {
+    private byte[] getDataAsByteArray(HashMap<String, String> response) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(baos);
+        ObjectOutputStream out;
         try {
-            out.writeUTF(sampleLabelAuth);
-            out.writeUTF(sampleLabelSign);
+            out = new ObjectOutputStream(baos);
+            out.writeObject(response);
+            out.close();
         } catch (IOException ex) {
             Logger.getLogger(FrejaEidPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                out.close();
                 baos.close();
             } catch (IOException ex) {
                 Logger.getLogger(FrejaEidPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
         return baos.toByteArray();
+    }
+
+    private void addSamplers() {
+        samplerMap.put("auth", authSampler);
+        samplerMap.put("sign", signSampler);
+        samplerMap.put("mobile", mobileClientSampler);
+    }
+
+    private SampleResult processAllRequests() {
+        SampleResult sampleResult = new SampleResult();
+        HashMap<String, String> response = new HashMap<>();
+        for (String request : requests) {
+            GenericSampler genericSampler = samplerMap.get(request);
+            SampleResult currentSamplerResult = genericSampler.sample(getEmail());
+            response.put(genericSampler.getSamplerName(), currentSamplerResult.getResponseCode());
+        }
+        sampleResult.setResponseData(getDataAsByteArray(response));
+        return sampleResult;
     }
 }

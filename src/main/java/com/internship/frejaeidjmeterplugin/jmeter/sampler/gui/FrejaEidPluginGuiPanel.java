@@ -7,6 +7,7 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox checkAuth;
+    private javax.swing.JCheckBox checkOpenSecureConnection;
     private javax.swing.JCheckBox checkSign;
     private javax.swing.JLabel lblTitleEmaill;
     private javax.swing.JTextField txtEmail;
@@ -16,6 +17,9 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
         initComponents();
     }
 
+    public JCheckBox getCheckOpenSecureConnection() {
+        return checkOpenSecureConnection;
+    }
     public JCheckBox getCheckAuth() {
         return checkAuth;
     }
@@ -40,12 +44,15 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
         checkSign = new javax.swing.JCheckBox();
         lblTitleEmaill = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
+        checkOpenSecureConnection = new javax.swing.JCheckBox();
 
         checkAuth.setText("InitAuthentication enabled");
 
         checkSign.setText("InitSign enabled");
 
         lblTitleEmaill.setText("Email:");
+
+        checkOpenSecureConnection.setText("Open secure connection enabled");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -54,6 +61,7 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(83, 83, 83)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(checkOpenSecureConnection)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(checkSign)
                     .addComponent(checkAuth)
@@ -67,7 +75,9 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
                 .addComponent(checkAuth)
                 .addGap(18, 18, 18)
                 .addComponent(checkSign)
-                .addGap(56, 56, 56)
+                .addGap(15, 15, 15)
+                .addComponent(checkOpenSecureConnection)
+                .addGap(18, 18, 18)
                 .addComponent(lblTitleEmaill)
                 .addGap(18, 18, 18)
                 .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

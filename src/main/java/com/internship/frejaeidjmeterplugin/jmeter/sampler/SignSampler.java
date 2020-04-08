@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.jmeter.samplers.SampleResult;
 
-public class SignSampler {
+public class SignSampler implements GenericSampler{
 
     private final SignService signService;
     private static final String TITLE = "Transaction";
@@ -18,6 +18,7 @@ public class SignSampler {
         signService = new SignService();
     }
 
+    @Override
     public SampleResult sample(String email) {
         SampleResult sampleResult = new SampleResult();
         sampleResult.sampleStart();
@@ -43,6 +44,11 @@ public class SignSampler {
         sampleResult.setResponseCode(responseCode);
         sampleResult.setResponseMessage(responseMessage);
         sampleResult.setContentType(contentType);
+    }
+
+    @Override
+    public String getSamplerName() {
+        return "sign";
     }
 
 }

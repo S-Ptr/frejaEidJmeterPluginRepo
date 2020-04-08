@@ -19,6 +19,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="checkOpenSecureConnection" min="-2" max="-2" attributes="0"/>
                   <Component id="txtEmail" min="-2" pref="224" max="-2" attributes="0"/>
                   <Component id="checkSign" min="-2" max="-2" attributes="0"/>
                   <Component id="checkAuth" min="-2" max="-2" attributes="0"/>
@@ -35,7 +36,9 @@
               <Component id="checkAuth" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="checkSign" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <Component id="checkOpenSecureConnection" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="lblTitleEmaill" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="txtEmail" min="-2" max="-2" attributes="0"/>
@@ -61,6 +64,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtEmail">
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="checkOpenSecureConnection">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Open secure connection enabled"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
