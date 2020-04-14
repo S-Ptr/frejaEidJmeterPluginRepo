@@ -39,6 +39,8 @@ public class ResultPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        initializeVariables();
+        setTitles();
         restartValuesActionListener();
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -52,7 +54,6 @@ public class ResultPanel extends javax.swing.JPanel {
         lblTitleFailed = new javax.swing.JLabel();
         lblFailed = new javax.swing.JLabel();
         btnRestartValues = new javax.swing.JButton();
-
     }
 
     private void setTitles() {
@@ -92,7 +93,7 @@ public class ResultPanel extends javax.swing.JPanel {
     }
 
     private void setLayoutHorizontal(javax.swing.GroupLayout layout) {
-        layout.setHorizontalGroup(
+         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(73, 73, 73)
