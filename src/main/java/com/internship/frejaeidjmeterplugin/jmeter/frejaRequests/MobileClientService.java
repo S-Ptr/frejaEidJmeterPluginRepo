@@ -20,6 +20,10 @@ public class MobileClientService {
     public MobileClientService() throws FrejaEidException, Exception {
         mobileClient = new MobileClient(SERVICE_ADRESS, KEYSTORE_PATH, KEYSTORE_PASSWORD);
     }
+    
+     static {
+         JsonServiceFactory.registerJsonServiceProvider(new JsonService());
+    }
 
     public void openSecureConnection() throws Exception {
         mobileClient.openSecureConnection();
