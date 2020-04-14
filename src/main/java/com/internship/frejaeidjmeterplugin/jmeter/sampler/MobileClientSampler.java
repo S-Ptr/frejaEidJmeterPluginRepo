@@ -6,12 +6,13 @@ import java.util.logging.Logger;
 import org.apache.jmeter.samplers.SampleResult;
 
 public class MobileClientSampler implements GenericSampler {
+
     private final MobileClientService mobileClientService;
-    
+
     public MobileClientSampler() throws Exception {
         mobileClientService = new MobileClientService();
     }
-    
+
     @Override
     public SampleResult sample(String entry) {
         SampleResult sampleResult = new SampleResult();
@@ -25,7 +26,7 @@ public class MobileClientSampler implements GenericSampler {
         }
         sampleResult.sampleEnd();
         return sampleResult;
-        
+
     }
 
     private void setSampleResult(SampleResult sampleResult, String contentType, boolean isSuccessful, String sampleLabel, String responseCode, String responseMessage) {

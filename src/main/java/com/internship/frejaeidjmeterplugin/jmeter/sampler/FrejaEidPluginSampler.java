@@ -17,14 +17,12 @@ public class FrejaEidPluginSampler extends AbstractSampler {
     private final SignSampler signSampler;
     private final MobileClientSampler mobileClientSampler;
     private final HashMap<String, GenericSampler> samplerMap;
-    private String[] requests;
 
     public FrejaEidPluginSampler() throws FrejaEidClientInternalException, Exception {
         authSampler = new AuthSampler();
         signSampler = new SignSampler();
         mobileClientSampler = new MobileClientSampler();
         samplerMap = new HashMap<>();
-        requests = new String[0];
         addSamplers();
     }
 
@@ -50,7 +48,7 @@ public class FrejaEidPluginSampler extends AbstractSampler {
     @Override
     public SampleResult sample(Entry entry) {
         SampleResult sampleResult = new SampleResult();
-        requests = getRequestsProperty();
+        String [] requests = getRequestsProperty();
         switch (requests.length) {
             case RequestNumber.NO_REQUEST:
                 sampleResult.setSampleLabel("noAction");
@@ -60,7 +58,7 @@ public class FrejaEidPluginSampler extends AbstractSampler {
                 sampleResult = currentSampler.sample(getEmail());
                 break;
             default:
-                sampleResult = processAllRequests();
+                sampleResult = processAllRequests(requests);
         }
         return sampleResult;
     }
@@ -91,7 +89,7 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         samplerMap.put("mobile", mobileClientSampler);
     }
 
-    private SampleResult processAllRequests() {
+    private SampleResult processAllRequests(String [] requests) {
         SampleResult sampleResult = new SampleResult();
         HashMap<String, String> response = new HashMap<>();
         for (String request : requests) {
