@@ -1,8 +1,10 @@
 package com.internship.frejaeidjmeterplugin.jmeter.frejaRequests;
 
 import com.verisec.frejaeid.commons.exception.FrejaEidException;
+import com.verisec.frejaeid.commons.service.json.JsonServiceFactory;
 import com.verisec.frejaeid.mobileclient.clients.api.MobileClientApi;
 import com.verisec.frejaeid.mobileclient.clients.impl.MobileClient;
+import com.verisec.frejaeid.service.commons.service.json.JsonService;
 
 
 public class MobileClientService {
@@ -14,6 +16,10 @@ public class MobileClientService {
 
     public MobileClientService() throws FrejaEidException, Exception{
         mobileClient = new MobileClient(SERVICE_ADRESS, KEYSTORE_PATH, KEYSTORE_PASSWORD);
+    }
+    
+     static {
+         JsonServiceFactory.registerJsonServiceProvider(new JsonService());
     }
 
     public void openSecureConnection() throws Exception {

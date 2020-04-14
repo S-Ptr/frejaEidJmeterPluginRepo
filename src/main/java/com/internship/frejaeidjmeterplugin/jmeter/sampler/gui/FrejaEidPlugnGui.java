@@ -15,6 +15,7 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
 
     private final FrejaEidPluginGuiPanel frejaEIDPluginGuiPanel;
     private final HashMap<JCheckBox, String> reguestsMap;
+    private static int i = 1;
 
     public FrejaEidPlugnGui() {
         super();
@@ -42,7 +43,6 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
         } catch (Exception ex) {
             Logger.getLogger(FrejaEidPlugnGui.class.getName()).log(Level.SEVERE, null, ex);
         }
-        modifyTestElement(frejaEdPluginSampler);
         return frejaEdPluginSampler;
     }
 
@@ -87,7 +87,7 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
     private void setRequestsMap() {
         reguestsMap.put(frejaEIDPluginGuiPanel.getCheckAuth(), "auth");
         reguestsMap.put(frejaEIDPluginGuiPanel.getCheckSign(), "sign");
-        reguestsMap.put(frejaEIDPluginGuiPanel.getCheckOpenSecureConnection(), "opse");
+        reguestsMap.put(frejaEIDPluginGuiPanel.getCheckOpenSecureConnection(), "mobile");
     }
 
 }

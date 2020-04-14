@@ -24,6 +24,7 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         signSampler = new SignSampler();
         mobileClientSampler = new MobileClientSampler();
         samplerMap = new HashMap<>();
+        requests = new String[0];
         addSamplers();
     }
 
@@ -39,10 +40,17 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         setProperty("requests", requests);
     }
 
+    private String[] getRequestsProperty() {
+        if (getProperty("requests").toString().equals("")){
+            return new String[0];
+        }
+        return getProperty("requests").toString().split(" ");
+    }
+
     @Override
     public SampleResult sample(Entry entry) {
         SampleResult sampleResult = new SampleResult();
-        requests = getProperty("requests").toString().split(" ");
+        requests = getRequestsProperty();
         switch (requests.length) {
             case RequestNumber.NO_REQUEST:
                 sampleResult.setSampleLabel("noAction");
@@ -94,4 +102,5 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         sampleResult.setResponseData(getDataAsByteArray(response));
         return sampleResult;
     }
+
 }
