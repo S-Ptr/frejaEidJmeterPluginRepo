@@ -6,6 +6,7 @@
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
@@ -15,28 +16,73 @@ import org.knowm.xchart.XYChart;
  * @author User
  */
 public class GraphPanel {
+
     private XYChart chart;
     private XChartPanel chartPanel;
-    
-    public GraphPanel(String title, String xAxisName, String yAxisName, String initSeriesName){
+    List<Double> successCount;
+    List<Double> failCount;
+    List<Double> count;
+
+    public GraphPanel(String title, String xAxisName, String yAxisName) {
         double[] initData = new double[1];
         initData[0] = 0;
-        chart = QuickChart.getChart(title, xAxisName, yAxisName, initSeriesName,initData, initData);
+        chart = QuickChart.getChart(title, xAxisName, yAxisName,"Failed", initData, initData);
+        chart.addSeries("Delivered", initData, initData);
         chartPanel = new XChartPanel(chart);
+        successCount = new CopyOnWriteArrayList<>();
+        successCount.add((double)0);
+        failCount = new CopyOnWriteArrayList<>();
+        failCount.add((double)0);
+        count = new CopyOnWriteArrayList<>();
+        count.add((double)0);
     }
-    
-    public XChartPanel getPanel(){
+
+    public XChartPanel getPanel() {
         return chartPanel;
     }
-    
-    public void updateSeries(String seriesName, List<? extends Number> xData, List<? extends Number> yData){
+
+    /*public void updateSeries(String seriesName, List<? extends Number> xData, List<? extends Number> yData) {
         chart.updateXYSeries(seriesName, xData, yData, null);
     }
-    
-    public void updateSeries(String seriesName, double[] xData, double[] yData){
+
+    public void updateSeries(String seriesName, double[] xData, double[] yData) {
         chart.updateXYSeries(seriesName, xData, yData, null);
+    }*/
+
+    public void increaseFailed() {
+        count.add(count.get(count.size() - 1) + 1);
+        //get the last element in the list
+        double last = failCount.get(failCount.size() - 1);
+        //append the incremented value of the last element to the list.
+        failCount.add(last + 1);
+        //update the other graph as well, for consistency. No increments here.
+        successCount.add(successCount.get(successCount.size() - 1));
+        chart.updateXYSeries("Failed", count, failCount, null);
+        chart.updateXYSeries("Delivered", count, successCount, null);
+        chartPanel.repaint();
+    }
+
+    public void increaseDelivered() {
+        count.add(count.get(count.size() - 1) + 1);
+        //same deal with successCount as with failCount
+        double last = successCount.get(successCount.size() - 1);
+        successCount.add(last + 1);
+        failCount.add(failCount.get(failCount.size() - 1));
+        chart.updateXYSeries("Failed", count, failCount, null);
+        chart.updateXYSeries("Delivered", count, successCount, null);
+        chartPanel.repaint();
     }
     
-    
-    
+    public void clear(){
+        successCount = new CopyOnWriteArrayList<>();
+        successCount.add((double)0);
+        failCount = new CopyOnWriteArrayList<>();
+        failCount.add((double)0);
+        count = new CopyOnWriteArrayList<>();
+        count.add((double)0);
+        chart.updateXYSeries("Failure", count, failCount, null);
+        chart.updateXYSeries("Success", count, successCount, null);
+        chartPanel.repaint();
+    }
+
 }

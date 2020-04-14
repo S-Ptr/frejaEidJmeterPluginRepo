@@ -9,10 +9,19 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
@@ -29,35 +38,24 @@ public class FrejaGraphVisualizerGui extends AbstractVisualizer {
     List<Double> successCount;
     List<Double> failCount;
     List<Double> count;
-    private final XYChart chart;
-    XChartPanel chartPanel;
     GraphPanel authResults;
     GraphPanel signResults;
     GraphPanel openSecureResults;
+    HashMap<String, GraphPanel> panelList;
+    private static final String RESPONSE_CODE = "FAILED";
 
     public FrejaGraphVisualizerGui() {
         super();
-        double[] initData = new double[1];
-        initData[0] = 0;
-        chart = QuickChart.getChart("Authentication Sampler Test", "Latency", "Count", "Failure",initData, initData);
-        chartPanel = new XChartPanel(chart);
-        chart.addSeries("Success", initData);
-        //chart.addSeries("Latency", initData);
-        latency = new CopyOnWriteArrayList<>();
-        latency.add((double)0);
-        successCount = new CopyOnWriteArrayList<>();
-        successCount.add((double)0);
-        failCount = new CopyOnWriteArrayList<>();
-        failCount.add((double)0);
-        count = new CopyOnWriteArrayList<>();
-        count.add((double)0);
-        
+        panelList = new HashMap<>();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
-        authResults = new GraphPanel("Authentication Sampler Results", "Number" ,"Count", "Failure");
-        signResults = new GraphPanel("Sign Sampler Results", "Number" ,"Count", "Failure");
-        openSecureResults = new GraphPanel("Open Secure Connection Results", "Number" ,"Count", "Failure");
+        authResults = new GraphPanel("Authentication Sampler Results", "Number" ,"Count");
+        signResults = new GraphPanel("Sign Sampler Results", "Number" ,"Count");
+        openSecureResults = new GraphPanel("Open Secure Connection Results", "Number" ,"Count");
+        panelList.put("auth", authResults);
+        panelList.put("sign", signResults);
+        panelList.put("mobile", openSecureResults);
         JTabbedPane jTP = new JTabbedPane();
         jTP.add("Auth", authResults.getPanel());
         jTP.add("Sign", signResults.getPanel());
@@ -79,53 +77,70 @@ public class FrejaGraphVisualizerGui extends AbstractVisualizer {
     @Override
     public void add(SampleResult sampleResult) {
         
-        if(sampleResult.getContentType() == "auth"){
-            //count represents the time-based X axis on the plot.
-            //It is incremented every time a sampler finishes it's work
-            latency.add((double)sampleResult.getLatency());
-            count.add(count.get(count.size()-1) + 1);
-            if(sampleResult.getResponseCode() == "FAILED"){
-                /* failCount represents a list of total failed requests
-                 * corresponding to the order of SampleReult arrival in the count  list.
-                 * This list, along with successCount, is used as the Y axis*/
-                
-                //get the last element in the list
-                double last = failCount.get(failCount.size()-1);
-                //append the incremented value of the last element to the list.
-                failCount.add(last + 1);
-                //update the other graph as well, for consistency. No increments here.
-                successCount.add(successCount.get(successCount.size() - 1));
-                
-            }else{
-                //same deal with successCount as with failCount
-                double last = successCount.get(successCount.size()-1);
-                successCount.add(last + 1);
-                failCount.add(failCount.get(failCount.size()-1));
+        HashMap<String, String> responseData = getResponseData(sampleResult);
+        if (responseData == null) {
+            if (!sampleResult.getSampleLabel().equals("noAction")) {
+                statisticsOneRequest(sampleResult.getContentType(), sampleResult.getResponseCode());
+            } else {
+                return;
             }
-            //Finally, update the views.
-            chart.updateXYSeries("Failure", count, failCount, null);
-            chart.updateXYSeries("Success", count, successCount, null);
-            //chart.updateXYSeries("Latency", count, latency, null);
-            chartPanel.repaint();
-        }else if(sampleResult.getContentType() == "sign"){
-            
+        } else {
+            statisticsMoreRequests(sampleResult);
         }
-        
+    }
+    
+    private HashMap<String, String> getResponseData(SampleResult sampleResult) {
+        byte[] responseDataByte = sampleResult.getResponseData();
+        HashMap<String, String> responseData = null;
+        ByteArrayInputStream bais = new ByteArrayInputStream(responseDataByte);
+        ObjectInputStream in;
+        try {
+            in = new ObjectInputStream(bais);
+            responseData = (HashMap<String, String>) in.readObject();
+            in.close();
+        } catch (Exception ex) {
+            Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                bais.close();
+            } catch (IOException ex) {
+                Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return responseData;
+    }
+    
+    private void statisticsOneRequest(String request, String responseCode) {
+        GraphPanel result = panelList.get(request);
+        if (responseCode.equals(RESPONSE_CODE)) {
+            result.increaseFailed();
+        } else {
+            result.increaseDelivered();
+        }
+    }
+
+    private void statisticsMoreRequests(SampleResult sampleResult) {
+        byte[] responseDataByte = sampleResult.getResponseData();
+        ByteArrayInputStream bais = new ByteArrayInputStream(responseDataByte);
+        try {
+            ObjectInputStream in = new ObjectInputStream(bais);
+            HashMap<String, String> responseData = (HashMap<String, String>) in.readObject();
+
+            for(Map.Entry pair : responseData.entrySet()) {
+                String requestName = (String) pair.getKey();
+                String responseCode = (String) pair.getValue();
+                statisticsOneRequest(requestName, responseCode);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void clearData() {
-        latency = new CopyOnWriteArrayList<>();
-        latency.add((double)0);
-        successCount = new CopyOnWriteArrayList<>();
-        successCount.add((double)0);
-        failCount = new CopyOnWriteArrayList<>();
-        failCount.add((double)0);
-        count = new CopyOnWriteArrayList<>();
-        count.add((double)0);
-        chart.updateXYSeries("Failure", count, failCount, null);
-        chart.updateXYSeries("Success", count, successCount, null);
-        chartPanel.repaint();
+        for(GraphPanel next : panelList.values()) {
+            next.clear();
+        }
     }
 
 }
