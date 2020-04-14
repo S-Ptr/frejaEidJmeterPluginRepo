@@ -12,7 +12,7 @@ public class AuthSampler implements GenericSampler {
 
     private final AuthenticationService authService;
 
-    public AuthSampler() throws FrejaEidClientInternalException {
+    public AuthSampler() throws FrejaEidClientInternalException, Exception {
         authService = new AuthenticationService();
     }
 

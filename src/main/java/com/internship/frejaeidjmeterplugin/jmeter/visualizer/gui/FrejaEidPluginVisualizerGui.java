@@ -15,6 +15,7 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
 
     private final FrejaEidPluginVisualizerGuiPanel frejaEIDPluginVsualizerGuiPanel;
     private static final String RESPONSE_CODE = "FAILED";
+    private static final String ERROR_MESSAGE = "Please choose request/s";
     private final HashMap<String, ResultPanel> results;
 
     public FrejaEidPluginVisualizerGui() {
@@ -40,10 +41,13 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
 
     @Override
     public void add(SampleResult sampleResult) {
+        setError("");
         HashMap<String, String> responseData = getResponseData(sampleResult);
         if (responseData == null) {
             if (!sampleResult.getSampleLabel().equals("noAction")) {
                 statisticsOneRequest(sampleResult.getContentType(), sampleResult.getResponseCode());
+            } else {
+                setError(ERROR_MESSAGE);
             }
         } else {
             statsticsMoreRequests(sampleResult);
@@ -75,6 +79,13 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
     public void clearData() {
     }
 
+    private void setError(String error) {
+        for (Map.Entry pair : results.entrySet()) {
+            ResultPanel result = (ResultPanel) pair.getValue();
+            result.setError(error);
+        }
+    }
+
     private void statisticsOneRequest(String request, String responseCode) {
         ResultPanel result = results.get(request);
         if (responseCode.equals(RESPONSE_CODE)) {
@@ -104,7 +115,7 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
     private void setResultsPanels() {
         results.put("auth", frejaEIDPluginVsualizerGuiPanel.getAuthResults());
         results.put("sign", frejaEIDPluginVsualizerGuiPanel.getSignResults());
-        results.put("opse", frejaEIDPluginVsualizerGuiPanel.getOpenSecureResults());
+        results.put("mobile", frejaEIDPluginVsualizerGuiPanel.getOpenSecureResults());
     }
 
 }
