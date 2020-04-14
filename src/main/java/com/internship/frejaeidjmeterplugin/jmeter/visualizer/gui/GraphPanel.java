@@ -5,6 +5,7 @@
  */
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.knowm.xchart.QuickChart;
@@ -28,6 +29,10 @@ public class GraphPanel {
         initData[0] = 0;
         chart = QuickChart.getChart(title, xAxisName, yAxisName,"Failed", initData, initData);
         chart.addSeries("Delivered", initData, initData);
+        chart.getSeriesMap().get("Failed").setLineColor(Color.RED);
+        chart.getSeriesMap().get("Failed").setMarker(new org.knowm.xchart.style.markers.None());
+        chart.getSeriesMap().get("Delivered").setLineColor(Color.green);
+        chart.getSeriesMap().get("Delivered").setMarker(new org.knowm.xchart.style.markers.None());
         chartPanel = new XChartPanel(chart);
         successCount = new CopyOnWriteArrayList<>();
         successCount.add((double)0);
@@ -80,8 +85,8 @@ public class GraphPanel {
         failCount.add((double)0);
         count = new CopyOnWriteArrayList<>();
         count.add((double)0);
-        chart.updateXYSeries("Failure", count, failCount, null);
-        chart.updateXYSeries("Success", count, successCount, null);
+        chart.updateXYSeries("Failed", count, failCount, null);
+        chart.updateXYSeries("Delivered", count, successCount, null);
         chartPanel.repaint();
     }
 
