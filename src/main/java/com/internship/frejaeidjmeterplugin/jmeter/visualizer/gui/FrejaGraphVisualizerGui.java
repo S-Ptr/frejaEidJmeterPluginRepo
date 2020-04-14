@@ -7,10 +7,13 @@ package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.swing.JTabbedPane;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
 import org.knowm.xchart.QuickChart;
@@ -28,6 +31,9 @@ public class FrejaGraphVisualizerGui extends AbstractVisualizer {
     List<Double> count;
     private final XYChart chart;
     XChartPanel chartPanel;
+    GraphPanel authResults;
+    GraphPanel signResults;
+    GraphPanel openSecureResults;
 
     public FrejaGraphVisualizerGui() {
         super();
@@ -49,7 +55,14 @@ public class FrejaGraphVisualizerGui extends AbstractVisualizer {
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
-        add(chartPanel, BorderLayout.CENTER);
+        authResults = new GraphPanel("Authentication Sampler Results", "Number" ,"Count", "Failure");
+        signResults = new GraphPanel("Sign Sampler Results", "Number" ,"Count", "Failure");
+        openSecureResults = new GraphPanel("Open Secure Connection Results", "Number" ,"Count", "Failure");
+        JTabbedPane jTP = new JTabbedPane();
+        jTP.add("Auth", authResults.getPanel());
+        jTP.add("Sign", signResults.getPanel());
+        jTP.add("Open secure connection", openSecureResults.getPanel());
+        add(jTP, BorderLayout.CENTER);
 
     }
 
