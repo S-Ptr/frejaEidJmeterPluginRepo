@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.jmeter.samplers.SampleResult;
 
-public class AuthSampler {
+public class AuthSampler implements GenericSampler {
 
     private final AuthenticationService authService;
 
@@ -16,6 +16,7 @@ public class AuthSampler {
         authService = new AuthenticationService();
     }
 
+    @Override
     public SampleResult sample(String email) {
         SampleResult sampleResult = new SampleResult();
         sampleResult.sampleStart();
@@ -43,5 +44,10 @@ public class AuthSampler {
         sampleResult.setResponseCode(responseCode);
         sampleResult.setResponseMessage(responseMessage);
         sampleResult.setContentType(contentType);
+    }
+
+    @Override
+    public String getSamplerName() {
+        return "auth";
     }
 }
