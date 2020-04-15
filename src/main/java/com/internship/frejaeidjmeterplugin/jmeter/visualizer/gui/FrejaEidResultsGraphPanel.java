@@ -8,41 +8,42 @@ import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 
 public class FrejaEidResultsGraphPanel {
+
     private XYChart chart;
     private XChartPanel chartPanel;
     private List<Double> successCount;
     private List<Double> failCount;
     private List<Double> totalCount;
-    
-    private void resetLists(){
-        successCount = new CopyOnWriteArrayList<>();
-        successCount.add((double)0);
-        failCount = new CopyOnWriteArrayList<>();
-        failCount.add((double)0);
-        totalCount = new CopyOnWriteArrayList<>();
-        totalCount.add((double)0);
-    }
-    
-    private void updateGraph(){
-        chart.updateXYSeries("Failed", totalCount, failCount, null);
-        chart.updateXYSeries("Delivered", totalCount, successCount, null);
+
+    public FrejaEidResultsGraphPanel(String title, String xAxisName, String yAxisName) {
+        double[] zeroArray = new double[1];
+        zeroArray[0] = 0;
+        chart = QuickChart.getChart(title, xAxisName, yAxisName, "Failed", zeroArray, zeroArray);
+        chart.addSeries("Delivered", zeroArray, zeroArray);
+        setChartStyle(Color.RED, Color.green);
+        chartPanel = new XChartPanel(chart);
+        resetLists();
     }
 
-    private void chartStyle(Color failColor, Color successColor){
+    private void setChartStyle(Color failColor, Color successColor) {
         chart.getSeriesMap().get("Failed").setLineColor(failColor);
         chart.getSeriesMap().get("Failed").setMarker(new org.knowm.xchart.style.markers.None());
         chart.getSeriesMap().get("Delivered").setLineColor(successColor);
         chart.getSeriesMap().get("Delivered").setMarker(new org.knowm.xchart.style.markers.None());
     }
     
-    public FrejaEidResultsGraphPanel(String title, String xAxisName, String yAxisName) {
-        double[] zeroArray = new double[1];
-        zeroArray[0] = 0;
-        chart = QuickChart.getChart(title, xAxisName, yAxisName,"Failed", zeroArray, zeroArray);
-        chart.addSeries("Delivered", zeroArray, zeroArray);
-        chartStyle(Color.RED, Color.green);
-        chartPanel = new XChartPanel(chart);
-        resetLists();
+    private void resetLists() {
+        successCount = new CopyOnWriteArrayList<>();
+        successCount.add((double) 0);
+        failCount = new CopyOnWriteArrayList<>();
+        failCount.add((double) 0);
+        totalCount = new CopyOnWriteArrayList<>();
+        totalCount.add((double) 0);
+    }
+
+    private void updateGraph() {
+        chart.updateXYSeries("Failed", totalCount, failCount, null);
+        chart.updateXYSeries("Delivered", totalCount, successCount, null);
     }
 
     public XChartPanel getPanel() {
@@ -70,10 +71,8 @@ public class FrejaEidResultsGraphPanel {
         updateGraph();
         chartPanel.repaint();
     }
-    
-    
-    
-    public void clear(){
+
+    public void clear() {
         resetLists();
         updateGraph();
         chartPanel.repaint();

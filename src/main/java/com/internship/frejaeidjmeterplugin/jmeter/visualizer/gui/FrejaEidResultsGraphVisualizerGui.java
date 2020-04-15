@@ -24,22 +24,13 @@ import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 
-
 public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
+
     private FrejaEidResultsGraphPanel authResults;
     private FrejaEidResultsGraphPanel signResults;
     private FrejaEidResultsGraphPanel openSecureConnectionResults;
     private HashMap<String, FrejaEidResultsGraphPanel> panelList;
     private static final String RESPONSE_CODE = "FAILED";
-    
-    private void initPanels(){
-         authResults = new FrejaEidResultsGraphPanel("Authentication Sampler Results", "Number" ,"Count");
-        signResults = new FrejaEidResultsGraphPanel("Sign Sampler Results", "Number" ,"Count");
-        openSecureConnectionResults = new FrejaEidResultsGraphPanel("Open Secure Connection Results", "Number" ,"Count");
-        panelList.put("auth", authResults);
-        panelList.put("sign", signResults);
-        panelList.put("mobile", openSecureConnectionResults);
-    }
 
     public FrejaEidResultsGraphVisualizerGui() {
         super();
@@ -53,7 +44,15 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
         jTP.add("Sign", signResults.getPanel());
         jTP.add("Open secure connection", openSecureConnectionResults.getPanel());
         add(jTP, BorderLayout.CENTER);
+    }
 
+    private void initPanels() {
+        authResults = new FrejaEidResultsGraphPanel("Authentication Sampler Results", "Number", "Count");
+        signResults = new FrejaEidResultsGraphPanel("Sign Sampler Results", "Number", "Count");
+        openSecureConnectionResults = new FrejaEidResultsGraphPanel("Open Secure Connection Results", "Number", "Count");
+        panelList.put("auth", authResults);
+        panelList.put("sign", signResults);
+        panelList.put("mobile", openSecureConnectionResults);
     }
 
     @Override
@@ -68,7 +67,7 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
 
     @Override
     public void add(SampleResult sampleResult) {
-        
+
         HashMap<String, String> responseData = getResponseData(sampleResult);
         if (responseData == null) {
             if (!sampleResult.getSampleLabel().equals("noAction")) {
@@ -80,7 +79,7 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
             statisticsForRequests(sampleResult);
         }
     }
-    
+
     private HashMap<String, String> getResponseData(SampleResult sampleResult) {
         byte[] responseDataByte = sampleResult.getResponseData();
         HashMap<String, String> responseData = null;
@@ -101,7 +100,7 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
         }
         return responseData;
     }
-    
+
     private void statisticsForOneRequest(String request, String responseCode) {
         FrejaEidResultsGraphPanel result = panelList.get(request);
         if (responseCode.equals(RESPONSE_CODE)) {
@@ -118,7 +117,7 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
             ObjectInputStream in = new ObjectInputStream(bais);
             HashMap<String, String> responseData = (HashMap<String, String>) in.readObject();
 
-            for(Map.Entry pair : responseData.entrySet()) {
+            for (Map.Entry pair : responseData.entrySet()) {
                 String requestName = (String) pair.getKey();
                 String responseCode = (String) pair.getValue();
                 statisticsForOneRequest(requestName, responseCode);
@@ -130,7 +129,7 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
 
     @Override
     public void clearData() {
-        for(FrejaEidResultsGraphPanel next : panelList.values()) {
+        for (FrejaEidResultsGraphPanel next : panelList.values()) {
             next.clear();
         }
     }
