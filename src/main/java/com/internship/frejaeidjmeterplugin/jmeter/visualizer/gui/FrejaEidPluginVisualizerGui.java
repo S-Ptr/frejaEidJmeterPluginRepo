@@ -77,6 +77,9 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
 
     @Override
     public void clearData() {
+        frejaEIDPluginVsualizerGuiPanel.getAuthResults().clearGui();
+        frejaEIDPluginVsualizerGuiPanel.getSignResults().clearGui();
+        frejaEIDPluginVsualizerGuiPanel.getOpenSecureResults().clearGui();
     }
 
     private void setError(String error) {

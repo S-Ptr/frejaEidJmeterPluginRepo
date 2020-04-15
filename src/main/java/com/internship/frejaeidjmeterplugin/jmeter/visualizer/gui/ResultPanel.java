@@ -3,7 +3,6 @@ package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 public class ResultPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRestartValues;
     private javax.swing.JLabel lblDelivered;
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblFailed;
@@ -44,14 +43,54 @@ public class ResultPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        initializeVariables();
-        setTitles();
-        restartValuesActionListener();
+
+        lblTitleDelivered = new javax.swing.JLabel();
+        lblDelivered = new javax.swing.JLabel();
+        lblTitleFailed = new javax.swing.JLabel();
+        lblFailed = new javax.swing.JLabel();
+        lblError = new javax.swing.JLabel();
+
+        lblTitleDelivered.setText("Delivered:");
+
+        lblDelivered.setText(" ");
+
+        lblTitleFailed.setText("Failed:");
+
+        lblError.setForeground(new java.awt.Color(255, 51, 51));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        setLayoutHorizontal(layout);
-        setLayoutVertical(layout);
-  
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblTitleDelivered)
+                        .addGap(93, 93, 93)
+                        .addComponent(lblDelivered))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblTitleFailed, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(93, 93, 93)
+                        .addComponent(lblFailed))
+                    .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitleDelivered)
+                    .addComponent(lblDelivered))
+                .addGap(56, 56, 56)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitleFailed)
+                    .addComponent(lblFailed))
+                .addGap(26, 26, 26)
+                .addComponent(lblError)
+                .addContainerGap(134, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void initializeVariables() {
@@ -59,7 +98,6 @@ public class ResultPanel extends javax.swing.JPanel {
         lblDelivered = new javax.swing.JLabel();
         lblTitleFailed = new javax.swing.JLabel();
         lblFailed = new javax.swing.JLabel();
-        btnRestartValues = new javax.swing.JButton();
         lblError = new javax.swing.JLabel();
     }
 
@@ -67,21 +105,9 @@ public class ResultPanel extends javax.swing.JPanel {
         lblTitleDelivered.setText("Delivered:");
         lblDelivered.setText("");
         lblTitleFailed.setText("Failed:");
-        btnRestartValues.setText("Restart values");
         lblError.setText("");
         lblError.setForeground(new java.awt.Color(255, 51, 51));
     }
-
-    private void restartValuesActionListener() {
-        btnRestartValues.addActionListener(this::restartValues);
-    }
-
-    private void restartValues(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartValuesActionPerformed
-        delivered = 0;
-        failed = 0;
-        lblDelivered.setText("");
-        lblFailed.setText("");
-    }//GEN-LAST:event_btnRestartValuesActionPerformed
 
     private void setLayoutVertical(javax.swing.GroupLayout layout) {
         layout.setVerticalGroup(
@@ -98,7 +124,6 @@ public class ResultPanel extends javax.swing.JPanel {
                                 .addGap(26, 26, 26)
                                 .addComponent(lblError)
                                 .addGap(31, 31, 31)
-                                .addComponent(btnRestartValues)
                                 .addContainerGap(80, Short.MAX_VALUE))
         );
     }
@@ -117,7 +142,6 @@ public class ResultPanel extends javax.swing.JPanel {
                                                 .addComponent(lblTitleFailed, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(93, 93, 93)
                                                 .addComponent(lblFailed))
-                                        .addComponent(btnRestartValues, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(35, Short.MAX_VALUE))
         );
