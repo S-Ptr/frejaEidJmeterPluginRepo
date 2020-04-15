@@ -1,37 +1,63 @@
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTabbedPane;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
+import org.knowm.xchart.QuickChart;
+import org.knowm.xchart.XChartPanel;
+import org.knowm.xchart.XYChart;
 
-public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
+public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
 
-    private final FrejaEidPluginVisualizerGuiPanel frejaEIDPluginVsualizerGuiPanel;
+    private FrejaEidResultsGraphPanel authResults;
+    private FrejaEidResultsGraphPanel signResults;
+    private FrejaEidResultsGraphPanel openSecureConnectionResults;
+    private HashMap<String, FrejaEidResultsGraphPanel> panelList;
     private static final String RESPONSE_CODE = "FAILED";
-    private static final String ERROR_MESSAGE = "Please choose request/s";
-    private final HashMap<String, ResultPanel> results;
 
-    public FrejaEidPluginVisualizerGui() {
+    public FrejaEidResultsGraphVisualizerGui() {
         super();
-        frejaEIDPluginVsualizerGuiPanel = new FrejaEidPluginVisualizerGuiPanel();
+        panelList = new HashMap<>();
         setLayout(new BorderLayout(0, 5));
         setBorder(makeBorder());
         add(makeTitlePanel(), BorderLayout.NORTH);
-        add(frejaEIDPluginVsualizerGuiPanel, BorderLayout.CENTER);
-        results = new HashMap<>();
-        setResultsPanels();
+        initPanels();
+        JTabbedPane jTP = new JTabbedPane();
+        jTP.add("Auth", authResults.getPanel());
+        jTP.add("Sign", signResults.getPanel());
+        jTP.add("Open secure connection", openSecureConnectionResults.getPanel());
+        add(jTP, BorderLayout.CENTER);
+    }
+
+    private void initPanels() {
+        authResults = new FrejaEidResultsGraphPanel("Authentication Sampler Results", "Number", "Count");
+        signResults = new FrejaEidResultsGraphPanel("Sign Sampler Results", "Number", "Count");
+        openSecureConnectionResults = new FrejaEidResultsGraphPanel("Open Secure Connection Results", "Number", "Count");
+        panelList.put("auth", authResults);
+        panelList.put("sign", signResults);
+        panelList.put("mobile", openSecureConnectionResults);
     }
 
     @Override
     public String getStaticLabel() {
-        return "Freja eID Plugin Statistics";
+        return "Freja eID Results Graph";
     }
 
     @Override
@@ -41,16 +67,16 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
 
     @Override
     public void add(SampleResult sampleResult) {
-        setError("");
+
         HashMap<String, String> responseData = getResponseData(sampleResult);
         if (responseData == null) {
             if (!sampleResult.getSampleLabel().equals("noAction")) {
-                statisticsOneRequest(sampleResult.getContentType(), sampleResult.getResponseCode());
+                statisticsForOneRequest(sampleResult.getContentType(), sampleResult.getResponseCode());
             } else {
-                setError(ERROR_MESSAGE);
+                return;
             }
         } else {
-            statsticsMoreRequests(sampleResult);
+            statisticsForRequests(sampleResult);
         }
     }
 
@@ -75,30 +101,16 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
         return responseData;
     }
 
-    @Override
-    public void clearData() {
-        frejaEIDPluginVsualizerGuiPanel.getAuthResults().clearGui();
-        frejaEIDPluginVsualizerGuiPanel.getSignResults().clearGui();
-        frejaEIDPluginVsualizerGuiPanel.getOpenSecureResults().clearGui();
-    }
-
-    private void setError(String error) {
-        for (Map.Entry pair : results.entrySet()) {
-            ResultPanel result = (ResultPanel) pair.getValue();
-            result.setError(error);
-        }
-    }
-
-    private void statisticsOneRequest(String request, String responseCode) {
-        ResultPanel result = results.get(request);
+    private void statisticsForOneRequest(String request, String responseCode) {
+        FrejaEidResultsGraphPanel result = panelList.get(request);
         if (responseCode.equals(RESPONSE_CODE)) {
-            result.increasetFailed();
+            result.increaseFailed();
         } else {
             result.increaseDelivered();
         }
     }
 
-    private void statsticsMoreRequests(SampleResult sampleResult) {
+    private void statisticsForRequests(SampleResult sampleResult) {
         byte[] responseDataByte = sampleResult.getResponseData();
         ByteArrayInputStream bais = new ByteArrayInputStream(responseDataByte);
         try {
@@ -108,17 +120,18 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
             for (Map.Entry pair : responseData.entrySet()) {
                 String requestName = (String) pair.getKey();
                 String responseCode = (String) pair.getValue();
-                statisticsOneRequest(requestName, responseCode);
+                statisticsForOneRequest(requestName, responseCode);
             }
         } catch (Exception ex) {
             Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void setResultsPanels() {
-        results.put("auth", frejaEIDPluginVsualizerGuiPanel.getAuthResults());
-        results.put("sign", frejaEIDPluginVsualizerGuiPanel.getSignResults());
-        results.put("mobile", frejaEIDPluginVsualizerGuiPanel.getOpenSecureResults());
+    @Override
+    public void clearData() {
+        for (FrejaEidResultsGraphPanel next : panelList.values()) {
+            next.clear();
+        }
     }
 
 }

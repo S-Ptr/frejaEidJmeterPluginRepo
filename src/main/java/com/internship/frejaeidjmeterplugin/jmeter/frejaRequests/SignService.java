@@ -13,6 +13,15 @@ import com.verisec.frejaeid.client.enums.TransactionContext;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientPollingException;
 import com.verisec.frejaeid.client.exceptions.FrejaEidException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 public class SignService {
 
@@ -21,7 +30,7 @@ public class SignService {
     private static final String KEYSTORE_PASSWORD = "123123123";
     private static final String SERVICE_ADRESS = "https://services-st.test.frejaeid.com";
 
-    public SignService() throws FrejaEidClientInternalException {
+    public SignService() throws FrejaEidClientInternalException{
         SslSettings sslSettings = SslSettings.create(KEYSTORE_PATH, KEYSTORE_PASSWORD);
         signClient = SignClient.create(sslSettings, FrejaEnvironment.TEST).setTestModeCustomUrl(SERVICE_ADRESS).setTransactionContext(TransactionContext.PERSONAL).build();
     }

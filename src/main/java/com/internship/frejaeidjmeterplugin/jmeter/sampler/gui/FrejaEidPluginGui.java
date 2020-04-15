@@ -11,13 +11,13 @@ import javax.swing.JCheckBox;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
 
-public class FrejaEidPlugnGui extends AbstractSamplerGui {
+public class FrejaEidPluginGui extends AbstractSamplerGui {
 
     private final FrejaEidPluginGuiPanel frejaEIDPluginGuiPanel;
     private final HashMap<JCheckBox, String> reguestsMap;
     private static int i = 1;
 
-    public FrejaEidPlugnGui() {
+    public FrejaEidPluginGui() {
         super();
         frejaEIDPluginGuiPanel = new FrejaEidPluginGuiPanel();
         setLayout(new BorderLayout(0, 5));
@@ -41,7 +41,7 @@ public class FrejaEidPlugnGui extends AbstractSamplerGui {
         } catch (FrejaEidClientInternalException ex) {
             Logger.getLogger(FrejaEidPluginGuiPanel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(FrejaEidPlugnGui.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrejaEidPluginGui.class.getName()).log(Level.SEVERE, null, ex);
         }
         return frejaEdPluginSampler;
     }
