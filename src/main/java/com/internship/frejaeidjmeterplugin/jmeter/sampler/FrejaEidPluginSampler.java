@@ -63,7 +63,7 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         return sampleResult;
     }
 
-    private byte[] getDataAsByteArray(HashMap<String, String> response) {
+    private byte[] getDataAsByteArray(HashMap<String, SampleResult> response) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out;
         try {
@@ -91,11 +91,11 @@ public class FrejaEidPluginSampler extends AbstractSampler {
 
     private SampleResult processAllRequests(String [] requests) {
         SampleResult sampleResult = new SampleResult();
-        HashMap<String, String> response = new HashMap<>();
+        HashMap<String, SampleResult> response = new HashMap<>();
         for (String request : requests) {
             GenericSampler genericSampler = samplerMap.get(request);
             SampleResult currentSamplerResult = genericSampler.sample(getEmail());
-            response.put(genericSampler.getSamplerName(), currentSamplerResult.getResponseCode());
+            response.put(genericSampler.getSamplerName(), currentSamplerResult);
         }
         sampleResult.setResponseData(getDataAsByteArray(response));
         return sampleResult;
