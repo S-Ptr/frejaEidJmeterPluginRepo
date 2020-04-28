@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
 import java.awt.Color;
@@ -12,10 +7,6 @@ import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 
-/**
- *
- * @author User
- */
 public class FrejaEidLatencyGraphPanel {
     private XYChart chart;
     private XChartPanel chartPanel;
@@ -23,9 +14,9 @@ public class FrejaEidLatencyGraphPanel {
     private List<Double> totalCount;
     
     public FrejaEidLatencyGraphPanel(String title, String xAxisName, String yAxisName) {
-        double[] zeroArray = new double[1];
-        zeroArray[0] = 0;
-        chart = QuickChart.getChart(title, xAxisName, yAxisName,"Latency", zeroArray, zeroArray);
+        double[] initZeroArray = new double[1];
+        initZeroArray[0] = 0;
+        chart = QuickChart.getChart(title, xAxisName, yAxisName,"Latency", initZeroArray, initZeroArray);
         setGraphStyle(Color.orange);
         chartPanel = new XChartPanel(chart);
         resetLists();
@@ -48,7 +39,7 @@ public class FrejaEidLatencyGraphPanel {
         chartPanel.repaint();
     }
     
-    public void add(double ping){
+    public void addLatency(double ping){
         latencies.add(ping);
         double previousTotalCount = totalCount.get(totalCount.size()-1);
         totalCount.add(previousTotalCount + 1);

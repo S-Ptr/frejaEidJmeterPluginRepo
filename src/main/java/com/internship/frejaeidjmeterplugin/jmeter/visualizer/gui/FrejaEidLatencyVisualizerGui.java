@@ -72,7 +72,7 @@ public class FrejaEidLatencyVisualizerGui extends AbstractVisualizer{
     private void statisticsForOneRequest(String request, SampleResult result) {
         FrejaEidLatencyGraphPanel panel = panelList.get(request);
         if (!result.getResponseCode().equals(RESPONSE_CODE)) {
-            panel.add((double)result.getLatency());
+            panel.addLatency((double)result.getLatency());
         }
     }
 

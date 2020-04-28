@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.internship.frejaeidjmeterplugin.util;
 
 import com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.FrejaEidPluginVisualizerGui;
@@ -14,10 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.jmeter.samplers.SampleResult;
 
-/**
- *
- * @author User
- */
 public class DataService {
     public static HashMap<String, SampleResult> mapResponseData(SampleResult sampleResult) {
         byte[] responseDataByte = sampleResult.getResponseData();
