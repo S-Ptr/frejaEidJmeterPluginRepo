@@ -68,7 +68,7 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
     @Override
     public void add(SampleResult sampleResult) {
 
-        HashMap<String, String> responseData = getResponseData(sampleResult);
+        HashMap<String, SampleResult> responseData = getResponseData(sampleResult);
         if (responseData == null) {
             if (!sampleResult.getSampleLabel().equals("noAction")) {
                 statisticsForOneRequest(sampleResult.getContentType(), sampleResult.getResponseCode());
@@ -80,14 +80,14 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
         }
     }
 
-    private HashMap<String, String> getResponseData(SampleResult sampleResult) {
+    private HashMap<String, SampleResult> getResponseData(SampleResult sampleResult) {
         byte[] responseDataByte = sampleResult.getResponseData();
-        HashMap<String, String> responseData = null;
+        HashMap<String, SampleResult> responseData = null;
         ByteArrayInputStream bais = new ByteArrayInputStream(responseDataByte);
         ObjectInputStream in;
         try {
             in = new ObjectInputStream(bais);
-            responseData = (HashMap<String, String>) in.readObject();
+            responseData = (HashMap<String, SampleResult>) in.readObject();
             in.close();
         } catch (Exception ex) {
             Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
@@ -115,11 +115,11 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
         ByteArrayInputStream bais = new ByteArrayInputStream(responseDataByte);
         try {
             ObjectInputStream in = new ObjectInputStream(bais);
-            HashMap<String, String> responseData = (HashMap<String, String>) in.readObject();
+            HashMap<String, SampleResult> responseData = (HashMap<String, SampleResult>) in.readObject();
 
             for (Map.Entry pair : responseData.entrySet()) {
                 String requestName = (String) pair.getKey();
-                String responseCode = (String) pair.getValue();
+                String responseCode = ((SampleResult) pair.getValue()).getResponseCode();
                 statisticsForOneRequest(requestName, responseCode);
             }
         } catch (Exception ex) {

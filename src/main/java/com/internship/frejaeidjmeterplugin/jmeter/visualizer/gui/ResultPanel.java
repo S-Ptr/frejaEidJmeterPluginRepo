@@ -28,7 +28,7 @@ public class ResultPanel extends javax.swing.JPanel {
         lblDelivered.setText(delivered + "");
     }
 
-    public void increasetFailed() {
+    public void increaseFailed() {
         failed += 1;
         lblFailed.setText(failed + "");
     }

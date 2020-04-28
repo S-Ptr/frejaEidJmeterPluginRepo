@@ -44,6 +44,7 @@ public class FrejaEidResultsGraphPanel {
     private void updateGraph() {
         chart.updateXYSeries("Failed", totalCount, failCount, null);
         chart.updateXYSeries("Delivered", totalCount, successCount, null);
+        chartPanel.repaint();
     }
 
     public XChartPanel getPanel() {
@@ -58,7 +59,6 @@ public class FrejaEidResultsGraphPanel {
         failCount.add(previousFailCount + 1);
         successCount.add(previousSuccessCount);
         updateGraph();
-        chartPanel.repaint();
     }
 
     public void increaseDelivered() {
@@ -69,13 +69,11 @@ public class FrejaEidResultsGraphPanel {
         failCount.add(previousFailCount);
         successCount.add(previousSuccessCount + 1);
         updateGraph();
-        chartPanel.repaint();
     }
 
     public void clear() {
         resetLists();
         updateGraph();
-        chartPanel.repaint();
     }
 
 }
