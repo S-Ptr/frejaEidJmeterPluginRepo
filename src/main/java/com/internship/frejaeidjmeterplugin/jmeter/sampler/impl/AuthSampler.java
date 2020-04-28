@@ -1,6 +1,7 @@
-package com.internship.frejaeidjmeterplugin.jmeter.sampler;
+package com.internship.frejaeidjmeterplugin.jmeter.sampler.impl;
 
 import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.AuthenticationService;
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.GenericSampler;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;

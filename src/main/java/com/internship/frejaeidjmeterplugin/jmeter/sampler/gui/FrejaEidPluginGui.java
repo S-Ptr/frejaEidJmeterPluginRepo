@@ -1,6 +1,6 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
-import com.internship.frejaeidjmeterplugin.jmeter.sampler.FrejaEidPluginSampler;
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.impl.FrejaEidPluginSampler;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.awt.BorderLayout;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
 
     private final FrejaEidPluginGuiPanel frejaEIDPluginGuiPanel;
     private final HashMap<JCheckBox, String> reguestsMap;
-    private static int i = 1;
 
     public FrejaEidPluginGui() {
         super();

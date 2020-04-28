@@ -1,6 +1,7 @@
-package com.internship.frejaeidjmeterplugin.jmeter.sampler;
+package com.internship.frejaeidjmeterplugin.jmeter.sampler.impl;
 
 import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.MobileClientService;
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.GenericSampler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.jmeter.samplers.SampleResult;
