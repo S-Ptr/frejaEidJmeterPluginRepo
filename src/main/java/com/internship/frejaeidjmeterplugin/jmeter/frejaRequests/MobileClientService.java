@@ -26,6 +26,4 @@ public final class MobileClientService {
     public void openSecureConnection() throws Exception {
         mobileClient.openSecureConnection();
     }
-
-
 }

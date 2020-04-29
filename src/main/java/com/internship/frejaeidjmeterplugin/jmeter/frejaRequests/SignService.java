@@ -20,7 +20,7 @@ public final class SignService {
 
     public SignService() throws FrejaEidClientInternalException {
         SslSettings sslSettings = SslSettings.create(EnviromentSettings.getRelyingPartyKeystorePath(), EnviromentSettings.getKeystorePassword());
-        signClient = SignClient.create(sslSettings,EnviromentSettings.getFrejaEnvironment()).setTestModeCustomUrl(EnviromentSettings.getServiceAddress()).setTransactionContext(TransactionContext.PERSONAL).build();
+        signClient = SignClient.create(sslSettings, EnviromentSettings.getFrejaEnvironment()).setTestModeCustomUrl(EnviromentSettings.getServiceAddress()).setTransactionContext(TransactionContext.PERSONAL).build();
     }
 
     public String initiateSignRequest(String email, String title, String dataToSignText, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
