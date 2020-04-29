@@ -1,6 +1,7 @@
 package com.internship.frejaeidjmeterplugin.jmeter.frejaRequests;
 
 import com.internship.frejaeidjmeterplugin.jmeter.settings.EnviromentSettings;
+import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.beans.sign.get.SignResult;
 import com.verisec.frejaeid.client.beans.sign.get.SignResultRequest;
 import com.verisec.frejaeid.client.beans.sign.init.DataToSign;
@@ -18,7 +19,8 @@ public final class SignService {
     private final SignClientApi signClient;
 
     public SignService() throws FrejaEidClientInternalException {
-        signClient = SignClient.create(EnviromentSettings.getSsllSettings(), EnviromentSettings.getFrejaEnvironment()).setTestModeCustomUrl(EnviromentSettings.getServiceAdress(ServiceType.SIGN)).setTransactionContext(TransactionContext.PERSONAL).build();
+        SslSettings sslSettings = SslSettings.create(EnviromentSettings.getRelyingPartyKeystorePath(), EnviromentSettings.getKeystorePassword());
+        signClient = SignClient.create(sslSettings,EnviromentSettings.getFrejaEnvironment()).setTestModeCustomUrl(EnviromentSettings.getServiceAddress()).setTransactionContext(TransactionContext.PERSONAL).build();
     }
 
     public String initiateSignRequest(String email, String title, String dataToSignText, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {

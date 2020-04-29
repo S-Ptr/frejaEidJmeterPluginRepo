@@ -62,6 +62,7 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
     private void setEnviromentSettings(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEnviromentActionPerformed
         // TODO add your handling code here:
         EnviromentSettings.setEnviroment((Enviroment) cmbEnviroment.getSelectedItem());
+        EnviromentSettings.populateSettings();
     }//GEN-LAST:event_cmbEnviromentActionPerformed
 
     private void initializeVariables() {

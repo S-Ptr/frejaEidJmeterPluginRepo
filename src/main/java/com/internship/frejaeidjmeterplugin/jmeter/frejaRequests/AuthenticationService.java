@@ -4,6 +4,7 @@ import com.internship.frejaeidjmeterplugin.jmeter.settings.EnviromentSettings;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResult;
 import com.verisec.frejaeid.client.beans.authentication.get.AuthenticationResultRequest;
 import com.verisec.frejaeid.client.beans.authentication.init.InitiateAuthenticationRequest;
+import com.verisec.frejaeid.client.beans.general.SslSettings;
 import com.verisec.frejaeid.client.client.api.AuthenticationClientApi;
 import com.verisec.frejaeid.client.client.impl.AuthenticationClient;
 import com.verisec.frejaeid.client.enums.MinRegistrationLevel;
@@ -17,7 +18,8 @@ public final class AuthenticationService {
     private final AuthenticationClientApi authenticationClient;
 
     public AuthenticationService() throws FrejaEidClientInternalException, FrejaEidException {
-        authenticationClient = AuthenticationClient.create(EnviromentSettings.getSsllSettings(), EnviromentSettings.getFrejaEnvironment()).setTestModeCustomUrl(EnviromentSettings.getServiceAdress(ServiceType.AUTHENTICATION)).setTransactionContext(TransactionContext.PERSONAL).build();
+        SslSettings sslSettings = SslSettings.create(EnviromentSettings.getRelyingPartyKeystorePath(), EnviromentSettings.getKeystorePassword());
+        authenticationClient = AuthenticationClient.create(sslSettings, EnviromentSettings.getFrejaEnvironment()).setTestModeCustomUrl(EnviromentSettings.getServiceAddress()).setTransactionContext(TransactionContext.PERSONAL).build();
     }
 
     public String initiateAuthenticationRequest(String email, MinRegistrationLevel registrationLevel) throws FrejaEidClientInternalException, FrejaEidException, FrejaEidClientPollingException {
