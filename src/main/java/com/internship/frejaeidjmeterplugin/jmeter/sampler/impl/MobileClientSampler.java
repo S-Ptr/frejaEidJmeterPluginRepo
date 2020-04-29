@@ -20,11 +20,14 @@ public class MobileClientSampler implements GenericSampler {
         sampleResult.sampleStart();
         try {
             mobileClientService.openSecureConnection();
+            sampleResult.latencyEnd();
             setSampleResult(sampleResult, "mobile", true, "Freja eID Response: DELIVERED", "DELIVERED", "The open secure connection request was delivered");
         } catch (Exception ex) {
+            sampleResult.latencyEnd();
             setSampleResult(sampleResult, "mobile", false, "Freja eID Response: FAILED", "FAILED", ex.getMessage());
             Logger.getLogger(MobileClientSampler.class.getName()).log(Level.SEVERE, null, ex);
         }
+        mobileClientService.closeConnection();
         sampleResult.sampleEnd();
         return sampleResult;
 
