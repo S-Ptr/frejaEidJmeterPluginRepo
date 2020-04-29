@@ -99,5 +99,7 @@ public class FrejaEidPluginVisualizerGui extends AbstractVisualizer {
         results.put("sign", frejaEIDPluginVsualizerGuiPanel.getSignResults());
         results.put("mobile", frejaEIDPluginVsualizerGuiPanel.getOpenSecureResults());
     }
+    
+   
 
 }
