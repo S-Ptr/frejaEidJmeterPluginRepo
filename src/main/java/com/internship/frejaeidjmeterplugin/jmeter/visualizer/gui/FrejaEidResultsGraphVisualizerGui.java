@@ -1,28 +1,16 @@
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
-import org.knowm.xchart.QuickChart;
-import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
 
 public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
 

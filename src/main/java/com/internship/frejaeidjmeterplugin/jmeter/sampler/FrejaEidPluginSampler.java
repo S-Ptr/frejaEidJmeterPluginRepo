@@ -1,7 +1,11 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler;
 
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.FrejaEidPluginGui;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -17,6 +21,8 @@ public class FrejaEidPluginSampler extends AbstractSampler {
     private final SignSampler signSampler;
     private final MobileClientSampler mobileClientSampler;
     private final HashMap<String, GenericSampler> samplerMap;
+    private long groupID;
+    private static HashMap<Long, BufferedReader> fileMap;
 
     public FrejaEidPluginSampler() throws FrejaEidClientInternalException, Exception {
         authSampler = new AuthSampler();
@@ -24,6 +30,7 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         mobileClientSampler = new MobileClientSampler();
         samplerMap = new HashMap<>();
         addSamplers();
+        fileMap = new HashMap<>();
     }
 
     public String getEmail() {
@@ -38,17 +45,56 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         setProperty("requests", requests);
     }
 
+    public String getEmailFilePath() {
+        return getPropertyAsString("emailFilePath");
+    }
+
+    public void setEmailFilePath(String path) {
+        setProperty("emailFilePath", path);
+    }
+
+    public String getEmailInputType() {
+        return getPropertyAsString("emailInputType");
+    }
+
+    public void setEmailInputType(String type) {
+        setProperty("emailInputType", type);
+    }
+
     private String[] getRequestsProperty() {
-        if (getProperty("requests").toString().equals("")){
+        if (getProperty("requests").toString().equals("")) {
             return new String[0];
         }
         return getProperty("requests").toString().split(" ");
     }
 
+    public long getGroupID() {
+        return groupID;
+    }
+
+    public void setGroupID(long groupID) {
+        this.groupID = groupID;
+    }
+    
     @Override
     public SampleResult sample(Entry entry) {
         SampleResult sampleResult = new SampleResult();
-        String [] requests = getRequestsProperty();
+        String[] requests = getRequestsProperty();
+        String email = null;
+        if (getEmailInputType().equals("SINGLE")) {
+            email = getEmail();
+        } else {
+            try {
+                email = FrejaEidPluginSampler.getLineFromFile(groupID,getEmailFilePath());
+                setEmail(email);
+            } catch (IOException ex) {
+                sampleResult.latencyEnd();
+                setSampleResult(sampleResult, "auth", false, "Freja eID Response: FAILED", "FAILED",
+                        ex.getClass().getSimpleName());
+                Logger.getLogger(AuthSampler.class.getName()).log(Level.SEVERE, null, ex);
+                return sampleResult;
+            }
+        }
         switch (requests.length) {
             case RequestNumber.NO_REQUEST:
                 sampleResult.setSampleLabel("noAction");
@@ -89,7 +135,15 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         samplerMap.put("mobile", mobileClientSampler);
     }
 
-    private SampleResult processAllRequests(String [] requests) {
+    private void setSampleResult(SampleResult sampleResult, String contentType, boolean isSuccessful, String sampleLabel, String responseCode, String responseMessage) {
+        sampleResult.setSuccessful(isSuccessful);
+        sampleResult.setSampleLabel(sampleLabel);
+        sampleResult.setResponseCode(responseCode);
+        sampleResult.setResponseMessage(responseMessage);
+        sampleResult.setContentType(contentType);
+    }
+    
+    private SampleResult processAllRequests(String[] requests) {
         SampleResult sampleResult = new SampleResult();
         HashMap<String, SampleResult> response = new HashMap<>();
         for (String request : requests) {
@@ -99,6 +153,18 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         }
         sampleResult.setResponseData(getDataAsByteArray(response));
         return sampleResult;
+    }
+    
+    public static synchronized String getLineFromFile(long groupID, String path) throws FileNotFoundException, IOException{
+        if(!fileMap.containsKey(groupID)){
+            fileMap.put(groupID, new BufferedReader(new FileReader(path)));
+        }
+        String line = fileMap.get(groupID).readLine();
+        if(line == null){
+            fileMap.replace(groupID, new BufferedReader(new FileReader(path)));
+            line = fileMap.get(groupID).readLine();
+        }
+        return line;
     }
 
 }

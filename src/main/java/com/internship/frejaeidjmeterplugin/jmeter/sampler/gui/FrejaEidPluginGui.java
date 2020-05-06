@@ -3,6 +3,11 @@ package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.FrejaEidPluginSampler;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -16,6 +21,10 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
     private final FrejaEidPluginGuiPanel frejaEIDPluginGuiPanel;
     private final HashMap<JCheckBox, String> reguestsMap;
     private static int i = 1;
+    private static long instanceCount = 0;
+    private long instanceID;
+    private BufferedReader emailFileStream;
+    private FileReader fileObject;
 
     public FrejaEidPluginGui() {
         super();
@@ -26,6 +35,8 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
         add(frejaEIDPluginGuiPanel, BorderLayout.CENTER);
         reguestsMap = new HashMap<>();
         setRequestsMap();
+        instanceCount++;
+        instanceID = instanceCount;
     }
 
     @Override
@@ -35,23 +46,25 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
 
     @Override
     public TestElement createTestElement() {
-        FrejaEidPluginSampler frejaEdPluginSampler = null;
+        FrejaEidPluginSampler frejaEidPluginSampler = null;
         try {
-            frejaEdPluginSampler = new FrejaEidPluginSampler();
+            frejaEidPluginSampler = new FrejaEidPluginSampler();
         } catch (FrejaEidClientInternalException ex) {
             Logger.getLogger(FrejaEidPluginGuiPanel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(FrejaEidPluginGui.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return frejaEdPluginSampler;
+        return frejaEidPluginSampler;
     }
 
     @Override
     public void configure(TestElement element) {
         super.configure(element);
         if (element instanceof FrejaEidPluginSampler) {
-            FrejaEidPluginSampler frejaEdPluginSampler = (FrejaEidPluginSampler) element;
-            frejaEIDPluginGuiPanel.setTxtEmail(frejaEdPluginSampler.getEmail());
+            FrejaEidPluginSampler frejaEidPluginSampler = (FrejaEidPluginSampler) element;
+            frejaEIDPluginGuiPanel.setTxtEmail(frejaEidPluginSampler.getEmail());
+            frejaEIDPluginGuiPanel.setEmailFilePath(frejaEidPluginSampler.getEmailFilePath());
+            frejaEIDPluginGuiPanel.setEmailInputType(frejaEidPluginSampler.getEmailInputType());
         }
     }
 
@@ -62,11 +75,18 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
         frejaEidPluginSampler.setEmail(frejaEIDPluginGuiPanel.getTxtEmail().getText());
         String requests = setRequests();
         frejaEidPluginSampler.setRequests(requests);
+        frejaEidPluginSampler.setEmailFilePath(frejaEIDPluginGuiPanel.getEmailFilePath().getText());
+        frejaEidPluginSampler.setEmailInputType(frejaEIDPluginGuiPanel.getEmailInputType());
+        frejaEidPluginSampler.setGroupID(instanceID);
     }
 
     @Override
     public String getStaticLabel() {
         return "Freja eID Plugin";
+    }
+    
+    public BufferedReader getEmailFileStream(){
+        return emailFileStream;
     }
 
     private String setRequests() {
@@ -89,5 +109,20 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
         reguestsMap.put(frejaEIDPluginGuiPanel.getCheckSign(), "sign");
         reguestsMap.put(frejaEIDPluginGuiPanel.getCheckOpenSecureConnection(), "mobile");
     }
+    
+    public synchronized String getLineFromFile(String absolutePath) throws FileNotFoundException, IOException{
+        if(emailFileStream == null){
+            emailFileStream = new BufferedReader(new FileReader(absolutePath));
+        }
+        String line = emailFileStream.readLine();
+        if(line == null){
+            emailFileStream = new BufferedReader(new FileReader(absolutePath));
+            line = emailFileStream.readLine();
+        }
+        return line;
+    }
+    
+    
+    
 
 }
