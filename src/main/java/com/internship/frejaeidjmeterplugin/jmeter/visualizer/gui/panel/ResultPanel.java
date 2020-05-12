@@ -1,6 +1,6 @@
-package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
+package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel;
 
-public class ResultPanel extends javax.swing.JPanel {
+public class ResultPanel extends javax.swing.JPanel implements GenericPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblDelivered;
@@ -23,17 +23,20 @@ public class ResultPanel extends javax.swing.JPanel {
         this.lblError.setText(error);
     }
 
+    @Override
     public void increaseDelivered() {
         delivered += 1;
         lblDelivered.setText(delivered + "");
     }
 
+    @Override
     public void increaseFailed() {
         failed += 1;
         lblFailed.setText(failed + "");
     }
 
-    public void clearGui() {
+    @Override
+    public void clear() {
         delivered = 0;
         failed = 0;
         lblDelivered.setText("");

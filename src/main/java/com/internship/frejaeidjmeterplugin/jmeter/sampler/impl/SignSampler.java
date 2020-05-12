@@ -28,12 +28,12 @@ public class SignSampler implements GenericSampler {
             String reference = signService.initiateSignRequest(email, TITLE, SIGN_DATA, MinRegistrationLevel.BASIC);
             SignResult authResult = signService.getResult(reference);
             sampleResult.latencyEnd();
-            setSampleResult(sampleResult, "sign", true, "Freja eID Response: " + authResult.getStatus().toString(),
+            setSampleResult(sampleResult, "sign", true, "sign",
                     authResult.getStatus().toString(), "The sign request was delivered");
             sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
             sampleResult.latencyEnd();
-            setSampleResult(sampleResult, "sign", false, "Freja eID Response: FAILED", "FAILED",
+            setSampleResult(sampleResult, "sign", false, "sign", "FAILED",
                     ex.getClass().getSimpleName());
             Logger.getLogger(SignSampler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

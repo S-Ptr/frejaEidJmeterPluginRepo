@@ -1,5 +1,6 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
 
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel.FrejaEidPluginGuiPanel;
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.impl.FrejaEidPluginSampler;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.awt.BorderLayout;

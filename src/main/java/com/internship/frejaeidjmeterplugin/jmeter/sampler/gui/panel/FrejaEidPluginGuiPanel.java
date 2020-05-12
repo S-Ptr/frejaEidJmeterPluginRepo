@@ -1,9 +1,12 @@
-package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui;
+package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel;
 
 import com.internship.frejaeidjmeterplugin.jmeter.enums.Enviroment;
 import com.internship.frejaeidjmeterplugin.jmeter.settings.EnviromentSettings;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
@@ -12,7 +15,9 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox checkAuth;
     private javax.swing.JCheckBox checkOpenSecureConnection;
     private javax.swing.JCheckBox checkSign;
-    private javax.swing.JComboBox<Enviroment> cmbEnviroment;
+    private javax.swing.JComboBox<String> cmbEnviroment;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel lblTitleEmaill;
     private javax.swing.JLabel lblTitleEnviroment;
     private javax.swing.JTextField txtEmail;
@@ -50,13 +55,73 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        initializeVariables();
-        setTitles();
+
+        jToggleButton1 = new javax.swing.JToggleButton();
+        checkAuth = new javax.swing.JCheckBox();
+        checkSign = new javax.swing.JCheckBox();
+        lblTitleEmaill = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
+        checkOpenSecureConnection = new javax.swing.JCheckBox();
+        lblTitleEnviroment = new javax.swing.JLabel();
+        cmbEnviroment = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+
+        jToggleButton1.setText("jToggleButton1");
+
+        checkAuth.setText("InitAuthentication enabled");
+
+        checkSign.setText("InitSign enabled");
+
+        lblTitleEmaill.setText("Email:");
+
+        checkOpenSecureConnection.setText("Open secure connection enabled");
+
+        lblTitleEnviroment.setText("Enviroment:");
+
         addActionOnComboBoxEnviroment();
+
+        jLabel1.setBackground(new java.awt.Color(60, 63, 65));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loader.gif"))); // NOI18N
+        jLabel1.setText("Loading ...");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        setLayoutHorizontal(layout);
-        setLayoutVertical(layout);    
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitleEnviroment)
+                    .addComponent(checkOpenSecureConnection)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkSign)
+                    .addComponent(checkAuth)
+                    .addComponent(lblTitleEmaill)
+                    .addComponent(cmbEnviroment, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(136, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(checkAuth)
+                .addGap(18, 18, 18)
+                .addComponent(checkSign)
+                .addGap(18, 18, 18)
+                .addComponent(checkOpenSecureConnection)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(lblTitleEmaill)
+                .addGap(18, 18, 18)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(lblTitleEnviroment)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmbEnviroment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void setEnviromentSettings(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEnviromentActionPerformed

@@ -1,4 +1,4 @@
-package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
+package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel;
 
 import java.awt.Color;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 
-public class FrejaEidResultsGraphPanel {
+public class FrejaEidResultsGraphPanel implements GenericPanel{
 
     private XYChart chart;
     private XChartPanel chartPanel;
@@ -51,6 +51,7 @@ public class FrejaEidResultsGraphPanel {
         return chartPanel;
     }
 
+    @Override
     public void increaseFailed() {
         double previousTotalCount = totalCount.get(totalCount.size() - 1);
         double previousFailCount = failCount.get(failCount.size() - 1);
@@ -61,6 +62,7 @@ public class FrejaEidResultsGraphPanel {
         updateGraph();
     }
 
+    @Override
     public void increaseDelivered() {
         double previousTotalCount = totalCount.get(totalCount.size() - 1);
         double previousFailCount = failCount.get(failCount.size() - 1);
@@ -71,6 +73,7 @@ public class FrejaEidResultsGraphPanel {
         updateGraph();
     }
 
+    @Override
     public void clear() {
         resetLists();
         updateGraph();

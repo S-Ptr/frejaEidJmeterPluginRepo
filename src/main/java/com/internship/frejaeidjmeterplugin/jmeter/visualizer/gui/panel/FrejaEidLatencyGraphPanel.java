@@ -1,4 +1,4 @@
-package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
+package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel;
 
 import java.awt.Color;
 import java.util.List;

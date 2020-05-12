@@ -1,11 +1,12 @@
-package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
+package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel;
 
+import com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel.ResultPanel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-public class FrejaEidPluginVisualizerGuiPanel extends JPanel {
+public class FrejaEidPluginVisualizerGuiPanel extends JPanel{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
@@ -33,10 +34,17 @@ public class FrejaEidPluginVisualizerGuiPanel extends JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        setLayoutHorizontal(layout);
-        setLayoutVertical(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 320, Short.MAX_VALUE)
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void setForm() {

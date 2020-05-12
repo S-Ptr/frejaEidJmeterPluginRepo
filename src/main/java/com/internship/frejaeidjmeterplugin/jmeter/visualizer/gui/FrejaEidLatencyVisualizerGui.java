@@ -1,9 +1,9 @@
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
-import com.internship.frejaeidjmeterplugin.util.DataService;
+import com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel.FrejaEidLatencyGraphPanel;
+import com.internship.frejaeidjmeterplugin.jmeter.util.DataService;
 import java.awt.BorderLayout;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import javax.swing.JTabbedPane;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
 
-public class FrejaEidLatencyVisualizerGui extends AbstractVisualizer{
+public class FrejaEidLatencyVisualizerGui extends AbstractVisualizer {
 
     private FrejaEidLatencyGraphPanel authResults;
     private FrejaEidLatencyGraphPanel signResults;
@@ -56,23 +56,20 @@ public class FrejaEidLatencyVisualizerGui extends AbstractVisualizer{
 
     @Override
     public void add(SampleResult sampleResult) {
-
         HashMap<String, SampleResult> responseData = DataService.mapResponseData(sampleResult);
         if (responseData == null) {
             if (!sampleResult.getSampleLabel().equals("noAction")) {
-                statisticsForOneRequest(sampleResult.getContentType(), sampleResult);
-            } else {
-                return;
+                statisticsForOneRequest(sampleResult);
             }
         } else {
             statisticsForRequests(sampleResult);
         }
     }
 
-    private void statisticsForOneRequest(String request, SampleResult result) {
-        FrejaEidLatencyGraphPanel panel = panelList.get(request);
-        if (!result.getResponseCode().equals(RESPONSE_CODE)) {
-            panel.addLatency((double)result.getLatency());
+    private void statisticsForOneRequest(SampleResult sampleResult) {
+        FrejaEidLatencyGraphPanel panel = panelList.get(sampleResult.getSampleLabel());
+        if (!sampleResult.getResponseCode().equals(RESPONSE_CODE)) {
+            panel.addLatency((double) sampleResult.getLatency());
         }
     }
 
@@ -86,7 +83,7 @@ public class FrejaEidLatencyVisualizerGui extends AbstractVisualizer{
             for (Map.Entry pair : responseData.entrySet()) {
                 String requestName = (String) pair.getKey();
                 SampleResult result = (SampleResult) pair.getValue();
-                statisticsForOneRequest(requestName, result);
+                statisticsForOneRequest(result);
             }
         } catch (Exception ex) {
             Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);

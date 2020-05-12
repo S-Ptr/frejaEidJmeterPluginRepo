@@ -2,6 +2,7 @@ package com.internship.frejaeidjmeterplugin.jmeter.sampler.impl;
 
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.GenericSampler;
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.RequestNumber;
+import com.internship.frejaeidjmeterplugin.jmeter.settings.EmailSettngs;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         createSamplers();
         SampleResult sampleResult = new SampleResult();
         String[] requests = getRequestsProperty();
+        setRandomEmail();
         switch (requests.length) {
             case RequestNumber.NO_REQUEST:
                 sampleResult.setSampleLabel("noAction");
@@ -111,6 +113,11 @@ public class FrejaEidPluginSampler extends AbstractSampler {
                 Logger.getLogger(FrejaEidPluginSampler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    private void setRandomEmail() {
+         int randomNumber = (int) (Math.random() * 9);
+         setEmail(EmailSettngs.getEmail(randomNumber));
     }
 
 }

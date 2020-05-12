@@ -1,36 +1,26 @@
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui;
 
+import com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel.FrejaEidResultsGraphPanel;
+import com.internship.frejaeidjmeterplugin.jmeter.util.DataService;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
-import org.knowm.xchart.QuickChart;
-import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
+import com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel.GenericPanel;
 
 public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
 
     private FrejaEidResultsGraphPanel authResults;
     private FrejaEidResultsGraphPanel signResults;
     private FrejaEidResultsGraphPanel openSecureConnectionResults;
-    private HashMap<String, FrejaEidResultsGraphPanel> panelList;
-    private static final String RESPONSE_CODE = "FAILED";
+    private HashMap<String, GenericPanel> panelList;
+
 
     public FrejaEidResultsGraphVisualizerGui() {
         super();
@@ -71,12 +61,10 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
         HashMap<String, SampleResult> responseData = getResponseData(sampleResult);
         if (responseData == null) {
             if (!sampleResult.getSampleLabel().equals("noAction")) {
-                statisticsForOneRequest(sampleResult.getContentType(), sampleResult.getResponseCode());
-            } else {
-                return;
+                DataService.statisticsForOneRequest(sampleResult, panelList);
             }
         } else {
-            statisticsForRequests(sampleResult);
+            DataService.statisticsForRequests(sampleResult, panelList);
         }
     }
 
@@ -101,35 +89,9 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
         return responseData;
     }
 
-    private void statisticsForOneRequest(String request, String responseCode) {
-        FrejaEidResultsGraphPanel result = panelList.get(request);
-        if (responseCode.equals(RESPONSE_CODE)) {
-            result.increaseFailed();
-        } else {
-            result.increaseDelivered();
-        }
-    }
-
-    private void statisticsForRequests(SampleResult sampleResult) {
-        byte[] responseDataByte = sampleResult.getResponseData();
-        ByteArrayInputStream bais = new ByteArrayInputStream(responseDataByte);
-        try {
-            ObjectInputStream in = new ObjectInputStream(bais);
-            HashMap<String, SampleResult> responseData = (HashMap<String, SampleResult>) in.readObject();
-
-            for (Map.Entry pair : responseData.entrySet()) {
-                String requestName = (String) pair.getKey();
-                String responseCode = ((SampleResult) pair.getValue()).getResponseCode();
-                statisticsForOneRequest(requestName, responseCode);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     @Override
     public void clearData() {
-        for (FrejaEidResultsGraphPanel next : panelList.values()) {
+        for (GenericPanel next : panelList.values()) {
             next.clear();
         }
     }
