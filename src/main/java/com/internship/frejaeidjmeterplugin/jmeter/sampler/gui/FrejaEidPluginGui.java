@@ -35,23 +35,23 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
 
     @Override
     public TestElement createTestElement() {
-        FrejaEidPluginSampler frejaEdPluginSampler = null;
+        FrejaEidPluginSampler frejaEidPluginSampler = null;
         try {
-            frejaEdPluginSampler = new FrejaEidPluginSampler();
+            frejaEidPluginSampler = new FrejaEidPluginSampler();
         } catch (FrejaEidClientInternalException ex) {
             Logger.getLogger(FrejaEidPluginGuiPanel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(FrejaEidPluginGui.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return frejaEdPluginSampler;
+        return frejaEidPluginSampler;
     }
 
     @Override
     public void configure(TestElement element) {
         super.configure(element);
         if (element instanceof FrejaEidPluginSampler) {
-            FrejaEidPluginSampler frejaEdPluginSampler = (FrejaEidPluginSampler) element;
-            frejaEIDPluginGuiPanel.setTxtEmail(frejaEdPluginSampler.getEmail());
+            FrejaEidPluginSampler frejaEidPluginSampler = (FrejaEidPluginSampler) element;
+            frejaEIDPluginGuiPanel.setTxtEmail(frejaEidPluginSampler.getEmail());
         }
     }
 
@@ -68,7 +68,7 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
     public String getStaticLabel() {
         return "Freja eID Plugin";
     }
-
+    
     private String setRequests() {
         String response = "";
         for (Map.Entry pair : reguestsMap.entrySet()) {
@@ -89,5 +89,4 @@ public class FrejaEidPluginGui extends AbstractSamplerGui {
         reguestsMap.put(frejaEIDPluginGuiPanel.getCheckSign(), "sign");
         reguestsMap.put(frejaEIDPluginGuiPanel.getCheckOpenSecureConnection(), "mobile");
     }
-
 }

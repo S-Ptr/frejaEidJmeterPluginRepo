@@ -2,9 +2,14 @@ package com.internship.frejaeidjmeterplugin.jmeter.sampler.impl;
 
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.GenericSampler;
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.RequestNumber;
-import com.internship.frejaeidjmeterplugin.jmeter.settings.EmailSettngs;
+import com.internship.frejaeidjmeterplugin.jmeter.settings.EmailSettings;
+import com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.FrejaEidPluginGui;
+import com.internship.frejaeidjmeterplugin.jmeter.settings.EnviromentSettings;
 import com.verisec.frejaeid.client.exceptions.FrejaEidClientInternalException;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -20,9 +25,12 @@ public class FrejaEidPluginSampler extends AbstractSampler {
     private SignSampler signSampler;
     private MobileClientSampler mobileSampler;
     private final HashMap<String, GenericSampler> samplerMap;
+    private long groupID;
+    private static HashMap<Long, BufferedReader> fileMap;
 
     public FrejaEidPluginSampler() throws FrejaEidClientInternalException, Exception {
         samplerMap = new HashMap<>();
+        addSamplers();
     }
 
     public String getEmail() {
@@ -37,11 +45,35 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         setProperty("requests", requests);
     }
 
+    public String getEmailFilePath() {
+        return getPropertyAsString("emailFilePath");
+    }
+
+    public void setEmailFilePath(String path) {
+        setProperty("emailFilePath", path);
+    }
+
+    public String getEmailInputType() {
+        return getPropertyAsString("emailInputType");
+    }
+
+    public void setEmailInputType(String type) {
+        setProperty("emailInputType", type);
+    }
+
     private String[] getRequestsProperty() {
         if (getProperty("requests").toString().equals("")) {
             return new String[0];
         }
         return getProperty("requests").toString().split(" ");
+    }
+
+    public long getGroupID() {
+        return groupID;
+    }
+
+    public void setGroupID(long groupID) {
+        this.groupID = groupID;
     }
 
     @Override
@@ -50,6 +82,7 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         SampleResult sampleResult = new SampleResult();
         String[] requests = getRequestsProperty();
         setRandomEmail();
+
         switch (requests.length) {
             case RequestNumber.NO_REQUEST:
                 sampleResult.setSampleLabel("noAction");
@@ -90,6 +123,14 @@ public class FrejaEidPluginSampler extends AbstractSampler {
         samplerMap.put("mobile", mobileSampler);
     }
 
+    private void setSampleResult(SampleResult sampleResult, String contentType, boolean isSuccessful, String sampleLabel, String responseCode, String responseMessage) {
+        sampleResult.setSuccessful(isSuccessful);
+        sampleResult.setSampleLabel(sampleLabel);
+        sampleResult.setResponseCode(responseCode);
+        sampleResult.setResponseMessage(responseMessage);
+        sampleResult.setContentType(contentType);
+    }
+
     private SampleResult processAllRequests(String[] requests) {
         SampleResult sampleResult = new SampleResult();
         HashMap<String, SampleResult> response = new HashMap<>();
@@ -116,8 +157,10 @@ public class FrejaEidPluginSampler extends AbstractSampler {
     }
 
     private void setRandomEmail() {
-         int randomNumber = (int) (Math.random() * 9);
-         setEmail(EmailSettngs.getEmail(randomNumber));
+        if (!EmailSettings.isSingleUser()) {
+            int randomNumber = (int) (Math.random() * 9);
+            setEmail(EmailSettings.getRandomEmail(randomNumber));
+        }
     }
 
 }
