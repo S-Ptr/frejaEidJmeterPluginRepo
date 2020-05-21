@@ -66,14 +66,15 @@ public class FrejaRequestPanel extends javax.swing.JPanel {
     private void initComponents() {
         initializeVariables();
         setTitles();
-        addActionOnCheckAuth();
-        addActionOnCheckSign();
+        //addActionOnCheckAuth();
+        //addActionOnCheckSign();
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         setLayoutHorizontal(layout);
         setLayoutVertical(layout);
     }// </editor-fold>//GEN-END:initComponents
 
+    /* This methods are used for approve or decline transactions
     private void checkAuth(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAuthActionPerformed
         // TODO add your handling code here:
         authChecked = !authChecked;
@@ -87,7 +88,7 @@ public class FrejaRequestPanel extends javax.swing.JPanel {
         setVisibleBtnGroupSign(signChecked);
         setOpenSecureConnectionCheckBox();
     }//GEN-LAST:event_checkSignActionPerformed
-
+*/
     private void populateBtnGroupAuth() {
         btnGroupAuth.add(radioApproveAuth);
         btnGroupAuth.add(radioDeclineAuth);
@@ -154,7 +155,7 @@ public class FrejaRequestPanel extends javax.swing.JPanel {
         radioDeclineSign.setText("decline");
         radioNoActionSign.setText("no action");
     }
-
+    /* This methods are used for approve and decline transactions
     private void addActionOnCheckAuth() {
         checkAuth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,7 +171,7 @@ public class FrejaRequestPanel extends javax.swing.JPanel {
             }
         });
     }
-
+*/
     private void setLayoutHorizontal(javax.swing.GroupLayout layout) {
               layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

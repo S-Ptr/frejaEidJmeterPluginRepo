@@ -24,11 +24,12 @@ public class AuthSampler extends FrejaEidRequest implements GenericSampler {
         sampleResult.sampleStart();
         try {
             String reference = authService.initiateAuthenticationRequest(email, MinRegistrationLevel.BASIC);
-            ResponseStatus status = handleRequest(getSamplerName(), reference, email);
+            // This method is used for approve or decline sign transaction
+            //ResponseStatus status = handleRequest(getSamplerName(), reference, email);
             AuthenticationResult authResult = authService.getResult(reference);
             sampleResult.latencyEnd();
             setSampleResult(sampleResult, "auth", true, "auth",
-                    authResult.getStatus().toString(), status.toString());
+                    authResult.getStatus().toString(), "place_for_status_attribute");
             sampleResult.setResponseCodeOK();
         } catch (Exception ex) {
             sampleResult.latencyEnd();

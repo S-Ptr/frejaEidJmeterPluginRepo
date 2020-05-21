@@ -27,7 +27,8 @@ public class SignSampler extends FrejaEidRequest implements GenericSampler {
         sampleResult.sampleStart();
         try {
             String reference = signService.initiateSignRequest(email, TITLE, SIGN_DATA, MinRegistrationLevel.BASIC);
-            ResponseStatus status = handleRequest(getSamplerName(), reference, email);
+            //This method is used for approve or decline auth transaction
+            // ResponseStatus status = handleRequest(getSamplerName(), reference, email);
             SignResult authResult = signService.getResult(reference);
             sampleResult.latencyEnd();
             setSampleResult(sampleResult, "sign", true, "sign",

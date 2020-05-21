@@ -89,7 +89,6 @@ public class EmailInputPanel extends javax.swing.JPanel {
         txtUserListFromFile.setEditable(false);
         btnBrowse.setEnabled(false);
     }//GEN-LAST:event_radioSingleUserActionPerformed
-
     private void chooseListOfUsersFromFile(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioUserListFromFileActionPerformed
         // TODO add your handling code here:
         txtEmail.setEditable(false);
