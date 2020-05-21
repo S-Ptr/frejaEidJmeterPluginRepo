@@ -14,11 +14,15 @@ import com.verisec.frejaeid.mobilecommons.beans.registration.account.RegisterAcc
 import com.verisec.frejaeid.service.commons.service.json.JsonService;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class MobileClientService {
 
-    private final HashMap<String, MobileClient> mobileClients;
-    private final HashMap<Integer, String> emails;
+    private static MobileClientService instance;
+    private HashMap<String, MobileClient> mobileClients;
+    private MobileClient singleMobileClient;
     private final ConfirmEmailServiceApi confirmEmailService;
     private static final JsonService jsonService;
 
@@ -29,53 +33,54 @@ public final class MobileClientService {
 
     public MobileClientService() throws FrejaEidException, Exception {
         confirmEmailService = new ConfirmEmailService();
-        emails = new HashMap<>();
-        mobileClients = new HashMap<>();
     }
 
-    static {
-        JsonServiceFactory.registerJsonServiceProvider(new JsonService());
+    public static MobileClientService getInstance() {
+        if (instance == null) {
+            try {
+                instance = new MobileClientService();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return instance;
     }
 
-    public void openSecureConnection(MobileClientApi mobileClient) throws Exception {
-        mobileClient.openSecureConnection();
-    }
-
-    public ResponseStatus restoreUserToBasicLevel(MobileClientApi mobileClient) throws FrejaEidException {
+    public ResponseStatus restoreUserToBasicLevel(MobileClientApi mobileClient, String email, String password) throws FrejaEidException {
         try {
             mobileClient.openSecureConnection();
-            RegisterAccountEventResponseBean registerAccountEventResponseBean = jsonService.deserializeFromJson(mobileClient.restoreAccount(EnviromentSettings.getUserEmail(), UserInfoType.EMAIL, LanguageCode.EN).getMessage(), RegisterAccountEventResponseBean.class);
-            confirmEmailService.openAndConfirmLinkFromLastEmailMessage();
-            return mobileClient.getTokenParamAndVerifyOtp(registerAccountEventResponseBean, EnviromentSettings.getUserEmail());
+            RegisterAccountEventResponseBean registerAccountEventResponseBean = jsonService.deserializeFromJson(mobileClient.restoreAccount(email, UserInfoType.EMAIL, LanguageCode.EN).getMessage(), RegisterAccountEventResponseBean.class);
+            confirmEmailService.openAndConfirmLinkFromLastEmailMessage(email, password);
+            return mobileClient.getTokenParamAndVerifyOtp(registerAccountEventResponseBean, email);
         } catch (Exception ex) {
             throw new FrejaEidException("Restoring user to BASIC level has failed.", ex);
         }
     }
 
-    public ResponseStatus bindUserToTransaction(MobileClientApi mobileClient, String reference) {
-        return mobileClient.bindUserToTransaction(reference);
+    public void connectMobileClientsWithEmails(HashMap<Integer, String> emails, List<String> passwords) throws FrejaEidException {
+        mobileClients = new HashMap<>();
+        for (Map.Entry pair : emails.entrySet()) {
+            int emailKey = (int) pair.getKey();
+            String email = (String) pair.getValue();
+            MobileClient mobileClient = new MobileClient(EnviromentSettings.getWebSocketAdress(), EnviromentSettings.getWebSocketKeystorePath(), EnviromentSettings.getKeystorePassword());
+            restoreUserToBasicLevel(mobileClient, email, passwords.get(emailKey));
+            mobileClients.put(email, mobileClient);
+        }
     }
 
-    public ResponseStatus approveAuthenticationTransaction(MobileClientApi mobileClient, String reference) {
-        return mobileClient.approveAuthenticationTransaction(reference);
+    public void initializeSingleMobileClient(String email, String password) throws FrejaEidException {
+        restoreUserToBasicLevel(singleMobileClient, email, password);
     }
 
-    public ResponseStatus approveSignTransaction(MobileClientApi mobileClient, String reference) throws Exception {
-        return mobileClient.approveSignTransaction(reference);
+    public void setSingleMobileClient(MobileClient singleMobileClient) {
+        this.singleMobileClient = singleMobileClient;
     }
 
-    public ResponseStatus declineTransaction(MobileClientApi mobileClient, String reference) {
-        return mobileClient.declineTransaction(reference);
+    public MobileClient getSingleMobileClient() {
+        return singleMobileClient;
     }
 
-    public void closeConnection(MobileClientApi mobileClient) {
-        mobileClient.closeConnection();
-    }
-
-    public void populateMobileClients(List<String> emails) {
-    }
-
-    public MobileClient getMobileClient(String email) {
+    public MobileClient getMobileClientForEmail(String email) {
         return mobileClients.get(email);
     }
 }

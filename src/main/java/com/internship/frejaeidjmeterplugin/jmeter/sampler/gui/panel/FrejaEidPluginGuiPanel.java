@@ -1,62 +1,41 @@
 package com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel;
 
 import com.internship.frejaeidjmeterplugin.jmeter.enums.Enviroment;
-import com.internship.frejaeidjmeterplugin.jmeter.settings.EmailSettings;
 import com.internship.frejaeidjmeterplugin.jmeter.settings.EnviromentSettings;
-import java.io.File;
+import com.internship.frejaeidjmeterplugin.jmeter.settings.RequestSettings;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.filechooser.FileFilter;
 
 public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBrowse;
-    private javax.swing.ButtonGroup btnGroupEmailInput;
-    private javax.swing.JCheckBox checkAuth;
+    private javax.swing.JButton btnSaveConfiguration;
     private javax.swing.JCheckBox checkOpenSecureConnection;
-    private javax.swing.JCheckBox checkSign;
     private javax.swing.JComboBox<String> cmbEnviroment;
-    private javax.swing.JLabel lblTitleEmailInput;
-    private javax.swing.JLabel lblTitleEnviroment;
-    private javax.swing.JLabel lblTitleRequests;
-    private javax.swing.JRadioButton radioSingleUser;
-    private javax.swing.JRadioButton radioUserListFromFile;
-    private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtUserListFromFile;
+    private com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel.EmailInputPanel emailInputPanel;
+    private com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel.FrejaRequestPanel frejaRequestPanel;
+    private javax.swing.JPanel panelEnviroment;
+    private javax.swing.JPanel panelMobileRequests;
     // End of variables declaration//GEN-END:variables
 
     public FrejaEidPluginGuiPanel() {
         initComponents();
-        setComboEnviroment();
-        populateBtnbtnGroupEmailInput();
+        setDefaultSettings();
     }
 
     public JCheckBox getCheckOpenSecureConnection() {
         return checkOpenSecureConnection;
     }
 
-    public JCheckBox getCheckAuth() {
-        return checkAuth;
+    public JButton getBtnSaveConfiguration() {
+        return btnSaveConfiguration;
     }
 
-    public JCheckBox getCheckSign() {
-        return checkSign;
-    }
-
-    public JTextField getTxtEmail() {
-        return txtEmail;
-    }
-
-    public void setTxtEmail(String text) {
-        this.txtEmail.setText(text);
-    }
-
-    private void setComboEnviroment() {
+    private void setDefaultSettings() {
         cmbEnviroment.setModel(new DefaultComboBoxModel(Enviroment.values()));
+        btnSaveConfiguration.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -64,99 +43,55 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
     private void initComponents() {
         initializeVariables();
         setTitles();
-        setFields();
         addActionOnComboBoxEnviroment();
-        addActionOnBtnBrowse();
-        addActionOnRadioSingleUser();
-        addActionOnRadioUserListFromFile();
+        addActionOnBtnSaveConfiguration();
+        setEnviromentPanel();
+        setMobileRequestPanel();
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         setLayoutHorizontal(layout);
-        setLayoutVertical(layout); 
+        setLayoutVertical(layout);     
     }// </editor-fold>//GEN-END:initComponents
+
+
+    private void saveConfiguration(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveConfigurationActionPerformed
+        // TODO add your handling code here:
+        RequestSettings.populateRequests(frejaRequestPanel.getCheckAuth().isSelected(), frejaRequestPanel.getCheckSign().isSelected(), checkOpenSecureConnection.isSelected());
+        RequestSettings.populateResponses(frejaRequestPanel.getRadioApproveAuth().isSelected(), frejaRequestPanel.getRadioDeclineAuth().isSelected(), frejaRequestPanel.getRadioNoActionAuth().isSelected(),
+                frejaRequestPanel.getRadioApproveSign().isSelected(), frejaRequestPanel.getRadioDeclineSign().isSelected(), frejaRequestPanel.getRadioNoActionSign().isSelected());
+        JOptionPane.showMessageDialog(this, "Configuration saved. You can run the program", "Successful", JOptionPane.OK_OPTION, new javax.swing.ImageIcon(getClass().getResource("/images/check.png")));
+    }//GEN-LAST:event_btnSaveConfigurationActionPerformed
 
     private void setEnviromentSettings(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEnviromentActionPerformed
         // TODO add your handling code here:
-        EnviromentSettings.setEnviroment((Enviroment) cmbEnviroment.getSelectedItem());
+        Enviroment enviroment = (Enviroment) cmbEnviroment.getSelectedItem();
+        EnviromentSettings.setEnviroment(enviroment);
         EnviromentSettings.populateSettings();
     }//GEN-LAST:event_cmbEnviromentActionPerformed
 
-    private void openFileChooser(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseActionPerformed
-        // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        addFilterToFileChooser(fileChooser);
-        int returnVal = fileChooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            EmailSettings.populateListOfEmails(file);
-            txtUserListFromFile.setText(file.getAbsolutePath());
-        } else {
-            JOptionPane.showMessageDialog(fileChooser, "Something went wrong. Please try again.", "File Selection Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnBrowseActionPerformed
-
-    private void disableUserListFromFile(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSingleUserActionPerformed
-        // TODO add your handling code here:
-        txtEmail.setEnabled(true);
-        txtUserListFromFile.setEditable(false);
-        btnBrowse.setEnabled(false);
-    }//GEN-LAST:event_radioSingleUserActionPerformed
-
-    private void disableSingleUser(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioUserListFromFileActionPerformed
-        // TODO add your handling code here:
-        txtEmail.setEnabled(false);
-        txtUserListFromFile.setEditable(true);
-        btnBrowse.setEnabled(true);
-    }//GEN-LAST:event_radioUserListFromFileActionPerformed
-
     private void initializeVariables() {
-        btnGroupEmailInput = new javax.swing.ButtonGroup();
-        checkAuth = new javax.swing.JCheckBox();
-        checkSign = new javax.swing.JCheckBox();
-        lblTitleEmailInput = new javax.swing.JLabel();
-        checkOpenSecureConnection = new javax.swing.JCheckBox();
-        lblTitleEnviroment = new javax.swing.JLabel();
+        btnSaveConfiguration = new javax.swing.JButton();
+        panelEnviroment = new javax.swing.JPanel();
         cmbEnviroment = new javax.swing.JComboBox<>();
-        lblTitleRequests = new javax.swing.JLabel();
-        radioSingleUser = new javax.swing.JRadioButton();
-        radioUserListFromFile = new javax.swing.JRadioButton();
-        txtEmail = new javax.swing.JTextField();
-        txtUserListFromFile = new javax.swing.JTextField();
-        btnBrowse = new javax.swing.JButton();
+        panelMobileRequests = new javax.swing.JPanel();
+        checkOpenSecureConnection = new javax.swing.JCheckBox();
+        frejaRequestPanel = new com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel.FrejaRequestPanel();
+        emailInputPanel = new com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel.EmailInputPanel();
     }
 
     private void setTitles() {
-        checkAuth.setText("InitAuthentication enabled");
-        checkSign.setText("InitSign enabled");
-        lblTitleEmailInput.setText("Email input:");
+        btnSaveConfiguration.setText("Save configuration");
         checkOpenSecureConnection.setText("Open secure connection enabled");
-        lblTitleEnviroment.setText("Enviroment:");
-        btnBrowse.setText("Browse");
-        lblTitleRequests.setText("Requests:");
-        radioSingleUser.setText("Single User:");
-        radioUserListFromFile.setText("User List from File:");
+        panelMobileRequests.setBorder(javax.swing.BorderFactory.createTitledBorder("Mobile client requests"));
+        panelEnviroment.setBorder(javax.swing.BorderFactory.createTitledBorder("Enviroment"));
+    }
+
+    private void addActionOnBtnSaveConfiguration() {
+        btnSaveConfiguration.addActionListener(this::saveConfiguration);
     }
 
     private void addActionOnComboBoxEnviroment() {
         cmbEnviroment.addActionListener(this::setEnviromentSettings);
-    }
-
-    private void addActionOnBtnBrowse() {
-        btnBrowse.addActionListener(this::openFileChooser);
-    }
-
-    private void addActionOnRadioSingleUser() {
-        radioSingleUser.addActionListener(this::disableUserListFromFile);
-    }
-
-    private void addActionOnRadioUserListFromFile() {
-        radioUserListFromFile.addActionListener(this::disableSingleUser);
-    }
-
-    private void setFields() {
-        btnBrowse.setEnabled(false);
-        txtUserListFromFile.setEditable(false);
-        radioSingleUser.setSelected(true);
     }
 
     private void setLayoutHorizontal(javax.swing.GroupLayout layout) {
@@ -165,28 +100,13 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblTitleRequests)
-                                        .addComponent(lblTitleEmailInput)
-                                        .addComponent(lblTitleEnviroment))
-                                .addGap(39, 39, 39)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(radioUserListFromFile)
-                                                        .addComponent(radioSingleUser)
-                                                        .addComponent(checkOpenSecureConnection)
-                                                        .addComponent(checkSign)
-                                                        .addComponent(checkAuth)
-                                                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(txtUserListFromFile, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(btnBrowse, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addComponent(cmbEnviroment, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(0, 64, Short.MAX_VALUE))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(btnSaveConfiguration, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(panelEnviroment, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(frejaRequestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
+                                                .addComponent(emailInputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(panelMobileRequests, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(31, Short.MAX_VALUE))
         );
     }
 
@@ -194,53 +114,58 @@ public class FrejaEidPluginGuiPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(checkAuth)
-                                        .addComponent(lblTitleRequests))
-                                .addGap(18, 18, 18)
-                                .addComponent(checkSign)
-                                .addGap(18, 18, 18)
-                                .addComponent(checkOpenSecureConnection)
-                                .addGap(31, 31, 31)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(lblTitleEmailInput)
-                                        .addComponent(radioSingleUser))
+                                .addGap(15, 15, 15)
+                                .addComponent(panelEnviroment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(emailInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(frejaRequestPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(7, 7, 7)
-                                .addComponent(radioUserListFromFile)
+                                .addComponent(panelMobileRequests, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(txtUserListFromFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnBrowse))
-                                .addGap(26, 26, 26)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(lblTitleEnviroment)
-                                        .addComponent(cmbEnviroment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(46, Short.MAX_VALUE))
+                                .addComponent(btnSaveConfiguration)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }
 
-    private void addFilterToFileChooser(JFileChooser fileChooser) {
-        fileChooser.addChoosableFileFilter(new FileFilter() {
-            public String getDescription() {
-                return "Text Files (*.txt)";
-            }
+    private void setEnviromentPanel() {
+        javax.swing.GroupLayout panelEnviromentLayout = new javax.swing.GroupLayout(panelEnviroment);
+        panelEnviroment.setLayout(panelEnviromentLayout);
+        panelEnviromentLayout.setHorizontalGroup(
+                panelEnviromentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelEnviromentLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(cmbEnviroment, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelEnviromentLayout.setVerticalGroup(
+                panelEnviromentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelEnviromentLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(cmbEnviroment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                } else {
-                    return f.getName().toLowerCase().endsWith(".txt");
-                }
-            }
-        });
     }
 
-    private void populateBtnbtnGroupEmailInput() {
-        btnGroupEmailInput.add(radioSingleUser);
-        btnGroupEmailInput.add(radioUserListFromFile);
+    private void setMobileRequestPanel() {
+        panelMobileRequests.setPreferredSize(new java.awt.Dimension(656, 60));
+        javax.swing.GroupLayout panelMobileRequestsLayout = new javax.swing.GroupLayout(panelMobileRequests);
+        panelMobileRequests.setLayout(panelMobileRequestsLayout);
+        panelMobileRequestsLayout.setHorizontalGroup(
+                panelMobileRequestsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelMobileRequestsLayout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(checkOpenSecureConnection, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(491, Short.MAX_VALUE))
+        );
+        panelMobileRequestsLayout.setVerticalGroup(
+                panelMobileRequestsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMobileRequestsLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(checkOpenSecureConnection)
+                                .addContainerGap())
+        );
     }
 
 }

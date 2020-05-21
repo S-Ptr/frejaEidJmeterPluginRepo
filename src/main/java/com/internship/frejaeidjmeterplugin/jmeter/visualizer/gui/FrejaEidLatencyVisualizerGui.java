@@ -7,8 +7,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
@@ -86,7 +84,7 @@ public class FrejaEidLatencyVisualizerGui extends AbstractVisualizer {
                 statisticsForOneRequest(result);
             }
         } catch (Exception ex) {
-            Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 

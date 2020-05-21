@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
-  <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="btnGroupEmailInput">
-    </Component>
-  </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -23,149 +19,133 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblTitleRequests" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblTitleEmailInput" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblTitleEnviroment" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="radioUserListFromFile" min="-2" max="-2" attributes="0"/>
-                          <Component id="radioSingleUser" min="-2" max="-2" attributes="0"/>
-                          <Component id="checkOpenSecureConnection" min="-2" max="-2" attributes="0"/>
-                          <Component id="checkSign" min="-2" max="-2" attributes="0"/>
-                          <Component id="checkAuth" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtEmail" min="-2" pref="224" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="btnSaveConfiguration" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="panelEnviroment" alignment="0" max="32767" attributes="0"/>
+                      <Component id="frejaRequestPanel" pref="736" max="32767" attributes="0"/>
+                      <Component id="emailInputPanel" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="txtUserListFromFile" min="-2" pref="224" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnBrowse" min="-2" pref="75" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="cmbEnviroment" min="-2" pref="224" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="0" pref="64" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="panelMobileRequests" alignment="0" min="-2" pref="736" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace pref="31" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="checkAuth" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblTitleRequests" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="checkSign" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="checkOpenSecureConnection" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblTitleEmailInput" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="radioSingleUser" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <Component id="panelEnviroment" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="emailInputPanel" min="-2" pref="355" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="frejaRequestPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="txtEmail" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-              <Component id="radioUserListFromFile" min="-2" max="-2" attributes="0"/>
+              <Component id="panelMobileRequests" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtUserListFromFile" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnBrowse" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblTitleEnviroment" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmbEnviroment" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="46" max="32767" attributes="0"/>
+              <Component id="btnSaveConfiguration" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JCheckBox" name="checkAuth">
+    <Component class="javax.swing.JButton" name="btnSaveConfiguration">
       <Properties>
-        <Property name="text" type="java.lang.String" value="InitAuthentication enabled"/>
+        <Property name="text" type="java.lang.String" value="Save configuration"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveConfigurationActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="checkSign">
+    <Container class="javax.swing.JPanel" name="panelEnviroment">
       <Properties>
-        <Property name="text" type="java.lang.String" value="InitSign enabled"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblTitleEmailInput">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Email input:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkOpenSecureConnection">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Open secure connection enabled"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblTitleEnviroment">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Enviroment:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="cmbEnviroment">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Enviroment"/>
+          </Border>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbEnviromentActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblTitleRequests">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="cmbEnviroment" min="-2" pref="230" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="cmbEnviroment" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JComboBox" name="cmbEnviroment">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbEnviromentActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="panelMobileRequests">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Requests:"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Mobile client requests"/>
+          </Border>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[656, 60]"/>
+        </Property>
       </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                  <Component id="checkOpenSecureConnection" min="-2" pref="219" max="-2" attributes="0"/>
+                  <EmptySpace pref="491" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="checkOpenSecureConnection" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JCheckBox" name="checkOpenSecureConnection">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Open secure connection enabled"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel.FrejaRequestPanel" name="frejaRequestPanel">
     </Component>
-    <Component class="javax.swing.JRadioButton" name="radioSingleUser">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Single User:"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioSingleUserActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="radioUserListFromFile">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="User List from File:"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioUserListFromFileActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtEmail">
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtUserListFromFile">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnBrowse">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Browse"/>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowseActionPerformed"/>
-      </Events>
+    <Component class="com.internship.frejaeidjmeterplugin.jmeter.sampler.gui.panel.EmailInputPanel" name="emailInputPanel">
     </Component>
   </SubComponents>
 </Form>

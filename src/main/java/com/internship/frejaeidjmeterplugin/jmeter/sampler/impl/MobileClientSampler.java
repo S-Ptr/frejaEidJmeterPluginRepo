@@ -2,25 +2,25 @@ package com.internship.frejaeidjmeterplugin.jmeter.sampler.impl;
 
 import com.internship.frejaeidjmeterplugin.jmeter.frejaRequests.MobileClientService;
 import com.internship.frejaeidjmeterplugin.jmeter.sampler.GenericSampler;
+import com.internship.frejaeidjmeterplugin.jmeter.settings.EmailSettings;
+import com.verisec.frejaeid.mobileclient.clients.impl.MobileClient;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.jmeter.samplers.SampleResult;
 
 public class MobileClientSampler implements GenericSampler {
 
-    private final MobileClientService mobileClientService;
-
     public MobileClientSampler() throws Exception {
-        mobileClientService = new MobileClientService();
     }
 
     @Override
     public SampleResult sample(String email) {
+        MobileClientService mobileClientService = MobileClientService.getInstance();
         SampleResult sampleResult = new SampleResult();
         sampleResult.sampleStart();
-        
+        MobileClient mobileClient = getMobileClient(email);
         try {
-            mobileClientService.openSecureConnection(mobileClientService.getMobileClient(email));
+            mobileClient.openSecureConnection();
             sampleResult.latencyEnd();
             setSampleResult(sampleResult, "mobile", true, "mobile", "DELIVERED", "The open secure connection request was delivered");
         } catch (Exception ex) {
@@ -28,10 +28,9 @@ public class MobileClientSampler implements GenericSampler {
             setSampleResult(sampleResult, "mobile", false, "mobile", "FAILED", ex.getMessage());
             Logger.getLogger(MobileClientSampler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        mobileClientService.closeConnection(mobileClientService.getMobileClient(email));
+        mobileClient.closeConnection();
         sampleResult.sampleEnd();
         return sampleResult;
-
     }
 
     private void setSampleResult(SampleResult sampleResult, String contentType, boolean isSuccessful, String sampleLabel, String responseCode, String responseMessage) {
@@ -45,6 +44,13 @@ public class MobileClientSampler implements GenericSampler {
     @Override
     public String getSamplerName() {
         return "mobile";
+    }
+
+    private MobileClient getMobileClient(String email) {
+        if (EmailSettings.isSingleUser()) {
+            return MobileClientService.getInstance().getSingleMobileClient();
+        }
+        return MobileClientService.getInstance().getMobileClientForEmail(email);
     }
 
 }

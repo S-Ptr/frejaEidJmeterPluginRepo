@@ -7,7 +7,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
@@ -15,14 +14,12 @@ import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
 import com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel.GenericPanel;
 
-
 public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
 
     private FrejaEidResultsGraphPanel authResults;
     private FrejaEidResultsGraphPanel signResults;
     private FrejaEidResultsGraphPanel openSecureConnectionResults;
     private HashMap<String, GenericPanel> panelList;
-
 
     public FrejaEidResultsGraphVisualizerGui() {
         super();
@@ -80,7 +77,7 @@ public class FrejaEidResultsGraphVisualizerGui extends AbstractVisualizer {
             responseData = (HashMap<String, SampleResult>) in.readObject();
             in.close();
         } catch (Exception ex) {
-            Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } finally {
             try {
                 bais.close();

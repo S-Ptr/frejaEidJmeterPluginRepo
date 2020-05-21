@@ -25,12 +25,12 @@ public class DataService {
             responseData = (HashMap<String, SampleResult>) in.readObject();
             in.close();
         } catch (Exception ex) {
-            Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } finally {
             try {
                 bais.close();
             } catch (IOException ex) {
-                Logger.getLogger(FrejaEidPluginVisualizerGui.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
         return responseData;

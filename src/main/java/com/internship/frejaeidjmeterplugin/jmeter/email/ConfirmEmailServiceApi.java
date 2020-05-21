@@ -6,5 +6,5 @@ import javax.mail.MessagingException;
 
 
 public interface ConfirmEmailServiceApi {
-    void openAndConfirmLinkFromLastEmailMessage() throws FrejaEidException, IOException, MessagingException, InterruptedException;
+    void openAndConfirmLinkFromLastEmailMessage(String email, String password) throws FrejaEidException, IOException, MessagingException, InterruptedException;
 }

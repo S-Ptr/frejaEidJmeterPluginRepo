@@ -1,5 +1,7 @@
 package com.internship.frejaeidjmeterplugin.jmeter.visualizer.gui.panel;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class ResultPanel extends javax.swing.JPanel implements GenericPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -10,13 +12,13 @@ public class ResultPanel extends javax.swing.JPanel implements GenericPanel {
     private javax.swing.JLabel lblTitleFailed;
     // End of variables declaration//GEN-END:variables
 
-    private int delivered;
-    private int failed;
+    private AtomicInteger delivered; 
+    private AtomicInteger failed; 
 
     public ResultPanel() {
         initComponents();
-        delivered = 0;
-        failed = 0;
+        delivered = new AtomicInteger();
+        failed = new AtomicInteger();
     }
 
     public void setError(String error) {
@@ -25,20 +27,20 @@ public class ResultPanel extends javax.swing.JPanel implements GenericPanel {
 
     @Override
     public void increaseDelivered() {
-        delivered += 1;
+        delivered.addAndGet(1);
         lblDelivered.setText(delivered + "");
     }
 
     @Override
     public void increaseFailed() {
-        failed += 1;
+        failed.addAndGet(1);
         lblFailed.setText(failed + "");
     }
 
     @Override
     public void clear() {
-        delivered = 0;
-        failed = 0;
+        delivered = new AtomicInteger();
+        failed = new AtomicInteger();
         lblDelivered.setText("");
         lblFailed.setText("");
     }

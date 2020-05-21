@@ -23,9 +23,6 @@ import javax.mail.Store;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 
-/**
- * @author vealmar
- */
 public class ConfirmEmailService implements ConfirmEmailServiceApi {
 
     private Store store;
@@ -46,14 +43,12 @@ public class ConfirmEmailService implements ConfirmEmailServiceApi {
     }
 
     @Override
-    public void openAndConfirmLinkFromLastEmailMessage() throws FrejaEidException, IOException, MessagingException, InterruptedException {
+    public void openAndConfirmLinkFromLastEmailMessage(String email, String password) throws FrejaEidException, IOException, MessagingException, InterruptedException {
         try {
-            connectToEmailServer(EnviromentSettings.getUserEmail(), EnviromentSettings.getUserEmailAccountPassword());
+            connectToEmailServer(email, password);
             String confirmLink = getConfirmRestoreLinkFromEmailContent(getEmailMessageContent(getConfirmRestoreEmailMessage()));
-          //  TestLogger.info("Click on link for confirming email: " + confirmLink);
             HttpGet httpGetRequest = new HttpGet(confirmLink);
             HttpResponse httpResponse = httpService.executeHttpRequest(httpGetRequest);
-         //   TestLogger.info("Restore email confirmation status: " + httpResponse.getStatusLine().getReasonPhrase());
             if (httpResponse.getStatusLine().getStatusCode() != HTTP_STATUS_CODE_OK) {
                 throw new FrejaEidException("Failed to confirm restore email.");
             }
@@ -77,7 +72,6 @@ public class ConfirmEmailService implements ConfirmEmailServiceApi {
 
     private void connectToEmailServer(String userEmail, String userEmailPassword) throws FrejaEidException {
         try {
-          //  TestLogger.info("Connecting to email server. ");
             Properties properties = new Properties();
             properties.put(MAIL_STORE_PROTOCOL_KEY, MAIL_STORE_PROTOCOL);
             Session emailSession = Session.getInstance(properties);
@@ -90,9 +84,7 @@ public class ConfirmEmailService implements ConfirmEmailServiceApi {
 
     private Message getConfirmRestoreEmailMessage() throws FrejaEidException, InterruptedException {
         try {
-         //   TestLogger.info("Waiting {} seconds for user to receive email. ", CONFIRM_RESTORE_EMAIL_WAITING_TIME_IN_MILLISECONDS / 1000);
             Thread.sleep(CONFIRM_RESTORE_EMAIL_WAITING_TIME_IN_MILLISECONDS);
-          //  TestLogger.info("Get last email message from inbox. ");
             emailFolder = store.getFolder(INBOX_FOLDER);
             emailFolder.open(Folder.READ_WRITE);
             Message[] messages = emailFolder.getMessages();
@@ -108,7 +100,6 @@ public class ConfirmEmailService implements ConfirmEmailServiceApi {
 
     private void closeEmailFolderAndStore() throws FrejaEidException {
         try {
-         //   TestLogger.info("Closing email folder and store. ");
             emailFolder.close(true);
             store.close();
         } catch (MessagingException ex) {

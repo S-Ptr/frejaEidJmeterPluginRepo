@@ -16,9 +16,6 @@ public class EnviromentSettings {
     private static String relyingPartyKeystorePath;
     private static String serviceAddress;
     private static String webSocketAdress;
-    private static String USER_EMAIL = "petarpetrovic123.test@gmail.com";
-    private static String USER_EMAIL_ACCOUNT_PASS = "Petar.123";
-    
 
     public EnviromentSettings() {
     }
@@ -56,13 +53,6 @@ public class EnviromentSettings {
         return serviceAddress;
     }
 
-    public static String getUserEmail() {
-        return USER_EMAIL;
-    }
-
-    public static String getUserEmailAccountPassword() {
-        return USER_EMAIL_ACCOUNT_PASS;
-    }
     public static FrejaEnvironment getFrejaEnvironment() {
         if (Enviroment.PRODUCTION == enviroment) {
             return FrejaEnvironment.PRODUCTION;
